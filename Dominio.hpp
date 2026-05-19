@@ -28,22 +28,18 @@ public:
 
 class Email {
 private:
-    string valor;  // onde o email válido será armazenado
+    std::string valor;
     
-    // Métodos privados (auxiliares, só usados dentro da classe)
-    void validar(const string& email) const;
-    void validarParteLocal(const string& local) const;
-    void validarDominio(const string& dominio) const;
-    
+    // Método privado de validação (só a classe usa)
+    void validar(const std::string& email) const;
+
 public:
-    // Construtor: cria um objeto Email já validado
-    Email(const string& email);
+    // Construtor
+    Email(const std::string& novoValor);
     
-    // Método set: modifica o email (com validação)
-    void setValor(const string& email);
-    
-    // Método get: retorna o email (apenas leitura)
-    string getValor() const;
+    // Métodos set e get
+    void set(const std::string& novoValor);
+    std::string get() const;
 };
 
 
