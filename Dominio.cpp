@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cctype>
 #include <sstream>
+#include <stdexcept>
 using namespace std;
 
 
@@ -154,3 +155,143 @@ void Email::validar(const string& email) const {
     }
     
 }  // fim do método validar
+
+/**
+ * @brief Realiza a validação do nome.
+ *
+ * @param nome nome que será validado.
+ *
+ * @throw invalid_argument caso o nome seja inválido.
+ */
+
+ void Nome::validar(string nome) {
+    if (nome.length() > 10 || nome.length() == 0)
+        throw invalid_argument("Nome invalido");
+
+    if (nome[0] == ' ' || nome.back() == ' ')
+        throw invalid_argument("Nome invalido");
+    
+    char ant = 'z';
+
+    for (char c : nome) {
+        if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == ' '))
+          throw invalid_argument("Nome invalido");
+        if (ant == ' ' && c == ' ')
+          throw invalid_argument("Nome invalido");
+        ant = c;
+    }
+  }
+
+ /**
+ * @brief Armazena o nome.
+ *
+ * @param nome nome que será armazenado.
+ */
+
+  void Nome::setNome(string nome) {
+    validar(nome);
+    this-> nome = nome;
+ } 
+
+ /**
+ * @brief Retorna o nome armazenado.
+ *
+ * @return String nome.
+ */
+string Nome::getNome(){
+    return nome;
+}
+
+/**
+ * @brief Realiza a validação da senha.
+ *
+ * @param senha senha que será validada.
+ *
+ * @throw invalid_argument caso a senha seja inválida.
+ */
+
+ void Senha::validar(string senha) {
+    if (senha.length() != 6)
+        throw invalid_argument("Senha invalida");
+    
+    char ant = ' ';
+    int maiu = 0, min = 0, num = 0;
+
+    for (char c : senha) {
+        if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9')))
+          throw invalid_argument("Senha invalida");
+        if ((c >= 'a' && c <= 'z')) {
+            min++;
+            if ((ant >= 'a' && ant <= 'z') || (ant >= 'A' && ant <= 'Z'))
+              throw invalid_argument("Senha invalida");
+        }
+        if ((c >= 'A' && c <= 'Z')) {
+            maiu++;
+            if ((ant >= 'a' && ant <= 'z') || (ant >= 'A' && ant <= 'Z'))
+              throw invalid_argument("Senha invalida");
+        }
+        if ((c >= '0' && c <= '9')) {
+            num++;
+            if ((ant >= '0' && ant <= '9'))
+              throw invalid_argument("Senha invalida");
+        }
+        ant = c;
+    }
+    if (num == 0 || maiu == 0 || min == 0)
+        throw invalid_argument("Senha invalida");
+  }
+
+ /**
+ * @brief Armazena a senha.
+ *
+ * @param senha senha que será armazenada.
+ */
+
+  void Senha::setSenha(string senha) {
+    validar(senha);
+    this-> senha = senha;
+ } 
+
+ /**
+ * @brief Retorna a senha armazenada.
+ *
+ * @return String senha.
+ */
+string Senha::getSenha(){
+    return senha;
+}
+
+/**
+ * @brief Realiza a validação do tempo inserido.
+ *
+ * @param tempo número que será validado.
+ *
+ * @throw invalid_argument caso o número seja inválido.
+ */
+
+ void Tempo::validar(int tempo) {
+    if (tempo > 365 || tempo <= 0)
+        throw invalid_argument("tempo invalido");
+  }
+
+ /**
+ * @brief Armazena o tempo.
+ *
+ * @param tempo número que será armazenado.
+ */
+
+  void Tempo::setTempo(int tempo) {
+    validar(tempo);
+    this-> tempo = tempo;
+ } 
+
+ /**
+ * @brief Retorna o tempo armazenado.
+ *
+ * @return Int tempo.
+ */
+int Tempo::getTempo(){
+    return tempo;
+}
+
+
