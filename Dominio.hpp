@@ -4,8 +4,35 @@
 #define DOMINIO_HPP_INCLUDED
 
 #include <string>
+#include<cctype>
+#include<stdexcept>
+
 using namespace std;
 
+//classe base
+class Dominio{
+protected:
+    string valor;
+    virtual void validar(string)=0;
+public:
+    void setValor(string);
+    string getValor() const;
+};
+
+class Codigo:public Dominio{
+private:
+    void validar(string);
+};
+
+class Data:public Dominio{
+private:
+    void validar(string);
+};
+
+class Estado:public Dominio{
+private:
+    void validar(string);
+};
 
 class Papel {
 private:
