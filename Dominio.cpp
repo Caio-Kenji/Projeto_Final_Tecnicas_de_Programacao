@@ -8,6 +8,43 @@
 #include <stdexcept>
 using namespace std;
 
+//implementação dos métodos da classe base
+void Dominio::setValor(string valor){
+    validar(valor);
+    this->valor=valor;
+}
+
+string Dominio::getValor() const{
+    return valor;
+}
+
+void Codigo::validar(string valor){
+    if(valor.size()>5) throw invalid_argument("Codigo invalido.");
+    if(islower(valor[0]) || islower(valor[1])) throw invalid_argument("Codigo invalido.");
+    if(isalpha(valor[2]) || isalpha(valor[3]) || isalpha(valor[4]))throw invalid_argument("Codigo invalido.");
+}
+
+void Data::validar(string valor){
+    int dia = stoi(valor.substr(0,2));
+    int mes = stoi(valor.substr(3,2));
+    int ano = stoi(valor.substr(6,4));
+    bool ehBissexto = false;
+    if( (ano % 4 == 0 && ano % 100 != 0) || ano % 400 == 0) ehBissexto=true;
+    else if(ano > 2999 || ano < 2000) throw invalid_argument("Data invalida.");
+    else if(mes > 12 || mes < 1) throw invalid_argument("Data invalida.");
+    else if(mes == 2){
+        if(ehBissexto && (dia > 29 || dia < 1)) throw invalid_argument("Data invalida.");
+        else if(dia > 28 || dia < 1) throw invalid_argument("Data invalida.");
+    }
+    else if(mes == 4 || mes == 6 || mes == 9 || mes == 11){
+        if(dia > 30 || dia < 1) throw invalid_argument("Data invalida.");
+    }
+    else if(dia > 31 || dia < 1)throw invalid_argument("Data invalida.");
+}
+
+void Estado::validar(string valor){
+    if(valor != "A FAZER" && valor != "FAZENDO" && valor != "FEITO") throw invalid_argument("Estado invalido.");
+}
 
 // Implementação do método privado validar
 void Papel::validar(const string& papel) {
