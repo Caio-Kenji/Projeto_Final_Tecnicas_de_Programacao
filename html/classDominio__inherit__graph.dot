@@ -1,0 +1,20 @@
+digraph "Dominio"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  Node1 [id="Node000001",label="Dominio",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Classe base abstrata para todos os domínios do sistema."];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="Codigo",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classCodigo.html",tooltip="Domínio para identificadores alfanuméricos com formato fixo de 5 caracteres."];
+  Node2 -> Node3 [id="edge2_Node000002_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="TUCodigo",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classTUCodigo.html",tooltip=" "];
+  Node1 -> Node4 [id="edge3_Node000001_Node000004",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node4 [id="Node000004",label="Data",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classData.html",tooltip="Domínio para representar um ponto específico no calendário gregoriano."];
+  Node4 -> Node5 [id="edge4_Node000004_Node000005",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node5 [id="Node000005",label="TUData",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classTUData.html",tooltip=" "];
+  Node1 -> Node6 [id="edge5_Node000001_Node000006",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node6 [id="Node000006",label="Estado",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classEstado.html",tooltip="Representa em qual etapa do fluxo de trabalho uma tarefa se encontra."];
+  Node6 -> Node7 [id="edge6_Node000006_Node000007",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node7 [id="Node000007",label="TUEstado",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classTUEstado.html",tooltip=" "];
+}
