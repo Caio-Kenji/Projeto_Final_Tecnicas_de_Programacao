@@ -2,9 +2,9 @@ var indexSectionsWithContent =
 {
   0: "cdefgmnprstv",
   1: "cdenpst",
-  2: "dmt",
+  2: "dempt",
   3: "egprsv",
-  4: "fsv"
+  4: "efmsv"
 };
 
 var indexSectionNames =
