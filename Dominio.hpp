@@ -49,6 +49,17 @@ public:
     string getValor() const;
 };
 
+
+
+
+
+
+// -----------DEFINIÇÕES: CÓDIGO---------------------------------------------------------
+
+
+
+
+
 /**
  * @brief Domínio para identificadores alfanuméricos com formato fixo de 5 caracteres.
  *
@@ -75,6 +86,20 @@ private:
      */
     void validar(string);
 };
+
+
+
+
+
+
+// -----------DEFINIÇÕES: DATA---------------------------------------------------------
+
+
+
+
+
+
+
 
 /**
  * @brief Domínio para representar um ponto específico no calendário gregoriano.
@@ -114,6 +139,21 @@ private:
     void validar(string);
 };
 
+
+
+
+
+
+
+
+// -----------DEFINIÇÕES: ESTADO---------------------------------------------------------
+
+
+
+
+
+
+
 /**
  * @brief Representa em qual etapa do fluxo de trabalho uma tarefa se encontra.
  *
@@ -140,40 +180,265 @@ private:
     void validar(string);
 };
 
+
+
+
+
+
+
+
+
+
+
+
+// -----------DEFINIÇÕES: PAPEL---------------------------------------------------------
+
+
+
+
+/**
+* @brief Domínio que representa o papel/função de uma pessoa no projeto Scrum.
+* 
+* @details A classe Papel define e valida os três papéis possíveis que um
+*          usuário pode assumir dentro de um projeto Scrum:
+*          - **DESENVOLVEDOR**: Responsável pela implementação técnica
+*          - **MESTRE SCRUM**: Facilitador do processo, remove impedimentos
+*          - **PROPRIETARIO DE PRODUTO**: Responsável pelo backlog e requisitos
+* 
+* @invariant O valor armazenado é sempre uma das três strings válidas.
+* 
+* @exceptions
+* @throw std::invalid_argument "Papel invalido. Opcoes validas: ..." 
+*         quando o valor fornecido não corresponde a nenhum papel permitido.
+* 
+* @note A comparação é case-sensitive e não considera acentuação conforme
+*       requisito não funcional 12.
+* 
+* @example
+* @code
+* try {
+*     Papel dev("DESENVOLVEDOR");      // Válido
+*     Papel scrum("MESTRE SCRUM");     // Válido
+*     Papel po("PROPRIETARIO DE PRODUTO"); // Válido
+*     Papel invalido("GERENTE");       // Lança exceção
+* } catch (const invalid_argument& e) {
+*     cout << e.what() << endl;
+* }
+* @endcode
+* 
+* @see Pessoa, Projeto
+*/
 class Papel {
 private:
-    string valor;  // atributo privado (nome sugestivo: "valor")
+    
+   string valor;  // atributo privado (nome sugestivo: "valor")
 
-    // Método privado de validação (opcional, mas organiza o código)
-    void validar(const string& papel);
+   /**
+   * @brief Valida se a string corresponde a um papel permitido.
+   * 
+   * @param papel String a ser validada.
+   * 
+   * @throw std::invalid_argument Se o papel não for um dos três permitidos.
+   * 
+   * @note Método privado, usado internamente por setValor() e pelo construtor.
+   *       Não deve ser chamado diretamente pelos usuários da classe.
+   */ 
+   void validar(const string& papel);
 
 public:
-    // Construtor (já valida na criação)
-    Papel(const string& papel);
+    
 
-    // Método set (lança exceção se inválido)
-    void setValor(const string& papel);
 
-    // Método get (retorna o valor)
-    string getValor() const;
+   /**
+   * @brief Construtor da classe Papel.
+   * 
+   * @param papel String contendo o papel a ser armazenado.
+   *             Deve ser exatamente "DESENVOLVEDOR", "MESTRE SCRUM" ou 
+   *             "PROPRIETARIO DE PRODUTO".
+   * 
+   * @throw std::invalid_argument Se o papel fornecido for inválido.
+   * 
+   * @post O objeto é criado apenas se a validação for bem-sucedida.
+   * 
+   * @see setValor(), validar()
+   */
+   Papel(const string& papel);
+
+
+
+
+   /**
+   * @brief Define/atualiza o valor do papel.
+   * 
+   * @param papel Nova string a ser validada e armazenada.
+   * 
+   * @throw std::invalid_argument Se o papel fornecido for inválido.
+   * 
+   * @post O valor antigo é preservado se a validação falhar.
+   *       O valor é atualizado apenas se a validação passar.
+   * 
+   * @note Este método é usado tanto pelo construtor quanto para atualizações.
+   * 
+   * @see getValor(), validar()
+   */
+   void setValor(const string& papel);
+
+
+
+
+
+   /**
+   * @brief Retorna o valor atual do papel.
+   * 
+   * @return std::string Cópia do valor armazenado ("DESENVOLVEDOR", 
+   *         "MESTRE SCRUM" ou "PROPRIETARIO DE PRODUTO").
+   * 
+   * @note Método constante (não modifica o objeto).
+   * 
+   * @see setValor()
+   */
+   string getValor() const;
 };
 
 
+
+
+// -----------DEFINIÇÕES: EMAIL---------------------------------------------------------
+
+
+
+
+/**
+ * @brief Domínio que representa um endereço de email válido.
+ * 
+ * @details A classe Email valida endereços de email seguindo uma gramática
+ *          específica conforme especificação do trabalho:
+ *          
+ *          **Formato geral:** `local@dominio`
+ *          
+ *          **Regras para PARTE LOCAL (antes do @):**
+ *          - Máximo de 64 caracteres
+ *          - Caracteres permitidos: letras (a-z), dígitos (0-9), ponto (.), hífen (-)
+ *          - Não pode começar ou terminar com ponto ou hífen
+ *          - Após ponto ou hífen deve vir letra ou dígito (não pode ter dois símbolos seguidos)
+ *          
+ *          **Regras para DOMÍNIO (depois do @):**
+ *          - Máximo de 255 caracteres
+ *          - Composto por partes separadas por ponto (.)
+ *          - Cada parte pode conter letras, dígitos e hífen (-)
+ *          - Cada parte não pode começar ou terminar com hífen
+ *          - Não pode ter pontos consecutivos (parte vazia)
+ * 
+ * @invariant O valor armazenado é sempre um email que passou por todas as validações.
+ * 
+ * @exceptions
+ * @throw std::invalid_argument com mensagens descritivas específicas para cada
+ *         tipo de erro de validação.
+ * 
+ * @example
+ * @code
+ * try {
+ *     Email e1("usuario@exemplo.com");        // Válido
+ *     Email e2("nome.sobrenome@empresa.com.br"); // Válido
+ *     Email e3("nome@dominio");               // Inválido (domínio sem ponto)
+ *     Email e4("nome..sobrenome@exemplo.com"); // Inválido (pontos consecutivos)
+ * } catch (const invalid_argument& e) {
+ *     cout << "Erro: " << e.what() << endl;
+ * }
+ * @endcode
+ * 
+ * @note As mensagens de erro são descritivas para facilitar a depuração
+ *       e permitir que a camada de apresentação mostre erros específicos.
+ * 
+ * @see Pessoa
+ */
 class Email {
 private:
-    std::string valor;
+   
+   string valor;
 
-    // Método privado de validação (só a classe usa)
-    void validar(const std::string& email) const;
+   
+   /**
+   * @brief Valida completamente um email conforme especificação.
+   * 
+   * @param email String a ser validada.
+   * 
+   * @throw std::invalid_argument Com mensagem específica do erro encontrado.
+   * 
+   * @details Etapas de validação na ordem:
+   *          - Verifica existência e posição do @
+   *          - Separa parte local e domínio
+   *          - Valida tamanhos máximos (64 e 255 caracteres)
+   *          - Valida caractere por caractere da parte local
+   *          - Valida domínio (quebra por pontos e valida cada parte)
+   * 
+   * @note Método privado, usado internamente. As validações são sequenciais
+   *       e param no primeiro erro encontrado.
+   */
+   void validar(const std::string& email) const;
 
 public:
-    // Construtor
-    Email(const std::string& novoValor);
+   
+   
+   /**
+   * @brief Construtor da classe Email.
+   * 
+   * @param novoValor String contendo o email a ser validado e armazenado.
+   * 
+   * @throw std::invalid_argument Se o email não passar nas validações.
+   * 
+   * @post Um objeto Email válido é criado apenas se a validação for bem-sucedida.
+   * 
+   * @see set(), validar()
+   */
+   Email(const string& novoValor);
 
-    // Métodos set e get
-    void set(const std::string& novoValor);
-    std::string get() const;
+
+
+
+   /**
+   * @brief Define um novo valor para o email.
+   * 
+   * @param novoValor String com o novo email a ser validado e armazenado.
+   * 
+   * @throw std::invalid_argument Se o email não passar nas validações.
+   * 
+   * @post O valor antigo é preservado se a validação falhar.
+   *       O valor é atualizado apenas se todas as regras forem satisfeitas.
+   * 
+   * @note Realiza todas as 4 etapas de validação:
+   *       1. Verificação do @ e estrutura básica
+   *       2. Validação da parte local
+   *       3. Validação do domínio
+   *       4. Verificação de tamanhos máximos
+   * 
+   * @see get(), validar()
+   */
+   void set(const std::string& novoValor);
+
+
+
+
+   /**
+   * @brief Retorna o valor atual do email.
+   * 
+   * @return std::string Cópia do email armazenado (já validado).
+   * 
+   * @note Método constante (não modifica o objeto).
+   * 
+   * @see set()
+   */
+   string get() const;
 };
+
+
+
+
+
+// -----------DEFINIÇÕES: NOME---------------------------------------------------------
+
+
+
 
 /**
  * @brief Classe que representa um nome válido.
@@ -206,6 +471,16 @@ public:
         string getNome();
 
  };
+
+
+
+
+
+// -----------DEFINIÇÕES SENHA---------------------------------------------------------
+
+
+
+
 
 /**
  * @brief Classe que representa uma senha válida.
@@ -242,6 +517,14 @@ public:
 
  };
 
+
+
+// -----------DEFINIÇÕES: TEMPO---------------------------------------------------------
+
+
+
+
+
 /**
  * @brief Classe que representa o tempo.
  *
@@ -270,9 +553,91 @@ public:
      /**
      * Retorna o tempo.
      */
-        int getTempo();
+        int getTempo() const;
 
  };
+
+
+// -----------DEFINIÇÕES: TEXTO---------------------------------------------------------
+
+
+/**
+ * @brief Classe de dominio para Texto.
+ */
+class Texto {
+private:
+    string valor;
+public:
+    void setValor(string v);
+    string getValor() const;
+};
+
+
+
+
+// -----------DEFINIÇÕES: PRIORIDADE---------------------------------------------------------
+
+
+
+
+
+/**
+ * @brief Classe domínio que representa a prioridade de uma história de usuário.
+ * 
+ * @details Armazena e valida strings que representam a prioridade de uma
+ *          história de usuário no backlog do produto.
+ * 
+ * @invariant O valor armazenado é sempre "ALTA", "MEDIA" ou "BAIXA".
+ * 
+ * @exceptions
+ * @throw invalid_argument se o valor fornecido não for uma prioridade válida.
+ * 
+ * @note O formato segue a especificação do PDF:
+ *       - ALTA: prioridade alta
+ *       - MEDIA: prioridade média (sem acento, conforme requisito 12)
+ *       - BAIXA: prioridade baixa
+ */
+class Prioridade {
+private:
+    string valor;  ///< Valor armazenado da prioridade
+
+    /**
+     * @brief Valida se a string é uma prioridade válida.
+     * @param prioridade String a ser validada.
+     * @throw invalid_argument se prioridade não for ALTA, MEDIA ou BAIXA.
+     */
+    void validar(const string& prioridade) const;
+
+public:
+    /**
+     * @brief Construtor da classe Prioridade.
+     * @param prioridade Valor inicial da prioridade.
+     * @throw invalid_argument Se o valor for inválido.
+     */
+    Prioridade(const string& prioridade);
+
+    /**
+     * @brief Define um novo valor para a prioridade.
+     * @param prioridade Novo valor a ser atribuído.
+     * @throw invalid_argument Se o valor for inválido.
+     * @post O valor anterior é preservado se a validação falhar.
+     */
+    void setValor(const string& prioridade);
+
+    /**
+     * @brief Retorna o valor atual da prioridade.
+     * @return String com o valor armazenado (ALTA, MEDIA ou BAIXA).
+     * @note Este método não modifica o objeto (const).
+     */
+    string getValor() const;
+};
+
+
+
+
+
+
+
 
 
 #endif // DOMINIO_HPP_INCLUDED
