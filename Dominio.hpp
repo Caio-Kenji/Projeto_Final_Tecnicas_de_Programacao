@@ -562,14 +562,100 @@ public:
 
 
 /**
- * @brief Classe de dominio para Texto.
+ * @brief Domínio para representar um texto descritivo com formato controlado.
+ * 
+ * @details A classe Texto é utilizada para armazenar descrições de histórias
+ *          de usuário e outros campos textuais do sistema. O formato segue
+ *          regras rigorosas conforme especificação do trabalho.
+ * 
+ * @invariant O valor armazenado sempre atende às seguintes regras:
+ *            - Tamanho entre 1 e 40 caracteres
+ *            - Primeiro e último caracteres não são vírgula, ponto ou espaço
+ *            - Caracteres permitidos: letras (A-Z, a-z), dígitos (0-9),
+ *              vírgula (,), ponto (.), espaço em branco ( )
+ *            - Vírgula e ponto não podem ser seguidos por vírgula ou ponto
+ *            - Espaço em branco é sempre seguido por letra ou dígito
+ * 
+ * @exceptions
+ * @throw std::invalid_argument "Texto invalido: tamanho incorreto." se o
+ *        texto tiver menos de 1 ou mais de 40 caracteres.
+ * @throw std::invalid_argument "Texto invalido: inicio ou fim invalido." se
+ *        o texto começar ou terminar com vírgula, ponto ou espaço.
+ * @throw std::invalid_argument "Texto invalido: caractere nao permitido." se
+ *        o texto contiver caracteres diferentes dos permitidos.
+ * @throw std::invalid_argument "Texto invalido: pontuacao seguida." se houver
+ *        dois pontos ou duas vírgulas consecutivas.
+ * @throw std::invalid_argument "Texto invalido: espaco seguido de caracter invalido."
+ *        se um espaço for seguido por algo que não seja letra ou dígito.
+ * 
+ * @example
+ * @code
+ * try {
+ *     Texto t1;
+ *     t1.setValor("Como desenvolvedor, eu quero...");  // Válido
+ *     
+ *     Texto t2;
+ *     t2.setValor("Texto com, pontuacao");              // Válido
+ *     
+ *     Texto t3;
+ *     t3.setValor(" Texto com espaco no inicio");       // Inválido!
+ * } catch (const invalid_argument& e) {
+ *     cout << e.what() << endl;
+ * }
+ * @endcode
+ * 
+ * @note A validação considera apenas caracteres ASCII, sem acentuação
+ *       ou cedilha (requisito não funcional 12).
+ * 
+ * @see Email, Nome
  */
 class Texto {
+
+
 private:
-    string valor;
+
+   /**
+   * @brief Valor interno armazenado do texto.
+   */
+   string valor;
+
+
 public:
-    void setValor(string v);
-    string getValor() const;
+
+
+
+
+   /**
+   * @brief Define um novo valor para o texto, validando conforme as regras.
+   * 
+   * @param v String contendo o texto a ser armazenado.
+   * 
+   * @throw std::invalid_argument Com mensagem específica se o texto for inválido.
+   * 
+   * @post O valor é atualizado apenas se passar em todas as validações.
+   * 
+   * @details As validações ocorrem na seguinte ordem:
+   *          1. Verificação de tamanho (1 a 40 caracteres)
+   *          2. Verificação de início e fim (não pode ser ',', '.' ou ' ')
+   *          3. Verificação caractere por caractere
+   *          4. Verificação de sequências proibidas
+   * 
+   * @see getValor()
+   */
+   void setValor(string v);
+
+
+
+   /**
+   * @brief Retorna o valor atual do texto.
+   * 
+   * @return std::string Cópia do texto armazenado (já validado).
+   * 
+   * @note Método constante (não modifica o objeto).
+   * 
+   * @see setValor()
+   */
+   string getValor() const;
 };
 
 
