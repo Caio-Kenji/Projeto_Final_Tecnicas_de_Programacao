@@ -80,16 +80,22 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad65e4166e23701fb713574181e36e212" id="r_ad65e4166e23701fb713574181e36e212"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEmail.html#ad65e4166e23701fb713574181e36e212">Email</a> (const std::string &amp;novoValor)</td></tr>
-<tr class="separator:ad65e4166e23701fb713574181e36e212"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a431541dcdff81c820476407e073b5ea4" id="r_a431541dcdff81c820476407e073b5ea4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEmail.html#a431541dcdff81c820476407e073b5ea4">Email</a> (const string &amp;novoValor)</td></tr>
+<tr class="memdesc:a431541dcdff81c820476407e073b5ea4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construtor da classe <a class="el" href="classEmail.html">Email</a>.  <br /></td></tr>
+<tr class="separator:a431541dcdff81c820476407e073b5ea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7bb4f2ba35c16c5e32fe59a3b8d7f1c" id="r_af7bb4f2ba35c16c5e32fe59a3b8d7f1c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEmail.html#af7bb4f2ba35c16c5e32fe59a3b8d7f1c">set</a> (const std::string &amp;novoValor)</td></tr>
+<tr class="memdesc:af7bb4f2ba35c16c5e32fe59a3b8d7f1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define um novo valor para o email.  <br /></td></tr>
 <tr class="separator:af7bb4f2ba35c16c5e32fe59a3b8d7f1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44d14c25185ac8ab89abed8a52722de5" id="r_a44d14c25185ac8ab89abed8a52722de5"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEmail.html#a44d14c25185ac8ab89abed8a52722de5">get</a> () const</td></tr>
+<tr class="memitem:a44d14c25185ac8ab89abed8a52722de5" id="r_a44d14c25185ac8ab89abed8a52722de5"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEmail.html#a44d14c25185ac8ab89abed8a52722de5">get</a> () const</td></tr>
+<tr class="memdesc:a44d14c25185ac8ab89abed8a52722de5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retorna o valor atual do email.  <br /></td></tr>
 <tr class="separator:a44d14c25185ac8ab89abed8a52722de5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ad65e4166e23701fb713574181e36e212" name="ad65e4166e23701fb713574181e36e212"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad65e4166e23701fb713574181e36e212">&#9670;&#160;</a></span>Email()</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><dl class="section examples"><dt>Examples</dt><dd><a class="el" href="_2home_2sofya_2projeto_tp1_2Projeto_Final_Tecnicas_de_Programacao_2Dominio_8hpp-example.html#_a11">/home/sofya/projeto_tp1/Projeto_Final_Tecnicas_de_Programacao/Dominio.hpp</a>.</dd>
+</dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a431541dcdff81c820476407e073b5ea4" name="a431541dcdff81c820476407e073b5ea4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a431541dcdff81c820476407e073b5ea4">&#9670;&#160;</a></span>Email()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -97,12 +103,28 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">Email::Email </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">const string &amp;&#160;</td>
           <td class="paramname"><em>novoValor</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Construtor da classe <a class="el" href="classEmail.html">Email</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">novoValor</td><td>String contendo o email a ser validado e armazenado.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>Se o email não passar nas validações.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section post"><dt>Postcondition</dt><dd>Um objeto <a class="el" href="classEmail.html">Email</a> válido é criado apenas se a validação for bem-sucedida.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classEmail.html#af7bb4f2ba35c16c5e32fe59a3b8d7f1c" title="Define um novo valor para o email.">set()</a>, validar() </dd></dl>
 
 </div>
 </div>
@@ -122,6 +144,13 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Retorna o valor atual do email. </p>
+<dl class="section return"><dt>Returns</dt><dd>std::string Cópia do email armazenado (já validado).</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Método constante (não modifica o objeto).</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classEmail.html#af7bb4f2ba35c16c5e32fe59a3b8d7f1c" title="Define um novo valor para o email.">set()</a> </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="_2home_2sofya_2projeto_tp1_2Projeto_Final_Tecnicas_de_Programacao_2Dominio_8hpp-example.html#a13">/home/sofya/projeto_tp1/Projeto_Final_Tecnicas_de_Programacao/Dominio.hpp</a>.</dd>
+</dl>
+
 </div>
 </div>
 <a id="af7bb4f2ba35c16c5e32fe59a3b8d7f1c" name="af7bb4f2ba35c16c5e32fe59a3b8d7f1c"></a>
@@ -139,6 +168,31 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Define um novo valor para o email. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">novoValor</td><td>String com o novo email a ser validado e armazenado.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>Se o email não passar nas validações.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section post"><dt>Postcondition</dt><dd>O valor antigo é preservado se a validação falhar. O valor é atualizado apenas se todas as regras forem satisfeitas.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Realiza todas as 4 etapas de validação:<ol type="1">
+<li>Verificação do @ e estrutura básica</li>
+<li>Validação da parte local</li>
+<li>Validação do domínio</li>
+<li>Verificação de tamanhos máximos</li>
+</ol>
+</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classEmail.html#a44d14c25185ac8ab89abed8a52722de5" title="Retorna o valor atual do email.">get()</a>, validar() </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="_2home_2sofya_2projeto_tp1_2Projeto_Final_Tecnicas_de_Programacao_2Dominio_8hpp-example.html#a12">/home/sofya/projeto_tp1/Projeto_Final_Tecnicas_de_Programacao/Dominio.hpp</a>.</dd>
+</dl>
 
 </div>
 </div>

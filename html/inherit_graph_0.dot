@@ -5,17 +5,5 @@ digraph "Graphical Class Hierarchy"
   edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
   node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
   rankdir="LR";
-  Node0 [id="Node000000",label="Dominio",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classDominio.html",tooltip="Classe base abstrata para todos os domínios do sistema."];
-  Node0 -> Node1 [id="edge1_Node000000_Node000001",dir="back",color="steelblue1",style="solid",tooltip=" "];
-  Node1 [id="Node000001",label="Codigo",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classCodigo.html",tooltip="Domínio para identificadores alfanuméricos com formato fixo de 5 caracteres."];
-  Node1 -> Node2 [id="edge2_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
-  Node2 [id="Node000002",label="TUCodigo",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classTUCodigo.html",tooltip=" "];
-  Node0 -> Node3 [id="edge3_Node000000_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
-  Node3 [id="Node000003",label="Data",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classData.html",tooltip="Domínio para representar um ponto específico no calendário gregoriano."];
-  Node3 -> Node4 [id="edge4_Node000003_Node000004",dir="back",color="steelblue1",style="solid",tooltip=" "];
-  Node4 [id="Node000004",label="TUData",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classTUData.html",tooltip=" "];
-  Node0 -> Node5 [id="edge5_Node000000_Node000005",dir="back",color="steelblue1",style="solid",tooltip=" "];
-  Node5 [id="Node000005",label="Estado",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classEstado.html",tooltip="Representa em qual etapa do fluxo de trabalho uma tarefa se encontra."];
-  Node5 -> Node6 [id="edge6_Node000005_Node000006",dir="back",color="steelblue1",style="solid",tooltip=" "];
-  Node6 [id="Node000006",label="TUEstado",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classTUEstado.html",tooltip=" "];
+  Node0 [id="Node000000",label="ContainerHistoriaUsuario",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classContainerHistoriaUsuario.html",tooltip=" "];
 }

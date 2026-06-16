@@ -81,13 +81,19 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a68ea7e812ff7c611f0c3749c59bc4730" id="r_a68ea7e812ff7c611f0c3749c59bc4730"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPapel.html#a68ea7e812ff7c611f0c3749c59bc4730">Papel</a> (const string &amp;papel)</td></tr>
+<tr class="memdesc:a68ea7e812ff7c611f0c3749c59bc4730"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construtor da classe <a class="el" href="classPapel.html">Papel</a>.  <br /></td></tr>
 <tr class="separator:a68ea7e812ff7c611f0c3749c59bc4730"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af60327a9384b3c048296e76ebb051b6c" id="r_af60327a9384b3c048296e76ebb051b6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPapel.html#af60327a9384b3c048296e76ebb051b6c">setValor</a> (const string &amp;papel)</td></tr>
+<tr class="memdesc:af60327a9384b3c048296e76ebb051b6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define/atualiza o valor do papel.  <br /></td></tr>
 <tr class="separator:af60327a9384b3c048296e76ebb051b6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abffd94741e81d0e634f4eb3fe8f82b47" id="r_abffd94741e81d0e634f4eb3fe8f82b47"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPapel.html#abffd94741e81d0e634f4eb3fe8f82b47">getValor</a> () const</td></tr>
+<tr class="memdesc:abffd94741e81d0e634f4eb3fe8f82b47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retorna o valor atual do papel.  <br /></td></tr>
 <tr class="separator:abffd94741e81d0e634f4eb3fe8f82b47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><dl class="section examples"><dt>Examples</dt><dd><a class="el" href="_2home_2sofya_2projeto_tp1_2Projeto_Final_Tecnicas_de_Programacao_2Dominio_8hpp-example.html#_a0">/home/sofya/projeto_tp1/Projeto_Final_Tecnicas_de_Programacao/Dominio.hpp</a>.</dd>
+</dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a68ea7e812ff7c611f0c3749c59bc4730" name="a68ea7e812ff7c611f0c3749c59bc4730"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a68ea7e812ff7c611f0c3749c59bc4730">&#9670;&#160;</a></span>Papel()</h2>
 
@@ -103,6 +109,22 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Construtor da classe <a class="el" href="classPapel.html">Papel</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">papel</td><td>String contendo o papel a ser armazenado. Deve ser exatamente "DESENVOLVEDOR", "MESTRE SCRUM" ou "PROPRIETARIO DE PRODUTO".</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>Se o papel fornecido for inválido.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section post"><dt>Postcondition</dt><dd>O objeto é criado apenas se a validação for bem-sucedida.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classPapel.html#af60327a9384b3c048296e76ebb051b6c" title="Define/atualiza o valor do papel.">setValor()</a>, validar() </dd></dl>
 
 </div>
 </div>
@@ -122,6 +144,13 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Retorna o valor atual do papel. </p>
+<dl class="section return"><dt>Returns</dt><dd>std::string Cópia do valor armazenado ("DESENVOLVEDOR", "MESTRE SCRUM" ou "PROPRIETARIO DE PRODUTO").</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Método constante (não modifica o objeto).</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classPapel.html#af60327a9384b3c048296e76ebb051b6c" title="Define/atualiza o valor do papel.">setValor()</a> </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="_2home_2sofya_2projeto_tp1_2Projeto_Final_Tecnicas_de_Programacao_2Dominio_8hpp-example.html#a10">/home/sofya/projeto_tp1/Projeto_Final_Tecnicas_de_Programacao/Dominio.hpp</a>.</dd>
+</dl>
+
 </div>
 </div>
 <a id="af60327a9384b3c048296e76ebb051b6c" name="af60327a9384b3c048296e76ebb051b6c"></a>
@@ -139,6 +168,25 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Define/atualiza o valor do papel. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">papel</td><td>Nova string a ser validada e armazenada.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>Se o papel fornecido for inválido.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section post"><dt>Postcondition</dt><dd>O valor antigo é preservado se a validação falhar. O valor é atualizado apenas se a validação passar.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Este método é usado tanto pelo construtor quanto para atualizações.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classPapel.html#abffd94741e81d0e634f4eb3fe8f82b47" title="Retorna o valor atual do papel.">getValor()</a>, validar() </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="_2home_2sofya_2projeto_tp1_2Projeto_Final_Tecnicas_de_Programacao_2Dominio_8hpp-example.html#a9">/home/sofya/projeto_tp1/Projeto_Final_Tecnicas_de_Programacao/Dominio.hpp</a>.</dd>
+</dl>
 
 </div>
 </div>

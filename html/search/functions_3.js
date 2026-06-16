@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['run_0',['run',['../classTUCodigo.html#a4e6994bcde0011cdf0b0bb7a2c4d94d9',1,'TUCodigo::run()'],['../classTUData.html#a4fd95b821fa6d55bdc82be6f3a3cbef2',1,'TUData::run()'],['../classTUEstado.html#a4c5b9e56f2d1282e575dcf153139d972',1,'TUEstado::run()']]]
+  ['desassociarhistoria_0',['desassociarhistoria',['../classPlanoSprint.html#a0b6b76bc6fd3ff7531249d60a652e0dd',1,'PlanoSprint::desassociarHistoria()'],['../classIServicoPlanoSprint.html#a5af5b289a29464b0f36e4bf02b023b9d',1,'IServicoPlanoSprint::desassociarHistoria()'],['../classServicoPlanoSprint.html#a2bd8f169740fd07355b6c50241c40564',1,'ServicoPlanoSprint::desassociarHistoria()']]],
+  ['desassociarhistoriaflow_1',['desassociarHistoriaFlow',['../classControladoraPlanoSprint.html#a2dec5f35bd9936e89a3a4744b9e01ddc',1,'ControladoraPlanoSprint']]]
 ];
