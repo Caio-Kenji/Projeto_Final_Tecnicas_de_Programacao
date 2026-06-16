@@ -18,11 +18,20 @@ string Dominio::getValor() const{
     return valor;
 }
 
+
+//---------------IMPLEMENTAÇÕES: CÓDIGO-------------------------------------------------------------------
+
+
 void Codigo::validar(string valor){
     if(valor.size()>5) throw invalid_argument("Codigo invalido.");
     if(islower(valor[0]) || islower(valor[1])) throw invalid_argument("Codigo invalido.");
     if(isalpha(valor[2]) || isalpha(valor[3]) || isalpha(valor[4]))throw invalid_argument("Codigo invalido.");
 }
+
+
+
+//--------------IMPLEMENTAÇÕES: DATA--------------------------------------------------------------------
+
 
 void Data::validar(string valor){
     int dia = stoi(valor.substr(0,2));
@@ -42,9 +51,16 @@ void Data::validar(string valor){
     else if(dia > 31 || dia < 1)throw invalid_argument("Data invalida.");
 }
 
+
+//-------------IMPLEMENTAÇÕES: ESTADO---------------------------------------------------------------------
+
+
 void Estado::validar(string valor){
     if(valor != "A FAZER" && valor != "FAZENDO" && valor != "FEITO") throw invalid_argument("Estado invalido.");
 }
+
+
+//------------IMPLEMENTAÇÕES: PAPEL----------------------------------------------------------------------
 
 // Implementação do método privado validar
 void Papel::validar(const string& papel) {
@@ -77,7 +93,7 @@ string Papel::getValor() const {
 }
 
 
-
+//---------------IMPLEMENTAÇÕES: EMAIL-------------------------------------------------------------------
 
 // Construtor
 Email::Email(const std::string& novoValor) {
@@ -193,6 +209,12 @@ void Email::validar(const string& email) const {
     
 }  // fim do método validar
 
+
+
+//-----------------IMPLEMENTAÇÕES: NOME-----------------------------------------------------------------
+
+
+
 /**
  * @brief Realiza a validação do nome.
  *
@@ -219,6 +241,7 @@ void Email::validar(const string& email) const {
     }
   }
 
+
  /**
  * @brief Armazena o nome.
  *
@@ -238,6 +261,9 @@ void Email::validar(const string& email) const {
 string Nome::getNome(){
     return nome;
 }
+
+
+// -----------------IMPLEMENTAÇÕES: SENHA-----------------------------------------------------------------
 
 /**
  * @brief Realiza a validação da senha.
@@ -298,6 +324,11 @@ string Senha::getSenha(){
     return senha;
 }
 
+
+// -----------------IMPLEMENTAÇÕES: TEMPO-----------------------------------------------------------------
+
+
+
 /**
  * @brief Realiza a validação do tempo inserido.
  *
@@ -327,8 +358,96 @@ string Senha::getSenha(){
  *
  * @return Int tempo.
  */
-int Tempo::getTempo(){
+int Tempo::getTempo() const{
     return tempo;
 }
 
 
+
+// -----------------IMPLEMENTAÇÕES: TEXTO-----------------------------------------------------------------
+
+
+
+/**
+ * @brief Implementação do método setValor para a classe Texto.
+ * Realiza a validação conforme as regras do trabalho.
+ */
+void Texto::setValor(std::string v) {
+    // 1. Validação de tamanho
+    if (v.length() > 40 || v.empty()) {
+        throw std::invalid_argument("Texto invalido: tamanho incorreto.");
+    }
+
+    // 2. Validação de caracteres e sequência
+    // Regra: não pode começar ou terminar com vírgula, ponto ou espaço
+    if (v[0] == ',' || v[0] == '.' || v[0] == ' ' ||
+        v.back() == ',' || v.back() == '.' || v.back() == ' ') {
+        throw std::invalid_argument("Texto invalido: inicio ou fim invalido.");
+    }
+
+    for (size_t i = 0; i < v.length(); ++i) {
+        char c = v[i];
+
+        // Verifica se é letra, dígito, vírgula, ponto ou espaço
+        if (!(isalnum(c) || c == ',' || c == '.' || c == ' ')) {
+            throw std::invalid_argument("Texto invalido: caractere nao permitido.");
+        }
+
+        // Regras de sequência: não pode ponto/vírgula seguidos
+        if (c == ',' || c == '.') {
+            if (i + 1 < v.length() && (v[i + 1] == ',' || v[i + 1] == '.')) {
+                throw std::invalid_argument("Texto invalido: pontuacao seguida.");
+            }
+        }
+
+        // Regra de espaço: deve ser seguido por letra ou dígito
+        if (c == ' ') {
+            if (i + 1 < v.length() && !(isalnum(v[i + 1]))) {
+                throw std::invalid_argument("Texto invalido: espaco seguido de caracter invalido.");
+            }
+        }
+    }
+
+    // Se passou por tudo, o valor é aceito
+    this->valor = v;
+}
+
+std::string Texto::getValor() const {
+    return valor;
+}
+
+
+
+// -----------------IMPLEMENTAÇÕES: PRIORIDADE-----------------------------------------------------------------
+
+
+
+
+// Construtor: chama o método set para validar e atribuir
+Prioridade::Prioridade(const string& prioridade) {
+    setValor(prioridade);
+}
+
+// Método set: valida e atribui
+void Prioridade::setValor(const string& prioridade) {
+    validar(prioridade);  // Se lançar exceção, não atribui
+    valor = prioridade;   // Só chega aqui se válido
+}
+
+// Método get: retorna o valor
+string Prioridade::getValor() const {
+    return valor;
+}
+
+// Método privado de validação
+void Prioridade::validar(const string& prioridade) const {
+    // Verifica se o valor está entre os permitidos
+    if (prioridade == "ALTA" || 
+        prioridade == "MEDIA" ||   // Sem acento, conforme PDF
+        prioridade == "BAIXA") {
+        return;  // Válido, sai do método
+    }
+    
+    // Se chegou aqui, é inválido -> lança exceção
+    throw invalid_argument("Prioridade invalida. Valores aceitos: ALTA, MEDIA, BAIXA");
+}
