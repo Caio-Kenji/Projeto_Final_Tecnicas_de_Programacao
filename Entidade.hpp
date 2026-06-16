@@ -19,9 +19,6 @@
  *
  * @note Esta classe segue o princípio de encapsulamento, fornecendo métodos
  *       públicos de acesso (getters/setters) para cada atributo.
- * @note Esta classe não valida relacionamentos entre atributos (ex: se a data
- *       de término é posterior à data de início). Essa responsabilidade pertence
- *       à camada de controle/serviço.
  *
  * @see Codigo, Nome, Data
  */
