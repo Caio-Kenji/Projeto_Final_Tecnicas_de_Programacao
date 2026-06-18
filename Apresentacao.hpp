@@ -24,6 +24,30 @@
 using namespace std;
 
 // ============================================
+// CONTROLADORA PARA PESSOA
+// ============================================
+
+/**
+ * @brief Controladora de apresentação para entidade Pessoa.
+ *
+ * @details Responsável por interagir com o usuário via console
+ *          e chamar os serviços relacionados à entidade Pessoa.
+ */
+class ControladoraPessoa {
+private:
+    IServicoPessoa* servico;
+
+public:
+    ControladoraPessoa(IServicoPessoa* s);
+
+    void executarMenu();
+    void criarPessoaFlow();
+    void consultarPessoaFlow();
+    void atualizarPessoaFlow();
+    void excluirPessoaFlow();
+};
+
+// ============================================
 // CONTROLADORA PARA PLANO DE SPRINT
 // ============================================
 
