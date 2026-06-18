@@ -21,7 +21,34 @@ void Projeto::setDataInicio(const Data& dataInicio){
 void Projeto::setDataTermino(const Data& dataTermino){
     data_termino = dataTermino;
 }
+// ------------------IMPLEMENTAÇÕES: PESSOA ----------------------------------
 
+Pessoa::Pessoa(const Email& emailNovo,
+               const Nome& nomeNovo,
+               const Senha& senhaNova,
+               const Papel& papelNovo)
+    : email(emailNovo),
+      nome(nomeNovo),
+      senha(senhaNova),
+      papel(papelNovo)
+{
+}
+
+void Pessoa::setEmail(const Email& emailNovo){
+    email = emailNovo;
+}
+
+void Pessoa::setNome(const Nome& nomeNovo){
+    nome = nomeNovo;
+}
+
+void Pessoa::setSenha(const Senha& senhaNova){
+    senha = senhaNova;
+}
+
+void Pessoa::setPapel(const Papel& papelNovo){
+    papel = papelNovo;
+}
 
 
 // ------------------IMPLEMENTAÇÕES: PLANOS DE SPRINT ----------------------------------
