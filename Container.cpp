@@ -1,35 +1,42 @@
 #include "Container.hpp"
 
-// MÉTODOS CONTEINER_PESSOA---------------------------------------------------------------
+#include "Container.hpp"
 
-bool ContainerPessoa::incluir(Pessoa pessoa){
+// MÉTODOS CONTEINER_PESSOA---------------------------------------------------------------
+bool ContainerPessoa::criar(Pessoa pessoa){
     return containerPes.insert(make_pair(pessoa.getEmail().get(), pessoa)).second;
 }
 
 bool ContainerPessoa::excluir(Email email){
     map<string, Pessoa>::iterator it = containerPes.find(email.get());
+
     if(it != containerPes.end()){
         containerPes.erase(it);
         return true;
     }
+
     return false;
 }
 
 bool ContainerPessoa::ler(Pessoa* pessoa){
     map<string, Pessoa>::iterator it = containerPes.find(pessoa->getEmail().get());
+
     if(it != containerPes.end()){
         *pessoa = it->second;
         return true;
     }
+
     return false;
 }
 
 bool ContainerPessoa::atualizar(Pessoa pessoa){
     map<string, Pessoa>::iterator it = containerPes.find(pessoa.getEmail().get());
+
     if(it != containerPes.end()){
         it->second = pessoa;
         return true;
     }
+
     return false;
 }
 
@@ -131,4 +138,3 @@ bool ContainerHistoriaUsuario::atualizar(HistoriaUsuario historia_usuario){
     }
     return false;
 }
-

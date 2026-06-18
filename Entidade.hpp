@@ -318,7 +318,6 @@ inline Papel Pessoa::getPapel() const{
 
 
 
-#endif // ENTIDADE_HPP_INCLUDED
 
 
 
@@ -525,3 +524,5 @@ public:
     int calcularSomaEstimativas() const;
 };
 
+
+#endif // ENTIDADE_HPP_INCLUDED
