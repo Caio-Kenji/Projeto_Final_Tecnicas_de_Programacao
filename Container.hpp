@@ -41,6 +41,15 @@ public:
     bool excluir(Codigo);
     bool ler(PlanoSprint*);
     bool atualizar(PlanoSprint);
+
+    // Métodos ADICIONAIS que o serviço precisa
+    bool existe(const string& codigo) const;
+    vector<PlanoSprint> listarTodas() const;
+    PlanoSprint* buscar(const string& codigo);
+    const PlanoSprint* buscar(const string& codigo) const;
+
+
+
 };
 
 // ----------------------------------------------------------------------

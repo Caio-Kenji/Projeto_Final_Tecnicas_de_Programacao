@@ -57,7 +57,7 @@ public:
 
 
 // ============================================
-// SERVIÇO PARA PLANO DE SPRINT
+// SERVIÇO PARA PLANO DE SPRINT (COMPLETO)
 // ============================================
 
 /**
@@ -101,7 +101,6 @@ public:
                               int estimativa) override;
     void listarHistoriasDoSprint(const std::string& codigoSprint) override;
 };
-
 
 
 

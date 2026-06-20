@@ -42,7 +42,7 @@ bool ContainerPessoa::atualizar(Pessoa pessoa){
 
 // MÉTODOS CONTEINER_PROJETO---------------------------------------------------------------
 
-bool ContainerProjeto::incluir(Projeto projeto){
+bool ContainerProjeto::criar(Projeto projeto){
     return containerPro.insert(make_pair(projeto.getCodigo().getValor(), projeto)).second;
 }
 
@@ -75,7 +75,7 @@ bool ContainerProjeto::atualizar(Projeto projeto){
 
 // MÉTODOS CONTEINER_PLANO_SPRINT---------------------------------------------------------------
 
-bool ContainerPlanoSprint::incluir(PlanoSprint plano_sprint){
+bool ContainerPlanoSprint::criar(PlanoSprint plano_sprint){
     return containerPS.insert(make_pair(plano_sprint.getCodigo().getValor(), plano_sprint)).second;
 }
 
@@ -106,9 +106,45 @@ bool ContainerPlanoSprint::atualizar(PlanoSprint plano_sprint){
     return false;
 }
 
+// ============================================
+// MÉTODOS ADICIONAIS: CONTAINER PLANO SPRINT
+// ============================================
+
+bool ContainerPlanoSprint::existe(const string& codigo) const {
+    return containerPS.find(codigo) != containerPS.end();
+}
+
+vector<PlanoSprint> ContainerPlanoSprint::listarTodas() const {
+    vector<PlanoSprint> lista;
+    for (const auto& par : containerPS) {
+        lista.push_back(par.second);
+    }
+    return lista;
+}
+
+PlanoSprint* ContainerPlanoSprint::buscar(const string& codigo) {
+    map<string, PlanoSprint>::iterator it = containerPS.find(codigo);
+    if (it != containerPS.end()) {
+        return &(it->second);
+    }
+    return nullptr;
+}
+
+const PlanoSprint* ContainerPlanoSprint::buscar(const string& codigo) const {
+    map<string, PlanoSprint>::const_iterator it = containerPS.find(codigo);
+    if (it != containerPS.end()) {
+        return &(it->second);
+    }
+    return nullptr;
+}
+
+
+
+
+
 // MÉTODOS CONTEINER_HISTORIA_USUARIO---------------------------------------------------------------
 
-bool ContainerHistoriaUsuario::incluir(HistoriaUsuario historia_usuario){
+bool ContainerHistoriaUsuario::criar(HistoriaUsuario historia_usuario){
     return containerHU.insert(make_pair(historia_usuario.getCodigo().getValor(), historia_usuario)).second;
 }
 
