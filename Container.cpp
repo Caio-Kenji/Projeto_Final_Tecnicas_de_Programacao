@@ -1,5 +1,6 @@
 #include "Container.hpp"
 
+<<<<<<< HEAD
 ContainerPessoa* ContainerPessoa::instancia = nullptr;
 ContainerProjeto* ContainerProjeto::instancia = nullptr;
 ContainerPlanoSprint* ContainerPlanoSprint::instancia = nullptr;
@@ -13,45 +14,59 @@ ContainerPessoa* ContainerPessoa::getInstancia() {
     return instancia;
 }
 
+=======
+#include "Container.hpp"
+
+// MÉTODOS CONTEINER_PESSOA---------------------------------------------------------------
+>>>>>>> c1fb3f805dc2776458a99084f96ac7751d0aa178
 bool ContainerPessoa::criar(Pessoa pessoa){
     return containerPes.insert(make_pair(pessoa.getEmail().get(), pessoa)).second;
 }
 
 bool ContainerPessoa::excluir(Email email){
     map<string, Pessoa>::iterator it = containerPes.find(email.get());
+
     if(it != containerPes.end()){
         containerPes.erase(it);
         return true;
     }
+
     return false;
 }
 
 bool ContainerPessoa::ler(Pessoa* pessoa){
     map<string, Pessoa>::iterator it = containerPes.find(pessoa->getEmail().get());
+
     if(it != containerPes.end()){
         *pessoa = it->second;
         return true;
     }
+
     return false;
 }
 
 bool ContainerPessoa::atualizar(Pessoa pessoa){
     map<string, Pessoa>::iterator it = containerPes.find(pessoa.getEmail().get());
+
     if(it != containerPes.end()){
         it->second = pessoa;
         return true;
     }
+
     return false;
 }
 
 // MÉTODOS CONTEINER_PROJETO---------------------------------------------------------------
 
+<<<<<<< HEAD
 ContainerProjeto* ContainerProjeto::getInstancia() {
     if (instancia == nullptr)
         instancia = new ContainerProjeto();
     return instancia;
 }
 
+=======
+>>>>>>> c1fb3f805dc2776458a99084f96ac7751d0aa178
 bool ContainerProjeto::criar(Projeto projeto){
     return containerPro.insert(make_pair(projeto.getCodigo().getValor(), projeto)).second;
 }
@@ -85,12 +100,15 @@ bool ContainerProjeto::atualizar(Projeto projeto){
 
 // MÉTODOS CONTEINER_PLANO_SPRINT---------------------------------------------------------------
 
+<<<<<<< HEAD
 ContainerPlanoSprint* ContainerPlanoSprint::getInstancia() {
     if (instancia == nullptr)
         instancia = new ContainerPlanoSprint();
     return instancia;
 }
 
+=======
+>>>>>>> c1fb3f805dc2776458a99084f96ac7751d0aa178
 bool ContainerPlanoSprint::criar(PlanoSprint plano_sprint){
     return containerPS.insert(make_pair(plano_sprint.getCodigo().getValor(), plano_sprint)).second;
 }
@@ -122,14 +140,53 @@ bool ContainerPlanoSprint::atualizar(PlanoSprint plano_sprint){
     return false;
 }
 
+// ============================================
+// MÉTODOS ADICIONAIS: CONTAINER PLANO SPRINT
+// ============================================
+
+bool ContainerPlanoSprint::existe(const string& codigo) const {
+    return containerPS.find(codigo) != containerPS.end();
+}
+
+vector<PlanoSprint> ContainerPlanoSprint::listarTodas() const {
+    vector<PlanoSprint> lista;
+    for (const auto& par : containerPS) {
+        lista.push_back(par.second);
+    }
+    return lista;
+}
+
+PlanoSprint* ContainerPlanoSprint::buscar(const string& codigo) {
+    map<string, PlanoSprint>::iterator it = containerPS.find(codigo);
+    if (it != containerPS.end()) {
+        return &(it->second);
+    }
+    return nullptr;
+}
+
+const PlanoSprint* ContainerPlanoSprint::buscar(const string& codigo) const {
+    map<string, PlanoSprint>::const_iterator it = containerPS.find(codigo);
+    if (it != containerPS.end()) {
+        return &(it->second);
+    }
+    return nullptr;
+}
+
+
+
+
+
 // MÉTODOS CONTEINER_HISTORIA_USUARIO---------------------------------------------------------------
 
+<<<<<<< HEAD
 ContainerHistoriaUsuario* ContainerHistoriaUsuario::getInstancia() {
     if (instancia == nullptr)
         instancia = new ContainerHistoriaUsuario();
     return instancia;
 }
 
+=======
+>>>>>>> c1fb3f805dc2776458a99084f96ac7751d0aa178
 bool ContainerHistoriaUsuario::criar(HistoriaUsuario historia_usuario){
     return containerHU.insert(make_pair(historia_usuario.getCodigo().getValor(), historia_usuario)).second;
 }
@@ -160,4 +217,3 @@ bool ContainerHistoriaUsuario::atualizar(HistoriaUsuario historia_usuario){
     }
     return false;
 }
-

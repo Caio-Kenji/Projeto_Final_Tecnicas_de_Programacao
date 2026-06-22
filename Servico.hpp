@@ -14,7 +14,7 @@
 #define SERVICO_HPP_INCLUDED
 
 #include "Interfaces.hpp"
-#include "Containers.hpp"
+#include "Container.hpp"
 
 #include <vector>
 #include <string>
@@ -25,11 +25,39 @@
 using namespace std;
 
 
+// ============================================
+// SERVIÇO PARA PESSOA
+// ============================================
 
+/**
+ * @brief Implementação concreta do serviço de Pessoa.
+ *
+ * @details Implementa IServicoPessoa e utiliza ContainerPessoa
+ *          para armazenar pessoas em memória.
+ */
+class ServicoPessoa : public IServicoPessoa {
+private:
+    ContainerPessoa container;
+
+public:
+    void criarPessoa(const string& email,
+                     const string& nome,
+                     const string& senha,
+                     const string& papel) override;
+
+    void consultarPessoa(const string& email) override;
+
+    void atualizarPessoa(const string& email,
+                         const string& nome,
+                         const string& senha,
+                         const string& papel) override;
+
+    void excluirPessoa(const string& email) override;
+};
 
 
 // ============================================
-// SERVIÇO PARA PLANO DE SPRINT
+// SERVIÇO PARA PLANO DE SPRINT (COMPLETO)
 // ============================================
 
 /**
@@ -80,5 +108,9 @@ public:
 
 
 
+<<<<<<< HEAD
 
 #endif //SERVICO_HPP_INCLUDED
+=======
+#endif //SERVICO_HPP_INCLUDED
+>>>>>>> c1fb3f805dc2776458a99084f96ac7751d0aa178
