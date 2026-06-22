@@ -1,11 +1,11 @@
 /**
  * @file Servico.hpp
  * @brief Implementação concreta dos serviços (lógica de negócio)
- * 
+ *
  * @details Este arquivo contém as classes que implementam as interfaces
  *          definidas em Interfaces.hpp. Cada classe contém a lógica de
  *          negócio e utiliza os containers para armazenamento.
- * 
+ *
  * @author Seu Nome
  * @date 2024
  */
@@ -34,7 +34,7 @@ using namespace std;
 
 /**
  * @brief Implementação concreta do serviço de PlanoSprint
- * 
+ *
  * @details Implementa IServicoPlanoSprint e contém as regras de negócio
  *          específicas de sprints, como validação de capacidade e
  *          associação de histórias.
@@ -51,7 +51,7 @@ public:
      * @param contProjeto Ponteiro para container de projetos
      * @param contHistoria Ponteiro para container de histórias
      */
-    ServicoPlanoSprint(ContainerProjeto* contProjeto, 
+    ServicoPlanoSprint(ContainerProjeto* contProjeto,
                        ContainerHistoriaUsuario* contHistoria);
 
     void criarPlanoSprint(const std::string& codigo,
@@ -62,7 +62,7 @@ public:
 
     void listarPlanosSprint() override;
     void consultarPlanoSprint(const std::string& codigo) override;
-    void atualizarCapacidade(const std::string& codigo, 
+    void atualizarCapacidade(const std::string& codigo,
                               int novaCapacidade) override;
     void excluirPlanoSprint(const std::string& codigo) override;
     void associarHistoria(const std::string& codigoSprint,

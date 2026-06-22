@@ -1,8 +1,19 @@
 #include "Container.hpp"
 
+ContainerPessoa* ContainerPessoa::instancia = nullptr;
+ContainerProjeto* ContainerProjeto::instancia = nullptr;
+ContainerPlanoSprint* ContainerPlanoSprint::instancia = nullptr;
+ContainerHistoriaUsuario* ContainerHistoriaUsuario::instancia = nullptr;
+
 // MÉTODOS CONTEINER_PESSOA---------------------------------------------------------------
 
-bool ContainerPessoa::incluir(Pessoa pessoa){
+ContainerPessoa* ContainerPessoa::getInstancia() {
+    if (instancia == nullptr)
+        instancia = new ContainerPessoa();
+    return instancia;
+}
+
+bool ContainerPessoa::criar(Pessoa pessoa){
     return containerPes.insert(make_pair(pessoa.getEmail().get(), pessoa)).second;
 }
 
@@ -35,7 +46,13 @@ bool ContainerPessoa::atualizar(Pessoa pessoa){
 
 // MÉTODOS CONTEINER_PROJETO---------------------------------------------------------------
 
-bool ContainerProjeto::incluir(Projeto projeto){
+ContainerProjeto* ContainerProjeto::getInstancia() {
+    if (instancia == nullptr)
+        instancia = new ContainerProjeto();
+    return instancia;
+}
+
+bool ContainerProjeto::criar(Projeto projeto){
     return containerPro.insert(make_pair(projeto.getCodigo().getValor(), projeto)).second;
 }
 
@@ -68,7 +85,13 @@ bool ContainerProjeto::atualizar(Projeto projeto){
 
 // MÉTODOS CONTEINER_PLANO_SPRINT---------------------------------------------------------------
 
-bool ContainerPlanoSprint::incluir(PlanoSprint plano_sprint){
+ContainerPlanoSprint* ContainerPlanoSprint::getInstancia() {
+    if (instancia == nullptr)
+        instancia = new ContainerPlanoSprint();
+    return instancia;
+}
+
+bool ContainerPlanoSprint::criar(PlanoSprint plano_sprint){
     return containerPS.insert(make_pair(plano_sprint.getCodigo().getValor(), plano_sprint)).second;
 }
 
@@ -101,7 +124,13 @@ bool ContainerPlanoSprint::atualizar(PlanoSprint plano_sprint){
 
 // MÉTODOS CONTEINER_HISTORIA_USUARIO---------------------------------------------------------------
 
-bool ContainerHistoriaUsuario::incluir(HistoriaUsuario historia_usuario){
+ContainerHistoriaUsuario* ContainerHistoriaUsuario::getInstancia() {
+    if (instancia == nullptr)
+        instancia = new ContainerHistoriaUsuario();
+    return instancia;
+}
+
+bool ContainerHistoriaUsuario::criar(HistoriaUsuario historia_usuario){
     return containerHU.insert(make_pair(historia_usuario.getCodigo().getValor(), historia_usuario)).second;
 }
 

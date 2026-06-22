@@ -12,7 +12,10 @@
 class ContainerPessoa{
 private:
     map<string, Pessoa> containerPes;
+    static ContainerPessoa *instancia;
+    ContainerPessoa(){};
 public:
+    static ContainerPessoa* getInstancia();
     bool criar(Pessoa);
     bool excluir(Email);
     bool ler(Pessoa*);
@@ -24,7 +27,10 @@ public:
 class ContainerProjeto{
 private:
     map<string, Projeto> containerPro;
+    static ContainerProjeto *instancia;
+    ContainerProjeto(){};
 public:
+    static ContainerProjeto* getInstancia();
     bool criar(Projeto);
     bool excluir(Codigo);
     bool ler(Projeto*);
@@ -36,7 +42,10 @@ public:
 class ContainerPlanoSprint{
 private:
     map<string, PlanoSprint> containerPS;
+    static ContainerPlanoSprint *instancia;
+    ContainerPlanoSprint(){};
 public:
+    static ContainerPlanoSprint* getInstancia();
     bool criar(PlanoSprint);
     bool excluir(Codigo);
     bool ler(PlanoSprint*);
@@ -47,8 +56,11 @@ public:
 
 class ContainerHistoriaUsuario{
 private:
-    map<string, HistoriaUsuario> containerHU; //conferir o nome da classe de HU quando implementar a entidade
+    map<string, HistoriaUsuario> containerHU;
+    static ContainerHistoriaUsuario *instancia;
+    ContainerHistoriaUsuario(){};
 public:
+    static ContainerHistoriaUsuario* getInstancia();
     bool criar(HistoriaUsuario);
     bool excluir(Codigo);
     bool ler(HistoriaUsuario*);

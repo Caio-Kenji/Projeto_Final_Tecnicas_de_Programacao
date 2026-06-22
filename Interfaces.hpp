@@ -1,11 +1,11 @@
 /**
  * @file Interfaces.hpp
  * @brief Interfaces (classes abstratas) para a camada de serviço
- * 
+ *
  * @details Este arquivo contém todas as interfaces que definem os contratos
  *          entre a camada de apresentação e a camada de serviço. Cada interface
  *          corresponde a uma entidade do sistema.
- * 
+ *
  * @author Seu Nome
  * @date 2024
  */
@@ -21,9 +21,21 @@
 #include <stdexcept>
 using namespace std;
 
+// ============================================
+// INTERFACE AUTENTICAÇÃO
+// ============================================
 
+class IAAutenticacao{
+public:
+    virtual bool autenticar(Email*) = 0;
+    virtual ~IAAutenticacao(){};
+};
 
-
+class ISAutenticacao{
+public:
+    virtual bool autenticar(const Email&, const Senha&) = 0;
+    virtual ~ISAutenticacao(){};
+};
 
 
 // ============================================
@@ -32,7 +44,7 @@ using namespace std;
 
 /**
  * @brief Interface para serviços da entidade PlanoSprint
- * 
+ *
  * @details Define todas as operações que podem ser realizadas sobre
  *          planos de sprint, incluindo associação de histórias.
  */
@@ -70,7 +82,7 @@ public:
      * @param codigo Código do sprint
      * @param novaCapacidade Nova capacidade em dias
      */
-    virtual void atualizarCapacidade(const std::string& codigo, 
+    virtual void atualizarCapacidade(const std::string& codigo,
                                       int novaCapacidade) = 0;
 
     /**

@@ -1,0 +1,80 @@
+# depslib dependency file v1.0
+1781644781 source:/home/sofya/projeto_tp1/Projeto_Final_Tecnicas_de_Programacao/Apresentacao.cpp
+	"Apresentacao.hpp"
+	<iostream>
+	<limits>
+	<cctype>
+	<algorithm>
+	<vector>
+	<string>
+	<sstream>
+	<stdexcept>
+
+1781644781 /home/sofya/projeto_tp1/Projeto_Final_Tecnicas_de_Programacao/Apresentacao.hpp
+	"Interfaces.hpp"
+	<string>
+	<vector>
+	<iostream>
+	<cctype>
+	<sstream>
+	<stdexcept>
+
+1781644781 /home/sofya/projeto_tp1/Projeto_Final_Tecnicas_de_Programacao/Interfaces.hpp
+	<string>
+	<vector>
+	<iostream>
+	<cctype>
+	<sstream>
+	<stdexcept>
+
+1781644781 source:/home/sofya/projeto_tp1/Projeto_Final_Tecnicas_de_Programacao/Containers.cpp
+	"Containers.hpp"
+	<stdexcept>
+	<vector>
+	<string>
+	<iostream>
+	<cctype>
+	<sstream>
+
+1781644781 /home/sofya/projeto_tp1/Projeto_Final_Tecnicas_de_Programacao/Containers.hpp
+	"Entidade.hpp"
+	<vector>
+	<string>
+	<iostream>
+	<cctype>
+	<sstream>
+	<stdexcept>
+
+1781644781 /home/sofya/projeto_tp1/Projeto_Final_Tecnicas_de_Programacao/Entidade.hpp
+	"Dominio.hpp"
+	<vector>
+	<string>
+	<iostream>
+	<cctype>
+	<sstream>
+	<stdexcept>
+
+1781644781 /home/sofya/projeto_tp1/Projeto_Final_Tecnicas_de_Programacao/Dominio.hpp
+	<string>
+	<cctype>
+	<stdexcept>
+
+1781644781 source:/home/sofya/projeto_tp1/Projeto_Final_Tecnicas_de_Programacao/Dominio.cpp
+	"Dominio.hpp"
+	<string>
+	<iostream>
+	<cctype>
+	<sstream>
+	<stdexcept>
+
+1781644781 source:/home/sofya/projeto_tp1/Projeto_Final_Tecnicas_de_Programacao/Entidade.cpp
+	"Entidade.hpp"
+	<vector>
+	<string>
+	<iostream>
+	<cctype>
+	<sstream>
+	<stdexcept>
+
+1779552915 source:/home/sofya/projeto_tp1/Projeto_Final_Tecnicas_de_Programacao/main.cpp
+
