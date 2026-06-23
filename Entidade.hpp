@@ -36,6 +36,7 @@ private:
     Codigo codigo;
     Nome nome;
     Data data_inicio, data_termino;
+    Email email_proprietario, email_mestre;
 
 public:
 
