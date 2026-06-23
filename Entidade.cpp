@@ -211,3 +211,195 @@ int PlanoSprint::calcularSomaEstimativas() const {
     }
     return soma;
 }
+
+
+
+// ----------------IMPLEMENTAÇÕES: PESSOA ----------------------------------------------
+
+
+// ============================================
+// IMPLEMENTAÇÃO: PESSOA
+// ============================================
+
+/**
+ * @brief Construtor da classe Pessoa.
+ * @details Inicializa todos os atributos com os objetos de domínio fornecidos.
+ *          Os domínios já foram validados antes da criação da Pessoa.
+ * 
+ * @param emailNovo Objeto Email válido
+ * @param nomeNovo Objeto Nome válido
+ * @param senhaNova Objeto Senha válido
+ * @param papelNovo Objeto Papel válido
+ */
+Pessoa::Pessoa(const Email& emailNovo,
+               const Nome& nomeNovo,
+               const Senha& senhaNova,
+               const Papel& papelNovo)
+    : email(emailNovo),
+      nome(nomeNovo),
+      senha(senhaNova),
+      papel(papelNovo)
+{
+    // Todos os atributos são inicializados na lista de inicialização
+    // Nenhuma validação adicional é necessária, pois os domínios já validaram
+}
+
+/**
+ * @brief Define o email da pessoa.
+ * @param emailNovo Objeto Email válido.
+ * @post O atributo email é atualizado.
+ */
+void Pessoa::setEmail(const Email& emailNovo) {
+    email = emailNovo;
+}
+
+/**
+ * @brief Define o nome da pessoa.
+ * @param nomeNovo Objeto Nome válido.
+ * @post O atributo nome é atualizado.
+ */
+void Pessoa::setNome(const Nome& nomeNovo) {
+    nome = nomeNovo;
+}
+
+/**
+ * @brief Define a senha da pessoa.
+ * @param senhaNova Objeto Senha válido.
+ * @post O atributo senha é atualizado.
+ */
+void Pessoa::setSenha(const Senha& senhaNova) {
+    senha = senhaNova;
+}
+
+/**
+ * @brief Define o papel da pessoa.
+ * @param papelNovo Objeto Papel válido.
+ * @post O atributo papel é atualizado.
+ */
+void Pessoa::setPapel(const Papel& papelNovo) {
+    papel = papelNovo;
+}
+
+
+
+//---------------------IMPLEMENTAÇÕES: HISTÓRIA DE USUÁRIO ---------------------------------------------------------------------
+
+// ============================================
+// IMPLEMENTAÇÃO: HISTORIA USUARIO
+// ============================================
+
+/**
+ * @brief Construtor da classe HistoriaUsuario.
+ * @details Inicializa todos os atributos com os objetos de domínio fornecidos.
+ *          Os domínios já foram validados antes da criação da HistoriaUsuario.
+ *
+ * @param codigoObj Código da história
+ * @param nomeObj Nome da história
+ * @param descricaoObj Descrição da história
+ * @param prioridadeObj Prioridade da história
+ * @param estadoObj Estado inicial da história
+ * @param codigoProjetoObj Código do projeto associado
+ * @param estimativaObj Estimativa da história
+ */
+HistoriaUsuario::HistoriaUsuario(const Codigo& codigoObj,
+                                 const Nome& nomeObj,
+                                 const Texto& descricaoObj,
+                                 const Prioridade& prioridadeObj,
+                                 const Estado& estadoObj,
+                                 const Codigo& codigoProjetoObj,
+                                 const Tempo& estimativaObj)
+    : codigo(codigoObj),
+      nome(nomeObj),
+      descricao(descricaoObj),
+      prioridade(prioridadeObj),
+      estado(estadoObj),
+      codigoProjeto(codigoProjetoObj),
+      estimativa(estimativaObj) {
+    // Todos os atributos são inicializados na lista de inicialização
+    // Nenhuma validação adicional é necessária, pois os domínios já validaram
+}
+
+// ========== SETTERS ==========
+
+/**
+ * @brief Define um novo código para a história.
+ * @param novoCodigo Objeto Codigo válido.
+ */
+void HistoriaUsuario::setCodigo(const Codigo& novoCodigo) {
+    codigo = novoCodigo;
+}
+
+/**
+ * @brief Define um novo nome para a história.
+ * @param novoNome Objeto Nome válido.
+ */
+void HistoriaUsuario::setNome(const Nome& novoNome) {
+    nome = novoNome;
+}
+
+/**
+ * @brief Define uma nova descrição para a história.
+ * @param novaDescricao Objeto Texto válido.
+ */
+void HistoriaUsuario::setDescricao(const Texto& novaDescricao) {
+    descricao = novaDescricao;
+}
+
+/**
+ * @brief Define uma nova prioridade para a história.
+ * @param novaPrioridade Objeto Prioridade válido.
+ */
+void HistoriaUsuario::setPrioridade(const Prioridade& novaPrioridade) {
+    prioridade = novaPrioridade;
+}
+
+/**
+ * @brief Define um novo estado para a história.
+ * @param novoEstado Objeto Estado válido.
+ * @post O atributo estado é atualizado.
+ * @note A validação do estado é feita pelo domínio Estado.
+ */
+void HistoriaUsuario::setEstado(const Estado& novoEstado) {
+    estado = novoEstado;
+}
+
+/**
+ * @brief Define um novo projeto associado à história.
+ * @param novoCodigoProjeto Objeto Codigo válido.
+ */
+void HistoriaUsuario::setCodigoProjeto(const Codigo& novoCodigoProjeto) {
+    codigoProjeto = novoCodigoProjeto;
+}
+
+/**
+ * @brief Define uma nova estimativa para a história.
+ * @param novaEstimativa Objeto Tempo válido.
+ */
+void HistoriaUsuario::setEstimativa(const Tempo& novaEstimativa) {
+    estimativa = novaEstimativa;
+}
+
+// ========== MÉTODOS DE VALIDAÇÃO ==========
+
+/**
+ * @brief Avança o estado da história para o próximo estágio.
+ * @details A FAZER → FAZENDO → FEITO
+ * @return true se o estado foi alterado, false se já está em FEITO.
+ */
+bool HistoriaUsuario::avancarEstado() {
+    string estadoAtual = estado.getValor();
+
+    if (estadoAtual == "A FAZER") {
+        Estado novoEstado;
+        novoEstado.setValor("FAZENDO");
+        estado = novoEstado;
+        return true;
+    } else if (estadoAtual == "FAZENDO") {
+        Estado novoEstado;
+        novoEstado.setValor("FEITO");
+        estado = novoEstado;
+        return true;
+    } else {
+        return false;
+    }
+}

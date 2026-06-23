@@ -108,9 +108,5 @@ public:
 
 
 
-<<<<<<< HEAD
 
 #endif //SERVICO_HPP_INCLUDED
-=======
-#endif //SERVICO_HPP_INCLUDED
->>>>>>> c1fb3f805dc2776458a99084f96ac7751d0aa178

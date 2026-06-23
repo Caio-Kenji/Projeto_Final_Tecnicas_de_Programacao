@@ -25,7 +25,6 @@ using namespace std;
 // INTERFACE AUTENTICAÇÃO
 // ============================================
 
-<<<<<<< HEAD
 class IAAutenticacao{
 public:
     virtual bool autenticar(Email*) = 0;
@@ -39,24 +38,15 @@ public:
 };
 
 
-=======
->>>>>>> c1fb3f805dc2776458a99084f96ac7751d0aa178
 // ============================================
 // INTERFACE PARA PESSOA
 // ============================================
 
 /**
-<<<<<<< HEAD
  * @brief Interface para serviços da entidade PlanoSprint
  *
  * @details Define todas as operações que podem ser realizadas sobre
  *          planos de sprint, incluindo associação de histórias.
-=======
- * @brief Interface para serviços da entidade Pessoa.
- *
- * @details Define as operações de criação, leitura, atualização e exclusão
- *          de pessoas cadastradas no sistema.
->>>>>>> c1fb3f805dc2776458a99084f96ac7751d0aa178
  */
 class IServicoPessoa {
 public:
@@ -96,7 +86,6 @@ public:
      * @brief Exclui uma pessoa pelo email.
      * @param email Email da pessoa.
      */
-<<<<<<< HEAD
     virtual void atualizarCapacidade(const std::string& codigo,
                                       int novaCapacidade) = 0;
 
@@ -131,9 +120,6 @@ public:
      * @param codigoSprint Código do sprint
      */
     virtual void listarHistoriasDoSprint(const std::string& codigoSprint) = 0;
-=======
-    virtual void excluirPessoa(const string& email) = 0;
->>>>>>> c1fb3f805dc2776458a99084f96ac7751d0aa178
 };
 
 
