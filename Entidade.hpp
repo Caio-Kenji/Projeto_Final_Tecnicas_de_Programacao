@@ -525,4 +525,594 @@ public:
 };
 
 
+
+
+// -------------------DEFINIÇÕES: PESSOA -------------------------------------------------------------------------------
+
+
+
+
+// ============================================
+// CLASSE PESSOA (COMPLETA E DOCUMENTADA)
+// ============================================
+
+/**
+ * @brief Classe que representa uma pessoa (usuário) cadastrada no sistema.
+ *
+ * @details A classe Pessoa é uma entidade que agrupa informações
+ *          relacionadas a um usuário do sistema Scrum:
+ *          - **Email**: identificador único da pessoa (domínio Email)
+ *          - **Nome**: nome completo da pessoa (domínio Nome)
+ *          - **Senha**: credencial para autenticação (domínio Senha)
+ *          - **Papel**: função no projeto (domínio Papel)
+ *
+ * @invariant Todos os atributos (email, nome, senha e papel)
+ *            sempre armazenam valores válidos, pois são instâncias
+ *            de classes de domínio que validam seus valores internamente.
+ *
+ * @invariant O email é único no sistema (verificado na camada de serviço).
+ *
+ * @note Esta classe segue o princípio de encapsulamento,
+ *       fornecendo métodos públicos de acesso (getters e setters)
+ *       para cada atributo.
+ *
+ * @see Email, Nome, Senha, Papel
+ * @see ServicoPessoa
+ *
+ * @example
+ * @code
+ * try {
+ *     Email email("ana@empresa.com");
+ *     Nome nome;
+ *     nome.setNome("Ana Silva");
+ *     Senha senha;
+ *     senha.setSenha("a1B2c3");
+ *     Papel papel("DESENVOLVEDOR");
+ *     
+ *     Pessoa pessoa(email, nome, senha, papel);
+ *     cout << "Pessoa criada: " << pessoa.getNome().getNome() << endl;
+ * } catch (const invalid_argument& e) {
+ *     cout << "Erro: " << e.what() << endl;
+ * }
+ * @endcode
+ */
+class Pessoa {
+private:
+    /** @brief Email da pessoa (identificador único) */
+    Email email;
+    
+    /** @brief Nome da pessoa */
+    Nome nome;
+    
+    /** @brief Senha da pessoa (para autenticação) */
+    Senha senha;
+    
+    /** @brief Papel da pessoa no projeto Scrum */
+    Papel papel;
+
+public:
+    // ========== CONSTRUTORES ==========
+
+    /**
+     * @brief Constrói uma pessoa com os dados informados.
+     *
+     * @param emailNovo Objeto Email válido da pessoa.
+     * @param nomeNovo Objeto Nome válido da pessoa.
+     * @param senhaNova Objeto Senha válida da pessoa.
+     * @param papelNovo Objeto Papel válido da pessoa.
+     *
+     * @post Uma instância de Pessoa é criada com os atributos
+     *       inicializados pelos valores fornecidos.
+     *
+     * @note Os objetos de domínio já foram validados antes de serem passados.
+     *
+     * @see Email, Nome, Senha, Papel
+     */
+    Pessoa(const Email& emailNovo,
+           const Nome& nomeNovo,
+           const Senha& senhaNova,
+           const Papel& papelNovo);
+
+    // ========== SETTERS ==========
+
+    /**
+     * @brief Define o email da pessoa.
+     *
+     * @param emailNovo Objeto Email válido a ser atribuído.
+     *
+     * @post O atributo email é atualizado com o valor informado.
+     *
+     * @see Email
+     */
+    void setEmail(const Email& emailNovo);
+
+    /**
+     * @brief Define o nome da pessoa.
+     *
+     * @param nomeNovo Objeto Nome válido a ser atribuído.
+     *
+     * @post O atributo nome é atualizado com o valor informado.
+     *
+     * @see Nome
+     */
+    void setNome(const Nome& nomeNovo);
+
+    /**
+     * @brief Define a senha da pessoa.
+     *
+     * @param senhaNova Objeto Senha válido a ser atribuído.
+     *
+     * @post O atributo senha é atualizado com o valor informado.
+     *
+     * @see Senha
+     */
+    void setSenha(const Senha& senhaNova);
+
+    /**
+     * @brief Define o papel da pessoa.
+     *
+     * @param papelNovo Objeto Papel válido a ser atribuído.
+     *
+     * @post O atributo papel é atualizado com o valor informado.
+     *
+     * @see Papel
+     */
+    void setPapel(const Papel& papelNovo);
+
+    // ========== GETTERS ==========
+
+    /**
+     * @brief Retorna o email da pessoa.
+     *
+     * @return Email Objeto Email contendo o email da pessoa.
+     *
+     * @note Método constante (não modifica o objeto).
+     *
+     * @see setEmail()
+     */
+    Email getEmail() const;
+
+    /**
+     * @brief Retorna o nome da pessoa.
+     *
+     * @return Nome Objeto Nome contendo o nome da pessoa.
+     *
+     * @note Método constante (não modifica o objeto).
+     *
+     * @see setNome()
+     */
+    Nome getNome() const;
+
+    /**
+     * @brief Retorna a senha da pessoa.
+     *
+     * @return Senha Objeto Senha contendo a senha da pessoa.
+     *
+     * @note Método constante (não modifica o objeto).
+     *
+     * @see setSenha()
+     */
+    Senha getSenha() const;
+
+    /**
+     * @brief Retorna o papel da pessoa.
+     *
+     * @return Papel Objeto Papel contendo o papel da pessoa.
+     *
+     * @note Método constante (não modifica o objeto).
+     *
+     * @see setPapel()
+     */
+    Papel getPapel() const;
+};
+
+// ============================================
+// MÉTODOS INLINE: PESSOA
+// ============================================
+
+/**
+ * @brief Retorna o email da pessoa.
+ * @details Implementação inline que retorna uma cópia do atributo email.
+ * @return Email Cópia do email armazenado.
+ */
+inline Email Pessoa::getEmail() const {
+    return email;
+}
+
+/**
+ * @brief Retorna o nome da pessoa.
+ * @details Implementação inline que retorna uma cópia do atributo nome.
+ * @return Nome Cópia do nome armazenado.
+ */
+inline Nome Pessoa::getNome() const {
+    return nome;
+}
+
+/**
+ * @brief Retorna a senha da pessoa.
+ * @details Implementação inline que retorna uma cópia do atributo senha.
+ * @return Senha Cópia da senha armazenada.
+ */
+inline Senha Pessoa::getSenha() const {
+    return senha;
+}
+
+/**
+ * @brief Retorna o papel da pessoa.
+ * @details Implementação inline que retorna uma cópia do atributo papel.
+ * @return Papel Cópia do papel armazenado.
+ */
+inline Papel Pessoa::getPapel() const {
+    return papel;
+}
+
+
+
+
+
+
+
+
+// --------------DEFINIÇÕES: HISTÓRIA DE USUÁRIO --------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+// ============================================
+// CLASSE HISTORIA USUARIO (COMPLETA E DOCUMENTADA)
+// ============================================
+
+/**
+ * @brief Classe que representa uma história de usuário (User Story) no sistema.
+ *
+ * @details A classe HistoriaUsuario é uma entidade que descreve uma funcionalidade
+ *          sob a perspectiva do usuário, seguindo o formato:
+ *          **"Como [papel], eu quero [ação] para [valor]"**
+ *
+ *          Cada história pertence a um projeto e pode ser associada a um sprint.
+ *          Seu estado evolui ao longo do desenvolvimento: A FAZER → FAZENDO → FEITO.
+ *
+ * @invariant Todos os atributos armazenam valores válidos, pois são instâncias
+ *            de classes de domínio que validam seus valores internamente.
+ * @invariant O código da história é único no sistema.
+ * @invariant O código do projeto associado deve existir no sistema.
+ * @invariant O estado inicial de uma história é sempre "A FAZER".
+ *
+ * @note As regras de negócio sobre capacidade vs estimativas são
+ *       verificadas na camada de serviço (ServicoPlanoSprint).
+ *
+ * @see Codigo, Nome, Texto, Prioridade, Estado, Tempo
+ * @see ServicoHistoriaUsuario
+ * @see PlanoSprint
+ *
+ * @example
+ * @code
+ * try {
+ *     Codigo codigo("US001");
+ *     Nome nome;
+ *     nome.setNome("Login");
+ *     Texto descricao;
+ *     descricao.setValor("Como usuario, eu quero fazer login para acessar o sistema");
+ *     Prioridade prioridade("ALTA");
+ *     Estado estado("A FAZER");
+ *     Codigo codigoProjeto("PR001");
+ *     Tempo estimativa;
+ *     estimativa.setTempo(5);
+ *
+ *     HistoriaUsuario historia(codigo, nome, descricao, prioridade,
+ *                              estado, codigoProjeto, estimativa);
+ *     cout << "Historia criada: " << historia.getNome().getNome() << endl;
+ * } catch (const invalid_argument& e) {
+ *     cout << "Erro: " << e.what() << endl;
+ * }
+ * @endcode
+ */
+class HistoriaUsuario {
+private:
+    /** @brief Código identificador único da história (formato: 2 letras + 3 dígitos) */
+    Codigo codigo;
+
+    /** @brief Nome/título resumido da história (máximo 10 caracteres) */
+    Nome nome;
+
+    /** @brief Descrição completa no formato "Como [papel], eu quero [ação] para [valor]" */
+    Texto descricao;
+
+    /** @brief Prioridade da história (ALTA, MEDIA, BAIXA) */
+    Prioridade prioridade;
+
+    /** @brief Estado atual da história (A FAZER, FAZENDO, FEITO) */
+    Estado estado;
+
+    /** @brief Código do projeto a que pertence */
+    Codigo codigoProjeto;
+
+    /** @brief Estimativa de esforço em dias (1-365) */
+    Tempo estimativa;
+
+public:
+    // ========== CONSTRUTOR ==========
+
+    /**
+     * @brief Construtor da classe HistoriaUsuario.
+     *
+     * @param codigoObj Código da história (2 letras + 3 dígitos).
+     * @param nomeObj Nome/título da história (até 10 caracteres).
+     * @param descricaoObj Descrição completa da história (até 40 caracteres).
+     * @param prioridadeObj Prioridade (ALTA, MEDIA, BAIXA).
+     * @param estadoObj Estado inicial (deve ser "A FAZER").
+     * @param codigoProjetoObj Código do projeto associado.
+     * @param estimativaObj Estimativa em dias (1-365).
+     *
+     * @throw invalid_argument Se algum domínio for inválido (repassado pelos domínios).
+     *
+     * @post Um objeto HistoriaUsuario válido é criado com todos os atributos
+     *       validados pelos respectivos domínios.
+     *
+     * @note O estado inicial deve ser "A FAZER". Alterações de estado
+     *       devem ser feitas através do método setEstado().
+     */
+    HistoriaUsuario(const Codigo& codigoObj,
+                    const Nome& nomeObj,
+                    const Texto& descricaoObj,
+                    const Prioridade& prioridadeObj,
+                    const Estado& estadoObj,
+                    const Codigo& codigoProjetoObj,
+                    const Tempo& estimativaObj);
+
+    // ========== GETTERS ==========
+
+    /**
+     * @brief Retorna o código da história.
+     * @return Codigo Objeto Codigo contendo o código.
+     * @note Método constante (não modifica o objeto).
+     */
+    Codigo getCodigo() const;
+
+    /**
+     * @brief Retorna o nome da história.
+     * @return Nome Objeto Nome contendo o título.
+     * @note Método constante (não modifica o objeto).
+     */
+    Nome getNome() const;
+
+    /**
+     * @brief Retorna a descrição da história.
+     * @return Texto Objeto Texto contendo a descrição completa.
+     * @note Método constante (não modifica o objeto).
+     */
+    Texto getDescricao() const;
+
+    /**
+     * @brief Retorna a prioridade da história.
+     * @return Prioridade Objeto Prioridade contendo o valor.
+     * @note Método constante (não modifica o objeto).
+     */
+    Prioridade getPrioridade() const;
+
+    /**
+     * @brief Retorna o estado atual da história.
+     * @return Estado Objeto Estado contendo o valor atual.
+     * @note Método constante (não modifica o objeto).
+     */
+    Estado getEstado() const;
+
+    /**
+     * @brief Retorna o código do projeto associado.
+     * @return Codigo Objeto Codigo contendo o código do projeto.
+     * @note Método constante (não modifica o objeto).
+     */
+    Codigo getCodigoProjeto() const;
+
+    /**
+     * @brief Retorna a estimativa de esforço da história.
+     * @return Tempo Objeto Tempo contendo a estimativa em dias.
+     * @note Método constante (não modifica o objeto).
+     */
+    Tempo getEstimativa() const;
+
+    // ========== SETTERS ==========
+
+    /**
+     * @brief Define um novo código para a história.
+     * @param novoCodigo Objeto Codigo válido.
+     * @post O atributo codigo é atualizado.
+     * @throw invalid_argument Se o código for inválido (repassado pelo domínio).
+     */
+    void setCodigo(const Codigo& novoCodigo);
+
+    /**
+     * @brief Define um novo nome para a história.
+     * @param novoNome Objeto Nome válido.
+     * @post O atributo nome é atualizado.
+     * @throw invalid_argument Se o nome for inválido (repassado pelo domínio).
+     */
+    void setNome(const Nome& novoNome);
+
+    /**
+     * @brief Define uma nova descrição para a história.
+     * @param novaDescricao Objeto Texto válido.
+     * @post O atributo descricao é atualizado.
+     * @throw invalid_argument Se a descrição for inválida (repassado pelo domínio).
+     */
+    void setDescricao(const Texto& novaDescricao);
+
+    /**
+     * @brief Define uma nova prioridade para a história.
+     * @param novaPrioridade Objeto Prioridade válido.
+     * @post O atributo prioridade é atualizado.
+     * @throw invalid_argument Se a prioridade for inválida (repassado pelo domínio).
+     */
+    void setPrioridade(const Prioridade& novaPrioridade);
+
+    /**
+     * @brief Define um novo estado para a história.
+     * @param novoEstado Objeto Estado válido.
+     * @post O atributo estado é atualizado.
+     * @throw invalid_argument Se o estado for inválido (repassado pelo domínio).
+     *
+     * @note A transição de estado deve seguir a ordem:
+     *       A FAZER → FAZENDO → FEITO (não é possível retroceder).
+     *       Essa regra é aplicada na camada de serviço.
+     */
+    void setEstado(const Estado& novoEstado);
+
+    /**
+     * @brief Define um novo projeto associado à história.
+     * @param novoCodigoProjeto Objeto Codigo válido.
+     * @post O atributo codigoProjeto é atualizado.
+     * @throw invalid_argument Se o código for inválido (repassado pelo domínio).
+     */
+    void setCodigoProjeto(const Codigo& novoCodigoProjeto);
+
+    /**
+     * @brief Define uma nova estimativa para a história.
+     * @param novaEstimativa Objeto Tempo válido.
+     * @post O atributo estimativa é atualizado.
+     * @throw invalid_argument Se a estimativa for inválida (repassado pelo domínio).
+     */
+    void setEstimativa(const Tempo& novaEstimativa);
+
+    // ========== MÉTODOS DE VALIDAÇÃO ==========
+
+    /**
+     * @brief Verifica se a história está em estado "A FAZER".
+     * @return true se o estado for "A FAZER", false caso contrário.
+     * @note Método útil para validar se a história pode ser associada a um sprint.
+     */
+    bool isAFazer() const;
+
+    /**
+     * @brief Verifica se a história está em estado "FAZENDO".
+     * @return true se o estado for "FAZENDO", false caso contrário.
+     */
+    bool isFazendo() const;
+
+    /**
+     * @brief Verifica se a história está em estado "FEITO".
+     * @return true se o estado for "FEITO", false caso contrário.
+     */
+    bool isFeito() const;
+
+    /**
+     * @brief Avança o estado da história para o próximo estágio.
+     * @details A FAZER → FAZENDO → FEITO
+     * @return true se o estado foi alterado, false se já está em FEITO.
+     * @note Este método aplica a regra de negócio de transição de estado.
+     *       A validação do estado é feita pelo domínio Estado.
+     */
+    bool avancarEstado();
+
+    /**
+     * @brief Retorna uma representação textual do estado atual.
+     * @return string "A FAZER", "FAZENDO" ou "FEITO".
+     */
+    string getEstadoStr() const;
+};
+
+// ============================================
+// MÉTODOS INLINE: HISTORIAUSUARIO
+// ============================================
+
+/**
+ * @brief Retorna o código da história.
+ * @details Implementação inline que retorna uma cópia do atributo codigo.
+ * @return Codigo Cópia do código armazenado.
+ */
+inline Codigo HistoriaUsuario::getCodigo() const {
+    return codigo;
+}
+
+/**
+ * @brief Retorna o nome da história.
+ * @details Implementação inline que retorna uma cópia do atributo nome.
+ * @return Nome Cópia do nome armazenado.
+ */
+inline Nome HistoriaUsuario::getNome() const {
+    return nome;
+}
+
+/**
+ * @brief Retorna a descrição da história.
+ * @details Implementação inline que retorna uma cópia do atributo descricao.
+ * @return Texto Cópia da descrição armazenada.
+ */
+inline Texto HistoriaUsuario::getDescricao() const {
+    return descricao;
+}
+
+/**
+ * @brief Retorna a prioridade da história.
+ * @details Implementação inline que retorna uma cópia do atributo prioridade.
+ * @return Prioridade Cópia da prioridade armazenada.
+ */
+inline Prioridade HistoriaUsuario::getPrioridade() const {
+    return prioridade;
+}
+
+/**
+ * @brief Retorna o estado atual da história.
+ * @details Implementação inline que retorna uma cópia do atributo estado.
+ * @return Estado Cópia do estado armazenado.
+ */
+inline Estado HistoriaUsuario::getEstado() const {
+    return estado;
+}
+
+/**
+ * @brief Retorna o código do projeto associado.
+ * @details Implementação inline que retorna uma cópia do atributo codigoProjeto.
+ * @return Codigo Cópia do código do projeto.
+ */
+inline Codigo HistoriaUsuario::getCodigoProjeto() const {
+    return codigoProjeto;
+}
+
+/**
+ * @brief Retorna a estimativa da história.
+ * @details Implementação inline que retorna uma cópia do atributo estimativa.
+ * @return Tempo Cópia da estimativa armazenada.
+ */
+inline Tempo HistoriaUsuario::getEstimativa() const {
+    return estimativa;
+}
+
+/**
+ * @brief Verifica se a história está em estado "A FAZER".
+ * @return true se o estado for "A FAZER".
+ */
+inline bool HistoriaUsuario::isAFazer() const {
+    return estado.getValor() == "A FAZER";
+}
+
+/**
+ * @brief Verifica se a história está em estado "FAZENDO".
+ * @return true se o estado for "FAZENDO".
+ */
+inline bool HistoriaUsuario::isFazendo() const {
+    return estado.getValor() == "FAZENDO";
+}
+
+/**
+ * @brief Verifica se a história está em estado "FEITO".
+ * @return true se o estado for "FEITO".
+ */
+inline bool HistoriaUsuario::isFeito() const {
+    return estado.getValor() == "FEITO";
+}
+
+/**
+ * @brief Retorna uma representação textual do estado atual.
+ * @return string "A FAZER", "FAZENDO" ou "FEITO".
+ */
+inline string HistoriaUsuario::getEstadoStr() const {
+    return estado.getValor();
+}
+
+
 #endif // ENTIDADE_HPP_INCLUDED
