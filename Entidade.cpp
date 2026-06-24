@@ -300,6 +300,8 @@ void Pessoa::setPapel(const Papel& papelNovo) {
  * @param estadoObj Estado inicial da história
  * @param codigoProjetoObj Código do projeto associado
  * @param estimativaObj Estimativa da história
+ * @param codigoPessoaObj Código da pessoa responsável
+ * @param codigoPlanoSprintObj Código do sprint associado
  */
 HistoriaUsuario::HistoriaUsuario(const Codigo& codigoObj,
                                  const Nome& nomeObj,
@@ -307,76 +309,70 @@ HistoriaUsuario::HistoriaUsuario(const Codigo& codigoObj,
                                  const Prioridade& prioridadeObj,
                                  const Estado& estadoObj,
                                  const Codigo& codigoProjetoObj,
-                                 const Tempo& estimativaObj)
+                                 const Tempo& estimativaObj,
+                                 const Codigo& codigoPessoaObj,
+                                 const Codigo& codigoPlanoSprintObj)
     : codigo(codigoObj),
       nome(nomeObj),
       descricao(descricaoObj),
       prioridade(prioridadeObj),
       estado(estadoObj),
       codigoProjeto(codigoProjetoObj),
-      estimativa(estimativaObj) {
+      estimativa(estimativaObj),
+      codigoPessoa(codigoPessoaObj),
+      codigoPlanoSprint(codigoPlanoSprintObj) {
     // Todos os atributos são inicializados na lista de inicialização
     // Nenhuma validação adicional é necessária, pois os domínios já validaram
 }
 
 // ========== SETTERS ==========
 
-/**
- * @brief Define um novo código para a história.
- * @param novoCodigo Objeto Codigo válido.
- */
 void HistoriaUsuario::setCodigo(const Codigo& novoCodigo) {
     codigo = novoCodigo;
 }
 
-/**
- * @brief Define um novo nome para a história.
- * @param novoNome Objeto Nome válido.
- */
 void HistoriaUsuario::setNome(const Nome& novoNome) {
     nome = novoNome;
 }
 
-/**
- * @brief Define uma nova descrição para a história.
- * @param novaDescricao Objeto Texto válido.
- */
 void HistoriaUsuario::setDescricao(const Texto& novaDescricao) {
     descricao = novaDescricao;
 }
 
-/**
- * @brief Define uma nova prioridade para a história.
- * @param novaPrioridade Objeto Prioridade válido.
- */
 void HistoriaUsuario::setPrioridade(const Prioridade& novaPrioridade) {
     prioridade = novaPrioridade;
 }
 
-/**
- * @brief Define um novo estado para a história.
- * @param novoEstado Objeto Estado válido.
- * @post O atributo estado é atualizado.
- * @note A validação do estado é feita pelo domínio Estado.
- */
 void HistoriaUsuario::setEstado(const Estado& novoEstado) {
     estado = novoEstado;
 }
 
-/**
- * @brief Define um novo projeto associado à história.
- * @param novoCodigoProjeto Objeto Codigo válido.
- */
 void HistoriaUsuario::setCodigoProjeto(const Codigo& novoCodigoProjeto) {
     codigoProjeto = novoCodigoProjeto;
 }
 
-/**
- * @brief Define uma nova estimativa para a história.
- * @param novaEstimativa Objeto Tempo válido.
- */
 void HistoriaUsuario::setEstimativa(const Tempo& novaEstimativa) {
     estimativa = novaEstimativa;
+}
+
+/**
+ * @brief Define a pessoa (desenvolvedor) responsável pela história.
+ * @param novoCodigoPessoa Objeto Codigo válido.
+ * @post O atributo codigoPessoa é atualizado.
+ * @note Pode ser usado um código vazio ("") para remover a associação.
+ */
+void HistoriaUsuario::setCodigoPessoa(const Codigo& novoCodigoPessoa) {
+    codigoPessoa = novoCodigoPessoa;
+}
+
+/**
+ * @brief Define o plano de sprint associado à história.
+ * @param novoCodigoPlanoSprint Objeto Codigo válido.
+ * @post O atributo codigoPlanoSprint é atualizado.
+ * @note Pode ser usado um código vazio ("") para remover a associação.
+ */
+void HistoriaUsuario::setCodigoPlanoSprint(const Codigo& novoCodigoPlanoSprint) {
+    codigoPlanoSprint = novoCodigoPlanoSprint;
 }
 
 // ========== MÉTODOS DE VALIDAÇÃO ==========

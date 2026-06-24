@@ -50,6 +50,14 @@ bool ContainerPessoa::atualizar(Pessoa pessoa){
     return false;
 }
 
+
+
+
+
+
+
+
+
 // MÉTODOS CONTEINER_PROJETO---------------------------------------------------------------
 
 ContainerProjeto* ContainerProjeto::getInstancia() {
@@ -88,6 +96,50 @@ bool ContainerProjeto::atualizar(Projeto projeto){
     }
     return false;
 }
+
+// ============================================
+// MÉTODOS ADICIONAIS: CONTAINER PROJETO
+// ============================================
+
+bool ContainerProjeto::existe(const string& codigo) const {
+    return containerPro.find(codigo) != containerPro.end();
+}
+
+vector<Projeto> ContainerProjeto::listarTodas() const {
+    vector<Projeto> lista;
+    for (const auto& par : containerPro) {
+        lista.push_back(par.second);
+    }
+    return lista;
+}
+
+Projeto* ContainerProjeto::buscar(const string& codigo) {
+    map<string, Projeto>::iterator it = containerPro.find(codigo);
+    if (it != containerPro.end()) {
+        return &(it->second);
+    }
+    return nullptr;
+}
+
+const Projeto* ContainerProjeto::buscar(const string& codigo) const {
+    map<string, Projeto>::const_iterator it = containerPro.find(codigo);
+    if (it != containerPro.end()) {
+        return &(it->second);
+    }
+    return nullptr;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 // MÉTODOS CONTEINER_PLANO_SPRINT---------------------------------------------------------------
 
@@ -164,6 +216,13 @@ const PlanoSprint* ContainerPlanoSprint::buscar(const string& codigo) const {
 
 
 
+
+
+
+
+
+
+
 // MÉTODOS CONTEINER_HISTORIA_USUARIO---------------------------------------------------------------
 
 ContainerHistoriaUsuario* ContainerHistoriaUsuario::getInstancia() {
@@ -201,4 +260,47 @@ bool ContainerHistoriaUsuario::atualizar(HistoriaUsuario historia_usuario){
         return true;
     }
     return false;
+}
+
+
+// ============================================
+// MÉTODOS ADICIONAIS: CONTAINER HISTORIA USUARIO
+// ============================================
+
+bool ContainerHistoriaUsuario::existe(const string& codigo) const {
+    return containerHU.find(codigo) != containerHU.end();
+}
+
+vector<HistoriaUsuario> ContainerHistoriaUsuario::listarTodas() const {
+    vector<HistoriaUsuario> lista;
+    for (const auto& par : containerHU) {
+        lista.push_back(par.second);
+    }
+    return lista;
+}
+
+HistoriaUsuario* ContainerHistoriaUsuario::buscar(const string& codigo) {
+    map<string, HistoriaUsuario>::iterator it = containerHU.find(codigo);
+    if (it != containerHU.end()) {
+        return &(it->second);
+    }
+    return nullptr;
+}
+
+const HistoriaUsuario* ContainerHistoriaUsuario::buscar(const string& codigo) const {
+    map<string, HistoriaUsuario>::const_iterator it = containerHU.find(codigo);
+    if (it != containerHU.end()) {
+        return &(it->second);
+    }
+    return nullptr;
+}
+
+vector<HistoriaUsuario> ContainerHistoriaUsuario::listarPorProjeto(const string& codigoProjeto) const {
+    vector<HistoriaUsuario> resultado;
+    for (const auto& par : containerHU) {
+        if (par.second.getCodigoProjeto().getValor() == codigoProjeto) {
+            resultado.push_back(par.second);
+        }
+    }
+    return resultado;
 }
