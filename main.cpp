@@ -2,8 +2,6 @@
  * @file main.cpp
  * @brief Ponto de entrada do programa
  *
- * @details Instancia todos os serviços e inicia o menu principal.
- *
  * @author Seu Nome
  * @date 2024
  */
@@ -11,7 +9,7 @@
 #include "Apresentacao.hpp"
 #include "Servico.hpp"
 
-using namespace std;
+using namespace std;  // ← APENAS UM using namespace
 
 int main() {
     try {
@@ -23,7 +21,7 @@ int main() {
         cout << endl;
 
         // ============================================
-        // 1. CRIAR OS SERVIÇOS (usam Singleton internamente)
+        // 1. CRIAR OS SERVIÇOS
         // ============================================
 
         ServicoPessoa servicoPessoa;
@@ -35,7 +33,7 @@ int main() {
         cout << endl;
 
         // ============================================
-        // 2. CRIAR O MENU PRINCIPAL (INJETANDO OS SERVIÇOS)
+        // 2. CRIAR O MENU PRINCIPAL
         // ============================================
 
         MenuPrincipal menu(&servicoPessoa,
@@ -61,7 +59,3 @@ int main() {
 
     return 0;
 }
-
-
-
-using namespace std;

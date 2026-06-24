@@ -76,15 +76,20 @@ public:
  *         - O 1º ou 2º caractere não for letra maiúscula
  *         - O 3º, 4º ou 5º caractere não for dígito
  */
-class Codigo:public Dominio{
-private:
+class Codigo: public Dominio {
+public:
+    Codigo() = default;
+    Codigo(const string& valor) {
+        setValor(valor);
+    }
 
-     /**
+private:
+    /**
      * @brief Valida o formato do código conforme especificação.
      * @param valor String de 5 caracteres.
      * @throw invalid_argument "Codigo invalido." para qualquer violação.
      */
-    void validar(string);
+    void validar(string) override;
 };
 
 
@@ -169,15 +174,20 @@ private:
  * @note A transição entre estados segue a ordem natural:
  *       A FAZER → FAZENDO → FEITO (não é possível retroceder ou pular fases)
  */
-class Estado:public Dominio{
-private:
+class Estado: public Dominio {
+public:
+    Estado() = default;
+    Estado(const string& valor) {
+        setValor(valor);
+    }
 
-     /**
+private:
+    /**
      * @brief Valida se o valor está entre os estados permitidos.
      * @param valor String a ser validada.
      * @throw invalid_argument "Estado invalido." se não for um dos três estados.
      */
-    void validar(string);
+    void validar(string) override;
 };
 
 

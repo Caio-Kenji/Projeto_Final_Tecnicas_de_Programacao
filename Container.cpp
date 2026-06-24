@@ -150,7 +150,7 @@ ContainerPlanoSprint* ContainerPlanoSprint::getInstancia() {
 }
 
 bool ContainerPlanoSprint::criar(PlanoSprint plano_sprint){
-    return containerPS.insert(make_pair(plano_sprint.getCodigo().getValor(), plano_sprint)).second;
+    return containerPS.insert(make_pair(plano_sprint.getCodigo(), plano_sprint)).second;
 }
 
 bool ContainerPlanoSprint::excluir(Codigo codigo){
@@ -163,7 +163,7 @@ bool ContainerPlanoSprint::excluir(Codigo codigo){
 }
 
 bool ContainerPlanoSprint::ler(PlanoSprint* plano_sprint){
-    map<string, PlanoSprint>::iterator it = containerPS.find(plano_sprint->getCodigo().getValor());
+    map<string, PlanoSprint>::iterator it = containerPS.find(plano_sprint->getCodigo());
     if(it != containerPS.end()){
         *plano_sprint = it->second;
         return true;
@@ -172,7 +172,7 @@ bool ContainerPlanoSprint::ler(PlanoSprint* plano_sprint){
 }
 
 bool ContainerPlanoSprint::atualizar(PlanoSprint plano_sprint){
-    map<string, PlanoSprint>::iterator it = containerPS.find(plano_sprint.getCodigo().getValor());
+    map<string, PlanoSprint>::iterator it = containerPS.find(plano_sprint.getCodigo());
     if(it != containerPS.end()){
         it->second = plano_sprint;
         return true;

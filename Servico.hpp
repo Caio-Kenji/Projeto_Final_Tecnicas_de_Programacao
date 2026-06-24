@@ -26,20 +26,22 @@ using namespace std;
 
 
 // ============================================
-// SERVIÇO PARA PESSOA
+// SERVIÇO PARA PESSOA (CORRIGIDO - VERSÃO SINGLETON)
 // ============================================
 
 /**
  * @brief Implementação concreta do serviço de Pessoa.
  *
- * @details Implementa IServicoPessoa e utiliza ContainerPessoa
+ * @details Implementa IServicoPessoa e utiliza ContainerPessoa (Singleton)
  *          para armazenar pessoas em memória.
  */
 class ServicoPessoa : public IServicoPessoa {
 private:
-    ContainerPessoa container;
+    ContainerPessoa* container;  // ← MUDOU para ponteiro
 
 public:
+    ServicoPessoa();  // ← Construtor adicionado
+
     void criarPessoa(const string& email,
                      const string& nome,
                      const string& senha,

@@ -13,6 +13,8 @@
 #ifndef INTERFACES_HPP_INCLUDED
 #define INTERFACES_HPP_INCLUDED
 
+#include "Dominio.hpp"
+
 #include <string>
 #include <vector>
 #include <iostream>
@@ -78,48 +80,12 @@ public:
      * @param papel Novo papel.
      */
     virtual void atualizarPessoa(const string& email,
-                                 const string& nome,
-                                 const string& senha,
-                                 const string& papel) = 0;
+                             const string& nome,
+                             const string& senha,
+                             const string& papel) = 0;
 
-    /**
-     * @brief Exclui uma pessoa pelo email.
-     * @param email Email da pessoa.
-     */
-    virtual void atualizarCapacidade(const std::string& codigo,
-                                      int novaCapacidade) = 0;
+    virtual void excluirPessoa(const string& email) = 0;
 
-    /**
-     * @brief Exclui um plano de sprint
-     * @param codigo Código do sprint
-     */
-    virtual void excluirPlanoSprint(const std::string& codigo) = 0;
-
-    /**
-     * @brief Associa uma história de usuário a um sprint
-     * @param codigoSprint Código do sprint
-     * @param codigoHistoria Código da história
-     * @param estimativa Estimativa em dias
-     */
-    virtual void associarHistoria(const std::string& codigoSprint,
-                                   const std::string& codigoHistoria,
-                                   int estimativa) = 0;
-
-    /**
-     * @brief Remove associação de uma história
-     * @param codigoSprint Código do sprint
-     * @param codigoHistoria Código da história
-     * @param estimativa Estimativa da história
-     */
-    virtual void desassociarHistoria(const std::string& codigoSprint,
-                                      const std::string& codigoHistoria,
-                                      int estimativa) = 0;
-
-    /**
-     * @brief Lista histórias associadas a um sprint
-     * @param codigoSprint Código do sprint
-     */
-    virtual void listarHistoriasDoSprint(const std::string& codigoSprint) = 0;
 };
 
 

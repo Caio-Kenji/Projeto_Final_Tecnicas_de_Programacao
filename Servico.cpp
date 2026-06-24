@@ -25,46 +25,54 @@ using namespace std;
 
 
 // ============================================
-// SERVIÇO: PESSOA
+// SERVIÇO: PESSOA (CORRIGIDO - VERSÃO SINGLETON)
 // ============================================
+
+ServicoPessoa::ServicoPessoa() {
+    container = ContainerPessoa::getInstancia();
+    if (container == nullptr) {
+        throw runtime_error("Erro: Falha ao obter instancia do container de pessoa");
+    }
+}
 
 void ServicoPessoa::criarPessoa(const string& email,
                                 const string& nome,
                                 const string& senha,
                                 const string& papel) {
+    // 1. Valida os domínios
     Email emailObj(email);
-
     Nome nomeObj;
     nomeObj.setNome(nome);
-
     Senha senhaObj;
     senhaObj.setSenha(senha);
-
     Papel papelObj(papel);
 
+    // 2. Cria a pessoa
     Pessoa pessoa(emailObj, nomeObj, senhaObj, papelObj);
 
-    if (!container.criar(pessoa)) {
+    // 3. Armazena no container (usando ->)
+    if (!container->criar(pessoa)) {
         throw runtime_error("Erro: Pessoa com email '" + email + "' ja existe");
     }
 
-    cout << "Pessoa criada com sucesso!" << endl;
+    cout << "✓ Pessoa criada com sucesso!" << endl;
+    cout << "  Email: " << email << endl;
+    cout << "  Nome: " << nome << endl;
+    cout << "  Papel: " << papel << endl;
 }
 
 void ServicoPessoa::consultarPessoa(const string& email) {
+    // Cria uma pessoa temporária para buscar
     Email emailObj(email);
-
     Nome nomeTemp;
     nomeTemp.setNome("Temp");
-
     Senha senhaTemp;
     senhaTemp.setSenha("a1B2c3");
-
     Papel papelTemp("DESENVOLVEDOR");
 
     Pessoa pessoa(emailObj, nomeTemp, senhaTemp, papelTemp);
 
-    if (!container.ler(&pessoa)) {
+    if (!container->ler(&pessoa)) {
         throw runtime_error("Erro: Pessoa com email '" + email + "' nao encontrada");
     }
 
@@ -80,32 +88,29 @@ void ServicoPessoa::atualizarPessoa(const string& email,
                                     const string& senha,
                                     const string& papel) {
     Email emailObj(email);
-
     Nome nomeObj;
     nomeObj.setNome(nome);
-
     Senha senhaObj;
     senhaObj.setSenha(senha);
-
     Papel papelObj(papel);
 
     Pessoa pessoa(emailObj, nomeObj, senhaObj, papelObj);
 
-    if (!container.atualizar(pessoa)) {
+    if (!container->atualizar(pessoa)) {
         throw runtime_error("Erro: Pessoa com email '" + email + "' nao encontrada");
     }
 
-    cout << "Pessoa atualizada com sucesso!" << endl;
+    cout << "✓ Pessoa '" << email << "' atualizada com sucesso!" << endl;
 }
 
 void ServicoPessoa::excluirPessoa(const string& email) {
     Email emailObj(email);
 
-    if (!container.excluir(emailObj)) {
+    if (!container->excluir(emailObj)) {
         throw runtime_error("Erro: Pessoa com email '" + email + "' nao encontrada");
     }
 
-    cout << "Pessoa excluida com sucesso!" << endl;
+    cout << "✓ Pessoa '" << email << "' excluida com sucesso!" << endl;
 }
 
 
