@@ -389,6 +389,7 @@ private:
 
 public:
    
+   Email() = default;
    
    /**
    * @brief Construtor da classe Email.

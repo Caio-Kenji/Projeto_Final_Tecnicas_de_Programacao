@@ -1,190 +1,998 @@
-#ifndef CONTROLADORA_HPP_INCLUDED
-#define CONTROLADORA_HPP_INCLUDED
+/**
+ * @file Controladoras.cpp
+ * @brief Implementação das controladoras de apresentação
+ * 
+ * @details Este arquivo contém a implementação de todas as classes
+ *          controladoras responsáveis pela interface com o usuário.
+ * 
+ * @author Seu Nome
+ * @date 2024
+ */
 
-#include "Interfaces.hpp"
-#include "Dominio.hpp"
-#include "Entidade.hpp"
+#include "Controladora.hpp"
+#include <iostream>
+#include <limits>
+#include <cctype>
+#include <algorithm>
 
+using namespace std;
 
-#define CLR_SCR system("cls");
+// ============================================
+// UTILITÁRIOS AUXILIARES
+// ============================================
 
-//-----------------------------------------------------------------------------------//
-//CONTROLADORAS DA CAMADA DE APRESENTAÇÃO
-//-----------------------------------------------------------------------------------//
-
-//--------------------------------------------------------------------------------------------
-// Classe controladora de apresentação controle.
-
-class CntrApresentacaoServicos{
-    private:
-        Email email;
-        IAAutenticacao *cntrIAAutenticacao;
-        IAPessoa *cntrIAPessoa;
-        IAProjeto *cntrIAProjeto;
-        IAPlanoSprint *cntrIAPlanoSprint;
-
-    public:
-        void executar();
-        void setCntrIAAutenticacao(IAAutenticacao*);
-        void setCntrIAPessoa(IAPessoa*);
-        void setCntrIAProjeto(IAProjeto*);
-        void setCntrIAPlanoSprint(IAPlanoSprint*);
-};
-
-inline void CntrApresentacaoServicos::setCntrIAAutenticacao(IAAutenticacao *cntr){
-        cntrIAAutenticacao = cntr;
+void limparBuffer() {
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
-inline void CntrApresentacaoServicos::setCntrIAPessoa(IAPessoa *cntr){
-        cntrIAPessoa = cntr;
+void pausar() {
+    cout << "\nPressione Enter para continuar...";
+    cin.get();
 }
 
-inline void CntrApresentacaoServicos::setCntrIAProjeto(IAProjeto *cntr){
-        cntrIAProjeto = cntr;
+bool validarFormatoCodigo(const string& codigo) {
+    if (codigo.length() != 5) return false;
+    if (!isupper(codigo[0]) || !isupper(codigo[1])) return false;
+    if (!isdigit(codigo[2]) || !isdigit(codigo[3]) || !isdigit(codigo[4])) return false;
+    return true;
 }
 
-inline void CntrApresentacaoServicos::setCntrIAPlanoSprint(IAPlanoSprint *cntr){
-        cntrIAPlanoSprint = cntr;
+bool validarFormatoData(const string& data) {
+    if (data.length() != 10) return false;
+    if (data[2] != '/' || data[5] != '/') return false;
+    return true;
 }
 
-
-//--------------------------------------------------------------------------------
-// Classe controladora de apresentação e autenticação.
-
-
-class CntrIAAutenticacao:public IAAutenticacao {
-private:
-    ISAutenticacao *cntrSAutenticacao;
-public:
-    bool autenticar(Email*);
-    void setCntrSAutenticacao(ISAutenticacao*);
-};
-
-void inline CntrIAAutenticacao::setCntrSAutenticacao(ISAutenticacao *cntrSAutenticacao){
-    this->cntrSAutenticacao = cntrSAutenticacao;
+string lerStringNaoVazia(const string& mensagem) {
+    string valor;
+    do {
+        cout << mensagem;
+        getline(cin, valor);
+        if (valor.empty()) {
+            cout << "✗ Campo nao pode ser vazio!" << endl;
+        }
+    } while (valor.empty());
+    return valor;
 }
 
+int lerInteiro(const string& mensagem, int min, int max) {
+    int valor;
+    string entrada;
+    do {
+        cout << mensagem;
+        getline(cin, entrada);
+        try {
+            valor = stoi(entrada);
+            if (valor >= min && valor <= max) {
+                break;
+            }
+            cout << "✗ Valor deve estar entre " << min << " e " << max << "!" << endl;
+        } catch (...) {
+            cout << "✗ Digite um numero valido!" << endl;
+        }
+    } while (true);
+    return valor;
+}
 
-//--------------------------------------------------------------------------------
-// Classe controladora de apresentação de pessoa
+// ============================================
+// CONTROLADORA DE AUTENTICAÇÃO
+// ============================================
 
+ControladoraAutenticacao::ControladoraAutenticacao(IServicoPessoa* servico)
+    : servicoPessoa(servico), emailUsuario(nullptr) {
+    if (servicoPessoa == nullptr) {
+        throw invalid_argument("Servico de pessoa nao pode ser nulo");
+    }
+}
 
-class CntrIAPessoa : public IAPessoa {
-private:
-    ISPessoa *cntrSPessoa;
-public:
-    void criar();
-    void executar(const Email&);
-    void setCntrSPessoa(ISPessoa*);
-};
+bool ControladoraAutenticacao::autenticar(const string& email, const string& senha) {
+    try {
+        // Tenta consultar a pessoa para verificar se existe
+        servicoPessoa->consultarPessoa(email);
+        // Se chegou aqui, a pessoa existe
+        // Em um sistema real, aqui verificaria a senha
+        emailUsuario = new Email(email);
+        return true;
+    } catch (const exception&) {
+        cout << "✗ Email ou senha invalidos!" << endl;
+        return false;
+    }
+}
 
-//--------------------------------------------------------------------------------
-// Classe controladora de apresentação de projeto
+bool ControladoraAutenticacao::executar() {
+    string email, senha;
+    int tentativas = 0;
+    const int MAX_TENTATIVAS = 3;
 
+    cout << "\n╔═══════════════════════════════════════════════════════╗" << endl;
+    cout << "║                    LOGIN                               ║" << endl;
+    cout << "╚═══════════════════════════════════════════════════════╝" << endl;
 
-class CntrIAProjeto : public IAProjeto {
-private:
-    ISProjeto *cntrSProjeto;
-public:
-    void executar(const Email&);
-    void setCntrSProjeto(ISProjeto*);
-};
+    do {
+        cout << "\nEmail: ";
+        getline(cin, email);
+        cout << "Senha: ";
+        getline(cin, senha);
 
+        if (autenticar(email, senha)) {
+            cout << "\n✓ Autenticado com sucesso!" << endl;
+            return true;
+        }
 
-//--------------------------------------------------------------------------------
-// Classe controladora de apresentação de plano de sprint
+        tentativas++;
+        if (tentativas < MAX_TENTATIVAS) {
+            cout << "\nTentativas restantes: " << (MAX_TENTATIVAS - tentativas) << endl;
+        }
 
+    } while (tentativas < MAX_TENTATIVAS);
 
+    cout << "\n✗ Numero maximo de tentativas excedido." << endl;
+    return false;
+}
 
-class CntrIAPlanoSprint : public IAPlanoSprint {
-private:
-    ISPlanoSprint *cntrSPlanoSprint;
-public:
-    void executar(const Email&);
-    void setCntrSPlanoSprint(ISPlanoSprint*);
-};
+Email* ControladoraAutenticacao::getEmailUsuario() const {
+    return emailUsuario;
+}
 
-//-----------------------------------------------------------------------------------//
-//CONTROLADORAS DA CAMADA DE SERVIÇOS
-//-----------------------------------------------------------------------------------//
+// ============================================
+// CONTROLADORA DE PESSOA
+// ============================================
 
+ControladoraPessoa::ControladoraPessoa(IServicoPessoa* s) : servico(s) {
+    if (servico == nullptr) {
+        throw invalid_argument("Servico de pessoa nao pode ser nulo");
+    }
+}
 
+string ControladoraPessoa::lerEmail() {
+    string email;
+    do {
+        cout << "Email: ";
+        getline(cin, email);
+        if (email.find('@') == string::npos) {
+            cout << "✗ Email deve conter '@'" << endl;
+        } else if (email.find('@') == 0 || email.find('@') == email.length() - 1) {
+            cout << "✗ '@' nao pode estar no inicio ou fim" << endl;
+        } else {
+            break;
+        }
+    } while (true);
+    return email;
+}
 
-//--------------------------------------------------------------------------------
-// Classe controladora de apresentação e autenticação.
+string ControladoraPessoa::lerNome() {
+    string nome;
+    do {
+        cout << "Nome (max 10 caracteres): ";
+        getline(cin, nome);
+        if (nome.empty() || nome.length() > 10) {
+            cout << "✗ Nome deve ter entre 1 e 10 caracteres!" << endl;
+        } else if (nome[0] == ' ' || nome.back() == ' ') {
+            cout << "✗ Nome nao pode comecar ou terminar com espaco!" << endl;
+        } else {
+            bool valido = true;
+            for (char c : nome) {
+                if (!isalpha(c) && c != ' ') {
+                    valido = false;
+                    break;
+                }
+            }
+            if (!valido) {
+                cout << "✗ Nome deve conter apenas letras e espacos!" << endl;
+            } else {
+                break;
+            }
+        }
+    } while (true);
+    return nome;
+}
 
+string ControladoraPessoa::lerSenha() {
+    string senha;
+    do {
+        cout << "Senha (6 caracteres): ";
+        getline(cin, senha);
+        if (senha.length() != 6) {
+            cout << "✗ Senha deve ter exatamente 6 caracteres!" << endl;
+        } else {
+            break;
+        }
+    } while (true);
+    return senha;
+}
 
-class CntrSAutenticacao : public ISAutenticacao {
-public:
-    bool autenticar(const Email&, const Senha&);
-};
+string ControladoraPessoa::lerPapel() {
+    string papel;
+    do {
+        cout << "Papel (DESENVOLVEDOR, MESTRE SCRUM, PROPRIETARIO DE PRODUTO): ";
+        getline(cin, papel);
+        if (papel == "DESENVOLVEDOR" || papel == "MESTRE SCRUM" || papel == "PROPRIETARIO DE PRODUTO") {
+            break;
+        }
+        cout << "✗ Papel invalido!" << endl;
+    } while (true);
+    return papel;
+}
 
+void ControladoraPessoa::executarMenu() {
+    int opcao;
+    do {
+        cout << "\n╔════════════════════════════════╗" << endl;
+        cout << "║       MENU PESSOA               ║" << endl;
+        cout << "╠════════════════════════════════╣" << endl;
+        cout << "║ 1 - Criar Pessoa                ║" << endl;
+        cout << "║ 2 - Consultar Pessoa            ║" << endl;
+        cout << "║ 3 - Atualizar Pessoa            ║" << endl;
+        cout << "║ 4 - Excluir Pessoa              ║" << endl;
+        cout << "║ 0 - Voltar                      ║" << endl;
+        cout << "╚════════════════════════════════╝" << endl;
+        cout << "Opcao: ";
 
-//--------------------------------------------------------------------------------
-// Classe controladora de apresentação de pessoa
+        cin >> opcao;
+        limparBuffer();
 
+        switch (opcao) {
+            case 1: criarPessoaFlow(); break;
+            case 2: consultarPessoaFlow(); break;
+            case 3: atualizarPessoaFlow(); break;
+            case 4: excluirPessoaFlow(); break;
+            case 0: cout << "Voltando..." << endl; break;
+            default: cout << "✗ Opcao invalida!" << endl;
+        }
 
-class CntrServicoPessoa : public ISPessoa {
-public:
-    void criarPessoa(const string& email,
-                     const string& nome,
-                     const string& senha,
-                     const string& papel);
+        if (opcao != 0) pausar();
+    } while (opcao != 0);
+}
 
-    void consultarPessoa(const string& email);
+void ControladoraPessoa::criarPessoaFlow() {
+    cout << "\n=== CRIAR PESSOA ===" << endl;
+    string email = lerEmail();
+    string nome = lerNome();
+    string senha = lerSenha();
+    string papel = lerPapel();
 
-    void atualizarPessoa(const string& email,
-                         const string& nome,
-                         const string& senha,
-                         const string& papel);
+    try {
+        servico->criarPessoa(email, nome, senha, papel);
+    } catch (const exception& e) {
+        cout << "✗ Erro: " << e.what() << endl;
+    }
+}
 
-    void excluirPessoa(const string& email);
-};
+void ControladoraPessoa::consultarPessoaFlow() {
+    cout << "\n=== CONSULTAR PESSOA ===" << endl;
+    string email = lerEmail();
 
-//--------------------------------------------------------------------------------
-// Classe controladora de apresentação de projeto
+    try {
+        servico->consultarPessoa(email);
+    } catch (const exception& e) {
+        cout << "✗ Erro: " << e.what() << endl;
+    }
+}
 
+void ControladoraPessoa::atualizarPessoaFlow() {
+    cout << "\n=== ATUALIZAR PESSOA ===" << endl;
+    string email = lerEmail();
+    string nome = lerNome();
+    string senha = lerSenha();
+    string papel = lerPapel();
 
-class CntrSProjeto : public ISProjeto {
-public:
-    bool criar(Projeto);
-    bool ler(Projeto);
-    bool atualizar(Projeto);
-    bool excluir(Codigo);
-};
+    try {
+        servico->atualizarPessoa(email, nome, senha, papel);
+    } catch (const exception& e) {
+        cout << "✗ Erro: " << e.what() << endl;
+    }
+}
 
+void ControladoraPessoa::excluirPessoaFlow() {
+    cout << "\n=== EXCLUIR PESSOA ===" << endl;
+    string email = lerEmail();
 
-//--------------------------------------------------------------------------------
-// Classe controladora de apresentação de plano de sprint
+    char confirm;
+    cout << "Tem certeza? (S/N): ";
+    cin >> confirm;
+    limparBuffer();
 
+    if (toupper(confirm) == 'S') {
+        try {
+            servico->excluirPessoa(email);
+        } catch (const exception& e) {
+            cout << "✗ Erro: " << e.what() << endl;
+        }
+    } else {
+        cout << "Operacao cancelada." << endl;
+    }
+}
 
+// ============================================
+// CONTROLADORA DE PROJETO
+// ============================================
 
-class CntrSPlanoSprint : public ISPlanoSprint {
-public:
-    void criarPlanoSprint(const std::string& codigo,
-                          int capacidade,
-                          const std::string& dataInicio,
-                          const std::string& dataTermino,
-                          const std::string& codigoProjeto);
+ControladoraProjeto::ControladoraProjeto(IServicoProjeto* s) : servico(s) {
+    if (servico == nullptr) {
+        throw invalid_argument("Servico de projeto nao pode ser nulo");
+    }
+}
 
-    void listarPlanosSprint();
+string ControladoraProjeto::lerCodigo(const string& mensagem) {
+    string codigo;
+    do {
+        cout << mensagem;
+        getline(cin, codigo);
+        if (!validarFormatoCodigo(codigo)) {
+            cout << "✗ Codigo invalido! Deve ter 2 letras maiusculas + 3 digitos (ex: AB123)" << endl;
+        } else {
+            break;
+        }
+    } while (true);
+    return codigo;
+}
 
-    void consultarPlanoSprint(const std::string& codigo);
+string ControladoraProjeto::lerNome() {
+    string nome;
+    do {
+        cout << "Nome (max 10 caracteres): ";
+        getline(cin, nome);
+        if (nome.empty() || nome.length() > 10) {
+            cout << "✗ Nome deve ter entre 1 e 10 caracteres!" << endl;
+        } else if (nome[0] == ' ' || nome.back() == ' ') {
+            cout << "✗ Nome nao pode comecar ou terminar com espaco!" << endl;
+        } else {
+            bool valido = true;
+            for (char c : nome) {
+                if (!isalnum(c) && c != ' ') {
+                    valido = false;
+                    break;
+                }
+            }
+            if (!valido) {
+                cout << "✗ Nome deve conter apenas letras, digitos e espacos!" << endl;
+            } else {
+                break;
+            }
+        }
+    } while (true);
+    return nome;
+}
 
-    void atualizarCapacidade(const std::string& codigo,
-                             int novaCapacidade);
+string ControladoraProjeto::lerData(const string& mensagem) {
+    string data;
+    do {
+        cout << mensagem << " (DD/MM/AAAA): ";
+        getline(cin, data);
+        if (!validarFormatoData(data)) {
+            cout << "✗ Formato invalido! Use DD/MM/AAAA" << endl;
+        } else {
+            break;
+        }
+    } while (true);
+    return data;
+}
 
-    void excluirPlanoSprint(const std::string& codigo);
+void ControladoraProjeto::executarMenu() {
+    int opcao;
+    do {
+        cout << "\n╔════════════════════════════════╗" << endl;
+        cout << "║       MENU PROJETO              ║" << endl;
+        cout << "╠════════════════════════════════╣" << endl;
+        cout << "║ 1 - Criar Projeto               ║" << endl;
+        cout << "║ 2 - Listar Projetos             ║" << endl;
+        cout << "║ 3 - Consultar Projeto           ║" << endl;
+        cout << "║ 4 - Atualizar Projeto           ║" << endl;
+        cout << "║ 5 - Excluir Projeto             ║" << endl;
+        cout << "║ 0 - Voltar                      ║" << endl;
+        cout << "╚════════════════════════════════╝" << endl;
+        cout << "Opcao: ";
 
-    void associarHistoria(const std::string& codigoSprint,
-                          const std::string& codigoHistoria,
-                          int estimativa);
+        cin >> opcao;
+        limparBuffer();
 
-    void desassociarHistoria(const std::string& codigoSprint,
-                             const std::string& codigoHistoria,
-                             int estimativa);
+        switch (opcao) {
+            case 1: criarProjetoFlow(); break;
+            case 2: listarProjetosFlow(); break;
+            case 3: consultarProjetoFlow(); break;
+            case 4: atualizarProjetoFlow(); break;
+            case 5: excluirProjetoFlow(); break;
+            case 0: cout << "Voltando..." << endl; break;
+            default: cout << "✗ Opcao invalida!" << endl;
+        }
 
-    void listarHistoriasDoSprint(const std::string& codigoSprint);
-};
+        if (opcao != 0) pausar();
+    } while (opcao != 0);
+}
 
-#endif // CONTROLADORA_HPP_INCLUDED
+void ControladoraProjeto::criarProjetoFlow() {
+    cout << "\n=== CRIAR PROJETO ===" << endl;
+    string codigo = lerCodigo("Codigo do projeto: ");
+    string nome = lerNome();
+    string dataInicio = lerData("Data de inicio");
+    string dataTermino = lerData("Data de termino");
+    string codigoScrumMaster = lerCodigo("Codigo do Scrum Master: ");
+
+    try {
+        servico->criarProjeto(codigo, nome, dataInicio, dataTermino, codigoScrumMaster);
+    } catch (const exception& e) {
+        cout << "✗ Erro: " << e.what() << endl;
+    }
+}
+
+void ControladoraProjeto::listarProjetosFlow() {
+    cout << "\n=== LISTAR PROJETOS ===" << endl;
+    try {
+        servico->listarProjetos();
+    } catch (const exception& e) {
+        cout << "✗ Erro: " << e.what() << endl;
+    }
+}
+
+void ControladoraProjeto::consultarProjetoFlow() {
+    cout << "\n=== CONSULTAR PROJETO ===" << endl;
+    string codigo = lerCodigo("Codigo do projeto: ");
+
+    try {
+        servico->consultarProjeto(codigo);
+    } catch (const exception& e) {
+        cout << "✗ Erro: " << e.what() << endl;
+    }
+}
+
+void ControladoraProjeto::atualizarProjetoFlow() {
+    cout << "\n=== ATUALIZAR PROJETO ===" << endl;
+    string codigo = lerCodigo("Codigo do projeto: ");
+    string novoNome = lerNome();
+
+    try {
+        servico->atualizarProjeto(codigo, novoNome);
+    } catch (const exception& e) {
+        cout << "✗ Erro: " << e.what() << endl;
+    }
+}
+
+void ControladoraProjeto::excluirProjetoFlow() {
+    cout << "\n=== EXCLUIR PROJETO ===" << endl;
+    string codigo = lerCodigo("Codigo do projeto: ");
+
+    char confirm;
+    cout << "Tem certeza? (S/N): ";
+    cin >> confirm;
+    limparBuffer();
+
+    if (toupper(confirm) == 'S') {
+        try {
+            servico->excluirProjeto(codigo);
+        } catch (const exception& e) {
+            cout << "✗ Erro: " << e.what() << endl;
+        }
+    } else {
+        cout << "Operacao cancelada." << endl;
+    }
+}
+
+// ============================================
+// CONTROLADORA DE PLANO DE SPRINT
+// ============================================
+
+ControladoraPlanoSprint::ControladoraPlanoSprint(IServicoPlanoSprint* s) : servico(s) {
+    if (servico == nullptr) {
+        throw invalid_argument("Servico de plano sprint nao pode ser nulo");
+    }
+}
+
+string ControladoraPlanoSprint::lerCodigo(const string& mensagem) {
+    string codigo;
+    do {
+        cout << mensagem;
+        getline(cin, codigo);
+        if (!validarFormatoCodigo(codigo)) {
+            cout << "✗ Codigo invalido! Deve ter 2 letras maiusculas + 3 digitos (ex: AB123)" << endl;
+        } else {
+            break;
+        }
+    } while (true);
+    return codigo;
+}
+
+string ControladoraPlanoSprint::lerData(const string& mensagem) {
+    string data;
+    do {
+        cout << mensagem << " (DD/MM/AAAA): ";
+        getline(cin, data);
+        if (!validarFormatoData(data)) {
+            cout << "✗ Formato invalido! Use DD/MM/AAAA" << endl;
+        } else {
+            break;
+        }
+    } while (true);
+    return data;
+}
+
+int ControladoraPlanoSprint::lerCapacidade() {
+    return lerInteiro("Capacidade (1 a 365 dias): ", 1, 365);
+}
+
+int ControladoraPlanoSprint::lerEstimativa() {
+    return lerInteiro("Estimativa (1 a 365 dias): ", 1, 365);
+}
+
+void ControladoraPlanoSprint::executarMenu() {
+    int opcao;
+    do {
+        cout << "\n╔════════════════════════════════════╗" << endl;
+        cout << "║       MENU PLANO DE SPRINT         ║" << endl;
+        cout << "╠════════════════════════════════════╣" << endl;
+        cout << "║ 1 - Criar Sprint                   ║" << endl;
+        cout << "║ 2 - Listar Sprints                 ║" << endl;
+        cout << "║ 3 - Consultar Sprint               ║" << endl;
+        cout << "║ 4 - Atualizar Capacidade           ║" << endl;
+        cout << "║ 5 - Excluir Sprint                 ║" << endl;
+        cout << "║ 6 - Associar Historia ao Sprint    ║" << endl;
+        cout << "║ 7 - Remover Historia do Sprint     ║" << endl;
+        cout << "║ 8 - Listar Historias do Sprint     ║" << endl;
+        cout << "║ 0 - Voltar                         ║" << endl;
+        cout << "╚════════════════════════════════════╝" << endl;
+        cout << "Opcao: ";
+
+        cin >> opcao;
+        limparBuffer();
+
+        switch (opcao) {
+            case 1: criarPlanoSprintFlow(); break;
+            case 2: listarPlanosFlow(); break;
+            case 3: consultarPlanoFlow(); break;
+            case 4: atualizarCapacidadeFlow(); break;
+            case 5: excluirPlanoFlow(); break;
+            case 6: associarHistoriaFlow(); break;
+            case 7: desassociarHistoriaFlow(); break;
+            case 8: listarHistoriasFlow(); break;
+            case 0: cout << "Voltando..." << endl; break;
+            default: cout << "✗ Opcao invalida!" << endl;
+        }
+
+        if (opcao != 0) pausar();
+    } while (opcao != 0);
+}
+
+void ControladoraPlanoSprint::criarPlanoSprintFlow() {
+    cout << "\n=== CRIAR PLANO DE SPRINT ===" << endl;
+    string codigo = lerCodigo("Codigo do sprint: ");
+    int capacidade = lerCapacidade();
+    string dataInicio = lerData("Data de inicio");
+    string dataTermino = lerData("Data de termino");
+    string codigoProjeto = lerCodigo("Codigo do projeto associado: ");
+
+    try {
+        servico->criarPlanoSprint(codigo, capacidade, dataInicio, dataTermino, codigoProjeto);
+    } catch (const exception& e) {
+        cout << "✗ Erro: " << e.what() << endl;
+    }
+}
+
+void ControladoraPlanoSprint::listarPlanosFlow() {
+    cout << "\n=== LISTAR PLANOS DE SPRINT ===" << endl;
+    try {
+        servico->listarPlanosSprint();
+    } catch (const exception& e) {
+        cout << "✗ Erro: " << e.what() << endl;
+    }
+}
+
+void ControladoraPlanoSprint::consultarPlanoFlow() {
+    cout << "\n=== CONSULTAR PLANO DE SPRINT ===" << endl;
+    string codigo = lerCodigo("Codigo do sprint: ");
+
+    try {
+        servico->consultarPlanoSprint(codigo);
+    } catch (const exception& e) {
+        cout << "✗ Erro: " << e.what() << endl;
+    }
+}
+
+void ControladoraPlanoSprint::atualizarCapacidadeFlow() {
+    cout << "\n=== ATUALIZAR CAPACIDADE ===" << endl;
+    string codigo = lerCodigo("Codigo do sprint: ");
+    int novaCapacidade = lerCapacidade();
+
+    try {
+        servico->atualizarCapacidade(codigo, novaCapacidade);
+    } catch (const exception& e) {
+        cout << "✗ Erro: " << e.what() << endl;
+    }
+}
+
+void ControladoraPlanoSprint::excluirPlanoFlow() {
+    cout << "\n=== EXCLUIR PLANO DE SPRINT ===" << endl;
+    string codigo = lerCodigo("Codigo do sprint: ");
+
+    char confirm;
+    cout << "Tem certeza? (S/N): ";
+    cin >> confirm;
+    limparBuffer();
+
+    if (toupper(confirm) == 'S') {
+        try {
+            servico->excluirPlanoSprint(codigo);
+        } catch (const exception& e) {
+            cout << "✗ Erro: " << e.what() << endl;
+        }
+    } else {
+        cout << "Operacao cancelada." << endl;
+    }
+}
+
+void ControladoraPlanoSprint::associarHistoriaFlow() {
+    cout << "\n=== ASSOCIAR HISTORIA AO SPRINT ===" << endl;
+    string codigoSprint = lerCodigo("Codigo do sprint: ");
+    string codigoHistoria = lerCodigo("Codigo da historia: ");
+    int estimativa = lerEstimativa();
+
+    try {
+        servico->associarHistoria(codigoSprint, codigoHistoria, estimativa);
+    } catch (const exception& e) {
+        cout << "✗ Erro: " << e.what() << endl;
+    }
+}
+
+void ControladoraPlanoSprint::desassociarHistoriaFlow() {
+    cout << "\n=== REMOVER HISTORIA DO SPRINT ===" << endl;
+    string codigoSprint = lerCodigo("Codigo do sprint: ");
+    string codigoHistoria = lerCodigo("Codigo da historia: ");
+    int estimativa = lerEstimativa();
+
+    try {
+        servico->desassociarHistoria(codigoSprint, codigoHistoria, estimativa);
+    } catch (const exception& e) {
+        cout << "✗ Erro: " << e.what() << endl;
+    }
+}
+
+void ControladoraPlanoSprint::listarHistoriasFlow() {
+    cout << "\n=== LISTAR HISTORIAS DO SPRINT ===" << endl;
+    string codigoSprint = lerCodigo("Codigo do sprint: ");
+
+    try {
+        servico->listarHistoriasDoSprint(codigoSprint);
+    } catch (const exception& e) {
+        cout << "✗ Erro: " << e.what() << endl;
+    }
+}
+
+// ============================================
+// CONTROLADORA DE HISTÓRIA DE USUÁRIO
+// ============================================
+
+ControladoraHistoriaUsuario::ControladoraHistoriaUsuario(IServicoHistoriaUsuario* s) : servico(s) {
+    if (servico == nullptr) {
+        throw invalid_argument("Servico de historia nao pode ser nulo");
+    }
+}
+
+string ControladoraHistoriaUsuario::lerCodigo(const string& mensagem) {
+    string codigo;
+    do {
+        cout << mensagem;
+        getline(cin, codigo);
+        if (!validarFormatoCodigo(codigo)) {
+            cout << "✗ Codigo invalido! Deve ter 2 letras maiusculas + 3 digitos (ex: AB123)" << endl;
+        } else {
+            break;
+        }
+    } while (true);
+    return codigo;
+}
+
+string ControladoraHistoriaUsuario::lerNome() {
+    string nome;
+    do {
+        cout << "Nome (max 10 caracteres): ";
+        getline(cin, nome);
+        if (nome.empty() || nome.length() > 10) {
+            cout << "✗ Nome deve ter entre 1 e 10 caracteres!" << endl;
+        } else if (nome[0] == ' ' || nome.back() == ' ') {
+            cout << "✗ Nome nao pode comecar ou terminar com espaco!" << endl;
+        } else {
+            bool valido = true;
+            char ant = ' ';
+            for (char c : nome) {
+                if (!isalnum(c) && c != ' ') {
+                    valido = false;
+                    break;
+                }
+                if (ant == ' ' && c == ' ') {
+                    valido = false;
+                    break;
+                }
+                ant = c;
+            }
+            if (!valido) {
+                cout << "✗ Nome invalido! Use apenas letras, digitos e espacos (sem espacos duplos)" << endl;
+            } else {
+                break;
+            }
+        }
+    } while (true);
+    return nome;
+}
+
+string ControladoraHistoriaUsuario::lerDescricao() {
+    string descricao;
+    do {
+        cout << "Descricao (max 40 caracteres): ";
+        getline(cin, descricao);
+        if (descricao.empty() || descricao.length() > 40) {
+            cout << "✗ Descricao deve ter entre 1 e 40 caracteres!" << endl;
+        } else if (descricao[0] == ',' || descricao[0] == '.' || descricao[0] == ' ') {
+            cout << "✗ Descricao nao pode comecar com virgula, ponto ou espaco!" << endl;
+        } else if (descricao.back() == ',' || descricao.back() == '.' || descricao.back() == ' ') {
+            cout << "✗ Descricao nao pode terminar com virgula, ponto ou espaco!" << endl;
+        } else {
+            break;
+        }
+    } while (true);
+    return descricao;
+}
+
+string ControladoraHistoriaUsuario::lerPrioridade() {
+    string prioridade;
+    do {
+        cout << "Prioridade (ALTA, MEDIA, BAIXA): ";
+        getline(cin, prioridade);
+        if (prioridade == "ALTA" || prioridade == "MEDIA" || prioridade == "BAIXA") {
+            break;
+        }
+        cout << "✗ Prioridade invalida! Opcoes: ALTA, MEDIA, BAIXA" << endl;
+    } while (true);
+    return prioridade;
+}
+
+string ControladoraHistoriaUsuario::lerEstado() {
+    string estado;
+    do {
+        cout << "Novo estado (A FAZER, FAZENDO, FEITO): ";
+        getline(cin, estado);
+        if (estado == "A FAZER" || estado == "FAZENDO" || estado == "FEITO") {
+            break;
+        }
+        cout << "✗ Estado invalido! Opcoes: A FAZER, FAZENDO, FEITO" << endl;
+    } while (true);
+    return estado;
+}
+
+int ControladoraHistoriaUsuario::lerEstimativa() {
+    return lerInteiro("Estimativa (1 a 365 dias): ", 1, 365);
+}
+
+void ControladoraHistoriaUsuario::executarMenu() {
+    int opcao;
+    do {
+        cout << "\n╔════════════════════════════════════╗" << endl;
+        cout << "║       MENU HISTORIA USUARIO         ║" << endl;
+        cout << "╠════════════════════════════════════╣" << endl;
+        cout << "║ 1 - Criar Historia                 ║" << endl;
+        cout << "║ 2 - Listar Historias               ║" << endl;
+        cout << "║ 3 - Consultar Historia             ║" << endl;
+        cout << "║ 4 - Alterar Estado                 ║" << endl;
+        cout << "║ 5 - Atualizar Historia             ║" << endl;
+        cout << "║ 6 - Excluir Historia               ║" << endl;
+        cout << "║ 7 - Atribuir Responsavel           ║" << endl;
+        cout << "║ 8 - Remover Responsavel            ║" << endl;
+        cout << "║ 9 - Listar por Projeto             ║" << endl;
+        cout << "║ 0 - Voltar                         ║" << endl;
+        cout << "╚════════════════════════════════════╝" << endl;
+        cout << "Opcao: ";
+
+        cin >> opcao;
+        limparBuffer();
+
+        switch (opcao) {
+            case 1: criarHistoriaFlow(); break;
+            case 2: listarHistoriasFlow(); break;
+            case 3: consultarHistoriaFlow(); break;
+            case 4: alterarEstadoFlow(); break;
+            case 5: atualizarHistoriaFlow(); break;
+            case 6: excluirHistoriaFlow(); break;
+            case 7: atribuirResponsavelFlow(); break;
+            case 8: removerResponsavelFlow(); break;
+            case 9: listarPorProjetoFlow(); break;
+            case 0: cout << "Voltando..." << endl; break;
+            default: cout << "✗ Opcao invalida!" << endl;
+        }
+
+        if (opcao != 0) pausar();
+    } while (opcao != 0);
+}
+
+void ControladoraHistoriaUsuario::criarHistoriaFlow() {
+    cout << "\n=== CRIAR HISTORIA USUARIO ===" << endl;
+    string codigo = lerCodigo("Codigo da historia: ");
+    string nome = lerNome();
+    string descricao = lerDescricao();
+    string prioridade = lerPrioridade();
+    string codigoProjeto = lerCodigo("Codigo do projeto: ");
+    int estimativa = lerEstimativa();
+
+    try {
+        servico->criarHistoria(codigo, nome, descricao, prioridade, codigoProjeto, estimativa);
+    } catch (const exception& e) {
+        cout << "✗ Erro: " << e.what() << endl;
+    }
+}
+
+void ControladoraHistoriaUsuario::listarHistoriasFlow() {
+    cout << "\n=== LISTAR HISTORIAS ===" << endl;
+    try {
+        servico->listarHistorias();
+    } catch (const exception& e) {
+        cout << "✗ Erro: " << e.what() << endl;
+    }
+}
+
+void ControladoraHistoriaUsuario::consultarHistoriaFlow() {
+    cout << "\n=== CONSULTAR HISTORIA ===" << endl;
+    string codigo = lerCodigo("Codigo da historia: ");
+
+    try {
+        servico->consultarHistoria(codigo);
+    } catch (const exception& e) {
+        cout << "✗ Erro: " << e.what() << endl;
+    }
+}
+
+void ControladoraHistoriaUsuario::alterarEstadoFlow() {
+    cout << "\n=== ALTERAR ESTADO ===" << endl;
+    string codigo = lerCodigo("Codigo da historia: ");
+    string novoEstado = lerEstado();
+
+    try {
+        servico->alterarEstado(codigo, novoEstado);
+    } catch (const exception& e) {
+        cout << "✗ Erro: " << e.what() << endl;
+    }
+}
+
+void ControladoraHistoriaUsuario::atualizarHistoriaFlow() {
+    cout << "\n=== ATUALIZAR HISTORIA ===" << endl;
+    string codigo = lerCodigo("Codigo da historia: ");
+    string nome = lerNome();
+    string descricao = lerDescricao();
+    string prioridade = lerPrioridade();
+    int estimativa = lerEstimativa();
+
+    try {
+        servico->atualizarHistoria(codigo, nome, descricao, prioridade, estimativa);
+    } catch (const exception& e) {
+        cout << "✗ Erro: " << e.what() << endl;
+    }
+}
+
+void ControladoraHistoriaUsuario::excluirHistoriaFlow() {
+    cout << "\n=== EXCLUIR HISTORIA ===" << endl;
+    string codigo = lerCodigo("Codigo da historia: ");
+
+    char confirm;
+    cout << "Tem certeza? (S/N): ";
+    cin >> confirm;
+    limparBuffer();
+
+    if (toupper(confirm) == 'S') {
+        try {
+            servico->excluirHistoria(codigo);
+        } catch (const exception& e) {
+            cout << "✗ Erro: " << e.what() << endl;
+        }
+    } else {
+        cout << "Operacao cancelada." << endl;
+    }
+}
+
+void ControladoraHistoriaUsuario::atribuirResponsavelFlow() {
+    cout << "\n=== ATRIBUIR RESPONSAVEL ===" << endl;
+    string codigoHistoria = lerCodigo("Codigo da historia: ");
+    string codigoPessoa = lerCodigo("Codigo do responsavel: ");
+
+    try {
+        servico->atribuirResponsavel(codigoHistoria, codigoPessoa);
+    } catch (const exception& e) {
+        cout << "✗ Erro: " << e.what() << endl;
+    }
+}
+
+void ControladoraHistoriaUsuario::removerResponsavelFlow() {
+    cout << "\n=== REMOVER RESPONSAVEL ===" << endl;
+    string codigoHistoria = lerCodigo("Codigo da historia: ");
+
+    try {
+        servico->removerResponsavel(codigoHistoria);
+    } catch (const exception& e) {
+        cout << "✗ Erro: " << e.what() << endl;
+    }
+}
+
+void ControladoraHistoriaUsuario::listarPorProjetoFlow() {
+    cout << "\n=== LISTAR HISTORIAS POR PROJETO ===" << endl;
+    string codigoProjeto = lerCodigo("Codigo do projeto: ");
+
+    try {
+        servico->listarHistoriasPorProjeto(codigoProjeto);
+    } catch (const exception& e) {
+        cout << "✗ Erro: " << e.what() << endl;
+    }
+}
+
+// ============================================
+// CONTROLADORA PRINCIPAL
+// ============================================
+
+ControladoraPrincipal::ControladoraPrincipal(IServicoPessoa* sp,
+                                             IServicoProjeto* spr,
+                                             IServicoPlanoSprint* splan,
+                                             IServicoHistoriaUsuario* shist)
+    : ctrlAutenticacao(sp),
+      ctrlPessoa(sp),
+      ctrlProjeto(spr),
+      ctrlPlanoSprint(splan),
+      ctrlHistoria(shist) {
+    if (sp == nullptr || spr == nullptr || splan == nullptr || shist == nullptr) {
+        throw invalid_argument("Servicos nao podem ser nulos");
+    }
+}
+
+void ControladoraPrincipal::exibirCabecalho() {
+    cout << "\n╔═══════════════════════════════════════════════════════╗" << endl;
+    cout << "║                                                       ║" << endl;
+    cout << "║   SISTEMA DE GERENCIAMENTO DE PROJETOS SCRUM         ║" << endl;
+    cout << "║                                                       ║" << endl;
+    cout << "╚═══════════════════════════════════════════════════════╝" << endl;
+}
+
+void ControladoraPrincipal::executarMenuPrincipal() {
+    int opcao;
+    do {
+        cout << "\n╔═══════════════════════════════════════════════════════╗" << endl;
+        cout << "║              SISTEMA SCRUM - MENU PRINCIPAL            ║" << endl;
+        cout << "╠═══════════════════════════════════════════════════════╣" << endl;
+        cout << "║  1 - Gerenciar Pessoas                                ║" << endl;
+        cout << "║  2 - Gerenciar Projetos                               ║" << endl;
+        cout << "║  3 - Gerenciar Planos de Sprint                       ║" << endl;
+        cout << "║  4 - Gerenciar Historias de Usuario                   ║" << endl;
+        cout << "║  0 - Sair                                             ║" << endl;
+        cout << "╚═══════════════════════════════════════════════════════╝" << endl;
+        cout << "Opcao: ";
+
+        cin >> opcao;
+        limparBuffer();
+
+        switch (opcao) {
+            case 1: ctrlPessoa.executarMenu(); break;
+            case 2: ctrlProjeto.executarMenu(); break;
+            case 3: ctrlPlanoSprint.executarMenu(); break;
+            case 4: ctrlHistoria.executarMenu(); break;
+            case 0: cout << "Saindo..." << endl; break;
+            default: cout << "✗ Opcao invalida!" << endl;
+        }
+
+        if (opcao != 0) pausar();
+    } while (opcao != 0);
+}
+
+void ControladoraPrincipal::executar() {
+    try {
+        exibirCabecalho();
+
+        // 1. Autenticação
+        if (!ctrlAutenticacao.executar()) {
+            cout << "\n✗ Falha na autenticacao. Sistema encerrado." << endl;
+            return;
+        }
+
+        // 2. Menu principal
+        executarMenuPrincipal();
+
+        cout << "\n╔═══════════════════════════════════════════════════════╗" << endl;
+        cout << "║           Sistema finalizado com sucesso!             ║" << endl;
+        cout << "╚═══════════════════════════════════════════════════════╝" << endl;
+
+    } catch (const exception& e) {
+        cout << "\n❌ ERRO FATAL: " << e.what() << endl;
+        cout << "O programa sera encerrado." << endl;
+    }
+}

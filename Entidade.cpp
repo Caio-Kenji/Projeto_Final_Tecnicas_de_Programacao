@@ -21,6 +21,15 @@ void Projeto::setDataInicio(const Data& dataInicio){
 void Projeto::setDataTermino(const Data& dataTermino){
     data_termino = dataTermino;
 }
+
+void Projeto::setProprietario(const Email& emailProprietarioNovo) {
+    email_proprietario = emailProprietarioNovo;
+}
+
+void Projeto::setMestre(const Email& emailMestreNovo) {
+    email_mestre = emailMestreNovo;
+}
+
 // ------------------IMPLEMENTAÇÕES: PESSOA ----------------------------------
 
 Pessoa::Pessoa(const Email& emailNovo,
@@ -49,6 +58,26 @@ void Pessoa::setSenha(const Senha& senhaNova){
 void Pessoa::setPapel(const Papel& papelNovo){
     papel = papelNovo;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // ------------------IMPLEMENTAÇÕES: PLANOS DE SPRINT ----------------------------------
@@ -214,6 +243,28 @@ int PlanoSprint::calcularSomaEstimativas() const {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ----------------IMPLEMENTAÇÕES: PESSOA ----------------------------------------------
 
 
@@ -279,6 +330,26 @@ void Pessoa::setSenha(const Senha& senhaNova) {
 void Pessoa::setPapel(const Papel& papelNovo) {
     papel = papelNovo;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -11,6 +11,15 @@
 #include <stdexcept>
 using namespace std;
 
+
+
+
+
+
+
+
+
+
 // ----------------DEFINIÇÕES: PROJETO ------------------------------------------
 
 
@@ -190,6 +199,19 @@ inline Email Projeto::getProprietario() const{
 inline Email Projeto::getMestre() const{
     return email_mestre;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // ----------------DEFINIÇÕES: PESSOA ------------------------------------------
@@ -583,229 +605,6 @@ public:
 };
 
 
-<<<<<<< HEAD
-#endif // ENTIDADE_HPP_INCLUDED
-=======
-
-
-// -------------------DEFINIÇÕES: PESSOA -------------------------------------------------------------------------------
-
-
-
-
-// ============================================
-// CLASSE PESSOA (COMPLETA E DOCUMENTADA)
-// ============================================
-
-/**
- * @brief Classe que representa uma pessoa (usuário) cadastrada no sistema.
- *
- * @details A classe Pessoa é uma entidade que agrupa informações
- *          relacionadas a um usuário do sistema Scrum:
- *          - **Email**: identificador único da pessoa (domínio Email)
- *          - **Nome**: nome completo da pessoa (domínio Nome)
- *          - **Senha**: credencial para autenticação (domínio Senha)
- *          - **Papel**: função no projeto (domínio Papel)
- *
- * @invariant Todos os atributos (email, nome, senha e papel)
- *            sempre armazenam valores válidos, pois são instâncias
- *            de classes de domínio que validam seus valores internamente.
- *
- * @invariant O email é único no sistema (verificado na camada de serviço).
- *
- * @note Esta classe segue o princípio de encapsulamento,
- *       fornecendo métodos públicos de acesso (getters e setters)
- *       para cada atributo.
- *
- * @see Email, Nome, Senha, Papel
- * @see ServicoPessoa
- *
- * @example
- * @code
- * try {
- *     Email email("ana@empresa.com");
- *     Nome nome;
- *     nome.setNome("Ana Silva");
- *     Senha senha;
- *     senha.setSenha("a1B2c3");
- *     Papel papel("DESENVOLVEDOR");
- *     
- *     Pessoa pessoa(email, nome, senha, papel);
- *     cout << "Pessoa criada: " << pessoa.getNome().getNome() << endl;
- * } catch (const invalid_argument& e) {
- *     cout << "Erro: " << e.what() << endl;
- * }
- * @endcode
- */
-class Pessoa {
-private:
-    /** @brief Email da pessoa (identificador único) */
-    Email email;
-    
-    /** @brief Nome da pessoa */
-    Nome nome;
-    
-    /** @brief Senha da pessoa (para autenticação) */
-    Senha senha;
-    
-    /** @brief Papel da pessoa no projeto Scrum */
-    Papel papel;
-
-public:
-    // ========== CONSTRUTORES ==========
-
-    /**
-     * @brief Constrói uma pessoa com os dados informados.
-     *
-     * @param emailNovo Objeto Email válido da pessoa.
-     * @param nomeNovo Objeto Nome válido da pessoa.
-     * @param senhaNova Objeto Senha válida da pessoa.
-     * @param papelNovo Objeto Papel válido da pessoa.
-     *
-     * @post Uma instância de Pessoa é criada com os atributos
-     *       inicializados pelos valores fornecidos.
-     *
-     * @note Os objetos de domínio já foram validados antes de serem passados.
-     *
-     * @see Email, Nome, Senha, Papel
-     */
-    Pessoa(const Email& emailNovo,
-           const Nome& nomeNovo,
-           const Senha& senhaNova,
-           const Papel& papelNovo);
-
-    // ========== SETTERS ==========
-
-    /**
-     * @brief Define o email da pessoa.
-     *
-     * @param emailNovo Objeto Email válido a ser atribuído.
-     *
-     * @post O atributo email é atualizado com o valor informado.
-     *
-     * @see Email
-     */
-    void setEmail(const Email& emailNovo);
-
-    /**
-     * @brief Define o nome da pessoa.
-     *
-     * @param nomeNovo Objeto Nome válido a ser atribuído.
-     *
-     * @post O atributo nome é atualizado com o valor informado.
-     *
-     * @see Nome
-     */
-    void setNome(const Nome& nomeNovo);
-
-    /**
-     * @brief Define a senha da pessoa.
-     *
-     * @param senhaNova Objeto Senha válido a ser atribuído.
-     *
-     * @post O atributo senha é atualizado com o valor informado.
-     *
-     * @see Senha
-     */
-    void setSenha(const Senha& senhaNova);
-
-    /**
-     * @brief Define o papel da pessoa.
-     *
-     * @param papelNovo Objeto Papel válido a ser atribuído.
-     *
-     * @post O atributo papel é atualizado com o valor informado.
-     *
-     * @see Papel
-     */
-    void setPapel(const Papel& papelNovo);
-
-    // ========== GETTERS ==========
-
-    /**
-     * @brief Retorna o email da pessoa.
-     *
-     * @return Email Objeto Email contendo o email da pessoa.
-     *
-     * @note Método constante (não modifica o objeto).
-     *
-     * @see setEmail()
-     */
-    Email getEmail() const;
-
-    /**
-     * @brief Retorna o nome da pessoa.
-     *
-     * @return Nome Objeto Nome contendo o nome da pessoa.
-     *
-     * @note Método constante (não modifica o objeto).
-     *
-     * @see setNome()
-     */
-    Nome getNome() const;
-
-    /**
-     * @brief Retorna a senha da pessoa.
-     *
-     * @return Senha Objeto Senha contendo a senha da pessoa.
-     *
-     * @note Método constante (não modifica o objeto).
-     *
-     * @see setSenha()
-     */
-    Senha getSenha() const;
-
-    /**
-     * @brief Retorna o papel da pessoa.
-     *
-     * @return Papel Objeto Papel contendo o papel da pessoa.
-     *
-     * @note Método constante (não modifica o objeto).
-     *
-     * @see setPapel()
-     */
-    Papel getPapel() const;
-};
-
-// ============================================
-// MÉTODOS INLINE: PESSOA
-// ============================================
-
-/**
- * @brief Retorna o email da pessoa.
- * @details Implementação inline que retorna uma cópia do atributo email.
- * @return Email Cópia do email armazenado.
- */
-inline Email Pessoa::getEmail() const {
-    return email;
-}
-
-/**
- * @brief Retorna o nome da pessoa.
- * @details Implementação inline que retorna uma cópia do atributo nome.
- * @return Nome Cópia do nome armazenado.
- */
-inline Nome Pessoa::getNome() const {
-    return nome;
-}
-
-/**
- * @brief Retorna a senha da pessoa.
- * @details Implementação inline que retorna uma cópia do atributo senha.
- * @return Senha Cópia da senha armazenada.
- */
-inline Senha Pessoa::getSenha() const {
-    return senha;
-}
-
-/**
- * @brief Retorna o papel da pessoa.
- * @details Implementação inline que retorna uma cópia do atributo papel.
- * @return Papel Cópia do papel armazenado.
- */
-inline Papel Pessoa::getPapel() const {
-    return papel;
-}
 
 
 
@@ -814,7 +613,8 @@ inline Papel Pessoa::getPapel() const {
 
 
 
-// --------------DEFINIÇÕES: HISTÓRIA DE USUÁRIO --------------------------------------------------------------------------
+
+
 
 
 
@@ -1305,4 +1105,3 @@ inline bool HistoriaUsuario::podeSerAtribuida() const {
 
 
 #endif // ENTIDADE_HPP_INCLUDED
->>>>>>> 3adc8f729f518f28b82f8769a911d39c615851be

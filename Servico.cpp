@@ -132,7 +132,7 @@ void ServicoPessoa::excluirPessoa(const string& email) {
 
 
 // ============================================
-// SERVIÇO: PLANO SPRINT (CORRIGIDO - VERSÃO SINGLETON)
+// SERVIÇO: PLANO SPRINT (CORRIGIDO)
 // ============================================
 
 /**
@@ -149,19 +149,11 @@ ServicoPlanoSprint::ServicoPlanoSprint() {
     }
 }
 
-/**
- * @brief Cria um novo plano de sprint.
- * @param codigo Código do sprint (2 letras + 3 dígitos)
- * @param capacidade Capacidade em dias (1-365)
- * @param dataInicio Data de início (DD/MM/AAAA)
- * @param dataTermino Data de término (DD/MM/AAAA)
- * @param codigoProjeto Código do projeto associado
- */
 void ServicoPlanoSprint::criarPlanoSprint(const string& codigo,
-                                           int capacidade,
-                                           const string& dataInicio,
-                                           const string& dataTermino,
-                                           const string& codigoProjeto) {
+                                          int capacidade,
+                                          const string& dataInicio,
+                                          const string& dataTermino,
+                                          const string& codigoProjeto) {
     // 1. Verifica se o código do sprint já existe
     if (container->existe(codigo)) {
         throw runtime_error("Erro: Sprint com codigo '" + codigo + "' ja existe");
@@ -186,9 +178,6 @@ void ServicoPlanoSprint::criarPlanoSprint(const string& codigo,
     cout << "  Periodo: " << dataInicio << " a " << dataTermino << endl;
 }
 
-/**
- * @brief Lista todos os planos de sprint cadastrados.
- */
 void ServicoPlanoSprint::listarPlanosSprint() {
     vector<PlanoSprint> lista = container->listarTodas();
 
@@ -217,10 +206,6 @@ void ServicoPlanoSprint::listarPlanosSprint() {
     }
 }
 
-/**
- * @brief Consulta um plano de sprint específico.
- * @param codigo Código do sprint
- */
 void ServicoPlanoSprint::consultarPlanoSprint(const string& codigo) {
     const PlanoSprint* s = container->buscar(codigo);
     if (s == nullptr) {
@@ -237,24 +222,15 @@ void ServicoPlanoSprint::consultarPlanoSprint(const string& codigo) {
     cout << "Historias associadas: " << s->getHistoriasAssociadas().size() << endl;
 }
 
-/**
- * @brief Atualiza a capacidade de um sprint.
- * @param codigo Código do sprint
- * @param novaCapacidade Nova capacidade em dias
- */
 void ServicoPlanoSprint::atualizarCapacidade(const string& codigo,
-                                              int novaCapacidade) {
+                                             int novaCapacidade) {
     PlanoSprint* s = container->buscar(codigo);
     if (s == nullptr) {
         throw runtime_error("Erro: Plano de sprint '" + codigo + "' nao encontrado");
     }
 
-    // O método setCapacidade() do PlanoSprint já valida:
-    // - Se a capacidade está entre 1 e 365
-    // - Se a nova capacidade não é menor que a soma das estimativas atuais
     s->setCapacidade(novaCapacidade);
 
-    // Atualiza no container
     if (!container->atualizar(*s)) {
         throw runtime_error("Erro: Falha ao atualizar capacidade");
     }
@@ -263,12 +239,7 @@ void ServicoPlanoSprint::atualizarCapacidade(const string& codigo,
          << "' atualizada para " << novaCapacidade << " dias" << endl;
 }
 
-/**
- * @brief Exclui um plano de sprint.
- * @param codigo Código do sprint
- */
 void ServicoPlanoSprint::excluirPlanoSprint(const string& codigo) {
-    // O container usa Codigo como parâmetro para excluir
     Codigo codigoObj(codigo);
 
     if (!container->excluir(codigoObj)) {
@@ -278,27 +249,18 @@ void ServicoPlanoSprint::excluirPlanoSprint(const string& codigo) {
     cout << "✓ Plano de sprint '" << codigo << "' removido com sucesso" << endl;
 }
 
-/**
- * @brief Associa uma história de usuário a um sprint.
- * @param codigoSprint Código do sprint
- * @param codigoHistoria Código da história
- * @param estimativa Estimativa em dias
- */
 void ServicoPlanoSprint::associarHistoria(const string& codigoSprint,
-                                           const string& codigoHistoria,
-                                           int estimativa) {
-    // 1. Verifica se o sprint existe
+                                          const string& codigoHistoria,
+                                          int estimativa) {
     PlanoSprint* s = container->buscar(codigoSprint);
     if (s == nullptr) {
         throw runtime_error("Erro: Plano de sprint '" + codigoSprint + "' nao encontrado");
     }
 
-    // 2. Verifica se a história existe
     if (!containerHistoria->existe(codigoHistoria)) {
         throw runtime_error("Erro: Historia de usuario '" + codigoHistoria + "' nao encontrada");
     }
 
-    // 3. Verifica se a história está em "A FAZER" (regra de negócio)
     const HistoriaUsuario* h = containerHistoria->buscar(codigoHistoria);
     if (h != nullptr && !h->isAFazer()) {
         throw runtime_error("Erro: Historia '" + codigoHistoria +
@@ -306,28 +268,19 @@ void ServicoPlanoSprint::associarHistoria(const string& codigoSprint,
                            h->getEstadoStr() + ")");
     }
 
-    // 4. Verifica se a história já está associada a outro sprint
     if (h != nullptr && h->estaAssociadaASprint()) {
         throw runtime_error("Erro: Historia '" + codigoHistoria +
                            "' ja esta associada ao sprint '" +
                            h->getCodigoPlanoSprint().getValor() + "'");
     }
 
-    // 5. Delegar a associação para o próprio PlanoSprint
-    // O método associarHistoria() do PlanoSprint valida:
-    // - Se a história já está associada a este sprint
-    // - Se a estimativa é válida
-    // - Se a capacidade não será excedida
     s->associarHistoria(codigoHistoria, estimativa);
 
-    // 6. Atualiza o sprint no container
     if (!container->atualizar(*s)) {
         throw runtime_error("Erro: Falha ao atualizar sprint");
     }
 
-    // 7. Atualiza a história com o código do sprint
     if (h != nullptr) {
-        // Precisamos de uma versão não-const da história para modificar
         HistoriaUsuario* hMod = containerHistoria->buscar(codigoHistoria);
         if (hMod != nullptr) {
             Codigo codigoSprintObj(codigoSprint);
@@ -343,44 +296,33 @@ void ServicoPlanoSprint::associarHistoria(const string& codigoSprint,
          << " / " << s->getCapacidade() << " dias" << endl;
 }
 
-/**
- * @brief Remove a associação de uma história com um sprint.
- * @param codigoSprint Código do sprint
- * @param codigoHistoria Código da história
- * @param estimativa Estimativa da história
- */
 void ServicoPlanoSprint::desassociarHistoria(const string& codigoSprint,
-                                              const string& codigoHistoria,
-                                              int estimativa) {
+                                             const string& codigoHistoria,
+                                             int estimativa) {
     PlanoSprint* s = container->buscar(codigoSprint);
     if (s == nullptr) {
         throw runtime_error("Erro: Plano de sprint '" + codigoSprint + "' nao encontrado");
     }
 
-    // Verifica se a história existe
     HistoriaUsuario* h = containerHistoria->buscar(codigoHistoria);
     if (h == nullptr) {
         throw runtime_error("Erro: Historia '" + codigoHistoria + "' nao encontrada");
     }
 
-    // Verifica se a história está associada a este sprint
     if (h->getCodigoPlanoSprint().getValor() != codigoSprint) {
         throw runtime_error("Erro: Historia '" + codigoHistoria +
                            "' nao esta associada ao sprint '" + codigoSprint + "'");
     }
 
-    // Remove do sprint
     if (!s->desassociarHistoria(codigoHistoria, estimativa)) {
         throw runtime_error("Erro: Falha ao remover historia do sprint");
     }
 
-    // Atualiza o sprint no container
     if (!container->atualizar(*s)) {
         throw runtime_error("Erro: Falha ao atualizar sprint");
     }
 
-    // Remove o código do sprint da história
-    h->setCodigoPlanoSprint(Codigo());  // Código vazio
+    h->setCodigoPlanoSprint(Codigo());
     if (!containerHistoria->atualizar(*h)) {
         throw runtime_error("Erro: Falha ao atualizar historia");
     }
@@ -389,10 +331,6 @@ void ServicoPlanoSprint::desassociarHistoria(const string& codigoSprint,
          << "' removida do sprint '" << codigoSprint << "'" << endl;
 }
 
-/**
- * @brief Lista todas as histórias associadas a um sprint.
- * @param codigoSprint Código do sprint
- */
 void ServicoPlanoSprint::listarHistoriasDoSprint(const string& codigoSprint) {
     const PlanoSprint* s = container->buscar(codigoSprint);
     if (s == nullptr) {
@@ -414,7 +352,6 @@ void ServicoPlanoSprint::listarHistoriasDoSprint(const string& codigoSprint) {
          << setw(12) << "Estado" << endl;
     cout << string(51, '-') << endl;
 
-    // Busca cada história para mostrar mais detalhes
     for (const auto& codHist : historias) {
         const HistoriaUsuario* h = containerHistoria->buscar(codHist);
         if (h != nullptr) {
@@ -433,6 +370,16 @@ void ServicoPlanoSprint::listarHistoriasDoSprint(const string& codigoSprint) {
     cout << "\nSoma total das estimativas: " << s->getSomaEstimativas()
          << " / " << s->getCapacidade() << " dias" << endl;
 }
+
+
+
+
+
+
+
+
+
+
 
 // ============================================
 // SERVIÇO: HISTORIA USUARIO
@@ -667,4 +614,125 @@ void ServicoHistoriaUsuario::listarHistoriasPorProjeto(const string& codigoProje
              << setw(12) << h.getEstadoStr()
              << setw(10) << h.getEstimativa().getTempo() << endl;
     }
+}
+
+
+
+
+
+
+
+// ============================================
+// SERVIÇO: PROJETO (ADICIONAR)
+// ============================================
+
+ServicoProjeto::ServicoProjeto() {
+    container = ContainerProjeto::getInstancia();
+    if (container == nullptr) {
+        throw runtime_error("Erro: Falha ao obter instancia do container de projeto");
+    }
+}
+
+void ServicoProjeto::criarProjeto(const string& codigo,
+                                  const string& nome,
+                                  const string& dataInicio,
+                                  const string& dataTermino,
+                                  const string& codigoScrumMaster) {
+    // 1. Verifica se o código já existe
+    if (container->existe(codigo)) {
+        throw runtime_error("Erro: Projeto com codigo '" + codigo + "' ja existe");
+    }
+
+    // 2. Valida os domínios
+    Codigo c(codigo);
+    Nome n;
+    n.setNome(nome);
+    Data di;
+    di.setValor(dataInicio);
+    Data dt;
+    dt.setValor(dataTermino);
+    Email scrummaster(codigoScrumMaster);
+
+    // 3. Cria o projeto
+    Projeto projeto;
+    projeto.setCodigo(c);
+    projeto.setNome(n);
+    projeto.setDataInicio(di);
+    projeto.setDataTermino(dt);
+    projeto.setMestre(scrummaster);
+
+    // 4. Armazena
+    if (!container->criar(projeto)) {
+        throw runtime_error("Erro: Falha ao criar projeto");
+    }
+
+    cout << "✓ Projeto criado com sucesso!" << endl;
+    cout << "  Codigo: " << codigo << endl;
+    cout << "  Nome: " << nome << endl;
+    cout << "  Periodo: " << dataInicio << " a " << dataTermino << endl;
+}
+
+void ServicoProjeto::listarProjetos() {
+    vector<Projeto> lista = container->listarTodas();
+
+    if (lista.empty()) {
+        cout << "Nenhum projeto cadastrado." << endl;
+        return;
+    }
+
+    cout << "\n=== PROJETOS CADASTRADOS ===" << endl;
+    cout << left << setw(10) << "Codigo"
+         << setw(20) << "Nome"
+         << setw(12) << "Inicio"
+         << setw(12) << "Termino"
+         << setw(10) << "Scrum Master" << endl;
+    cout << string(64, '-') << endl;
+
+    for (const auto& p : lista) {
+        cout << setw(10) << p.getCodigo().getValor()
+             << setw(20) << p.getNome().getNome()
+             << setw(12) << p.getDataInicio().getValor()
+             << setw(12) << p.getDataTermino().getValor()
+             << setw(10) << p.getMestre().get() << endl;
+    }
+}
+
+void ServicoProjeto::consultarProjeto(const string& codigo) {
+    const Projeto* p = container->buscar(codigo);
+    if (p == nullptr) {
+        throw runtime_error("Erro: Projeto '" + codigo + "' nao encontrado");
+    }
+
+    cout << "\n=== DADOS DO PROJETO ===" << endl;
+    cout << "Codigo: " << p->getCodigo().getValor() << endl;
+    cout << "Nome: " << p->getNome().getNome() << endl;
+    cout << "Data Inicio: " << p->getDataInicio().getValor() << endl;
+    cout << "Data Termino: " << p->getDataTermino().getValor() << endl;
+    cout << "Scrum Master: " << p->getMestre().get() << endl;
+}
+
+void ServicoProjeto::atualizarProjeto(const string& codigo,
+                                      const string& novoNome) {
+    Projeto* p = container->buscar(codigo);
+    if (p == nullptr) {
+        throw runtime_error("Erro: Projeto '" + codigo + "' nao encontrado");
+    }
+
+    Nome nome;
+    nome.setNome(novoNome);
+    p->setNome(nome);
+
+    if (!container->atualizar(*p)) {
+        throw runtime_error("Erro: Falha ao atualizar projeto");
+    }
+
+    cout << "✓ Projeto '" << codigo << "' atualizado para: " << novoNome << endl;
+}
+
+void ServicoProjeto::excluirProjeto(const string& codigo) {
+    Codigo c(codigo);
+    if (!container->excluir(c)) {
+        throw runtime_error("Erro: Projeto '" + codigo + "' nao encontrado");
+    }
+    cout << "✓ Projeto '" << codigo << "' removido com sucesso" << endl;
 }

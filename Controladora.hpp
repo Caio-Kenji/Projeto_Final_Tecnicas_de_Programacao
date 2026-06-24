@@ -1,190 +1,507 @@
-#ifndef CONTROLADORA_HPP_INCLUDED
-#define CONTROLADORA_HPP_INCLUDED
+/**
+ * @file Controladoras.hpp
+ * @brief Controladoras da camada de apresentação
+ * 
+ * @details Este arquivo contém todas as classes controladoras responsáveis
+ *          pela interface com o usuário, seguindo o padrão MVC.
+ *          Cada controladora gerencia uma entidade do sistema.
+ * 
+ * @author Seu Nome
+ * @date 2024
+ */
+
+#ifndef CONTROLADORAS_HPP_INCLUDED
+#define CONTROLADORAS_HPP_INCLUDED
 
 #include "Interfaces.hpp"
 #include "Dominio.hpp"
 #include "Entidade.hpp"
 
+#include <iostream>
+#include <string>
+#include <limits>
+#include <cctype>
 
-#define CLR_SCR system("cls");
+using namespace std;
 
-//-----------------------------------------------------------------------------------//
-//CONTROLADORAS DA CAMADA DE APRESENTAÇÃO
-//-----------------------------------------------------------------------------------//
+// ============================================
+// UTILITÁRIOS AUXILIARES
+// ============================================
 
-//--------------------------------------------------------------------------------------------
-// Classe controladora de apresentação controle.
+/**
+ * @brief Limpa o buffer de entrada do teclado
+ */
+void limparBuffer();
 
-class CntrApresentacaoServicos{
-    private:
-        Email email;
-        IAAutenticacao *cntrIAAutenticacao;
-        IAPessoa *cntrIAPessoa;
-        IAProjeto *cntrIAProjeto;
-        IAPlanoSprint *cntrIAPlanoSprint;
+/**
+ * @brief Pausa a execução até o usuário pressionar Enter
+ */
+void pausar();
 
-    public:
-        void executar();
-        void setCntrIAAutenticacao(IAAutenticacao*);
-        void setCntrIAPessoa(IAPessoa*);
-        void setCntrIAProjeto(IAProjeto*);
-        void setCntrIAPlanoSprint(IAPlanoSprint*);
-};
+/**
+ * @brief Valida o formato de um código (2 letras + 3 dígitos)
+ * @param codigo String a ser validada
+ * @return true se o formato for válido
+ */
+bool validarFormatoCodigo(const string& codigo);
 
-inline void CntrApresentacaoServicos::setCntrIAAutenticacao(IAAutenticacao *cntr){
-        cntrIAAutenticacao = cntr;
-}
+/**
+ * @brief Valida o formato de uma data (DD/MM/AAAA)
+ * @param data String a ser validada
+ * @return true se o formato for válido
+ */
+bool validarFormatoData(const string& data);
 
-inline void CntrApresentacaoServicos::setCntrIAPessoa(IAPessoa *cntr){
-        cntrIAPessoa = cntr;
-}
+/**
+ * @brief Lê uma string do teclado com validação de não vazio
+ * @param mensagem Mensagem a ser exibida
+ * @return string lida
+ */
+string lerStringNaoVazia(const string& mensagem);
 
-inline void CntrApresentacaoServicos::setCntrIAProjeto(IAProjeto *cntr){
-        cntrIAProjeto = cntr;
-}
+/**
+ * @brief Lê um inteiro do teclado com validação de intervalo
+ * @param mensagem Mensagem a ser exibida
+ * @param min Valor mínimo
+ * @param max Valor máximo
+ * @return int lido
+ */
+int lerInteiro(const string& mensagem, int min, int max);
 
-inline void CntrApresentacaoServicos::setCntrIAPlanoSprint(IAPlanoSprint *cntr){
-        cntrIAPlanoSprint = cntr;
-}
+// ============================================
+// CONTROLADORA DE AUTENTICAÇÃO
+// ============================================
 
-
-//--------------------------------------------------------------------------------
-// Classe controladora de apresentação e autenticação.
-
-
-class CntrIAAutenticacao:public IAAutenticacao {
+/**
+ * @brief Controladora de apresentação para autenticação
+ * 
+ * @details Responsável por autenticar usuários no sistema.
+ *          Gerencia o login e a sessão do usuário.
+ */
+class ControladoraAutenticacao {
 private:
-    ISAutenticacao *cntrSAutenticacao;
+    IServicoPessoa* servicoPessoa;
+    Email* emailUsuario;
+
 public:
-    bool autenticar(Email*);
-    void setCntrSAutenticacao(ISAutenticacao*);
-};
+    /**
+     * @brief Construtor da controladora de autenticação
+     * @param servico Ponteiro para o serviço de pessoa
+     */
+    ControladoraAutenticacao(IServicoPessoa* servico);
 
-void inline CntrIAAutenticacao::setCntrSAutenticacao(ISAutenticacao *cntrSAutenticacao){
-    this->cntrSAutenticacao = cntrSAutenticacao;
-}
+    /**
+     * @brief Executa o fluxo de autenticação
+     * @return true se o usuário foi autenticado com sucesso
+     */
+    bool executar();
 
+    /**
+     * @brief Retorna o email do usuário autenticado
+     * @return Email* Ponteiro para o email do usuário
+     */
+    Email* getEmailUsuario() const;
 
-//--------------------------------------------------------------------------------
-// Classe controladora de apresentação de pessoa
-
-
-class CntrIAPessoa : public IAPessoa {
 private:
-    ISPessoa *cntrSPessoa;
-public:
-    void criar();
-    void executar(const Email&);
-    void setCntrSPessoa(ISPessoa*);
+    /**
+     * @brief Tenta autenticar o usuário com email e senha
+     * @param email Email informado
+     * @param senha Senha informada
+     * @return true se a autenticação for bem-sucedida
+     */
+    bool autenticar(const string& email, const string& senha);
 };
 
-//--------------------------------------------------------------------------------
-// Classe controladora de apresentação de projeto
+// ============================================
+// CONTROLADORA DE PESSOA
+// ============================================
 
-
-class CntrIAProjeto : public IAProjeto {
+/**
+ * @brief Controladora de apresentação para entidade Pessoa
+ * 
+ * @details Gerencia as operações de CRUD para pessoas,
+ *          incluindo criação, consulta, atualização e exclusão.
+ */
+class ControladoraPessoa {
 private:
-    ISProjeto *cntrSProjeto;
+    IServicoPessoa* servico;
+
+    /**
+     * @brief Lê um email do teclado com validação básica
+     * @return string Email lido
+     */
+    string lerEmail();
+
+    /**
+     * @brief Lê um nome do teclado com validação
+     * @return string Nome lido
+     */
+    string lerNome();
+
+    /**
+     * @brief Lê uma senha do teclado com validação
+     * @return string Senha lida
+     */
+    string lerSenha();
+
+    /**
+     * @brief Lê um papel do teclado com validação
+     * @return string Papel lido
+     */
+    string lerPapel();
+
 public:
-    void executar(const Email&);
-    void setCntrSProjeto(ISProjeto*);
+    /**
+     * @brief Construtor da controladora de pessoa
+     * @param s Ponteiro para o serviço de pessoa
+     */
+    ControladoraPessoa(IServicoPessoa* s);
+
+    /**
+     * @brief Executa o menu principal de pessoa
+     */
+    void executarMenu();
+
+    /**
+     * @brief Fluxo de criação de pessoa
+     */
+    void criarPessoaFlow();
+
+    /**
+     * @brief Fluxo de consulta de pessoa
+     */
+    void consultarPessoaFlow();
+
+    /**
+     * @brief Fluxo de atualização de pessoa
+     */
+    void atualizarPessoaFlow();
+
+    /**
+     * @brief Fluxo de exclusão de pessoa
+     */
+    void excluirPessoaFlow();
 };
 
+// ============================================
+// CONTROLADORA DE PROJETO
+// ============================================
 
-//--------------------------------------------------------------------------------
-// Classe controladora de apresentação de plano de sprint
-
-
-
-class CntrIAPlanoSprint : public IAPlanoSprint {
+/**
+ * @brief Controladora de apresentação para entidade Projeto
+ * 
+ * @details Gerencia as operações de CRUD para projetos.
+ */
+class ControladoraProjeto {
 private:
-    ISPlanoSprint *cntrSPlanoSprint;
+    IServicoProjeto* servico;
+
+    /**
+     * @brief Lê um código do teclado com validação de formato
+     * @param mensagem Mensagem a ser exibida
+     * @return string Código lido
+     */
+    string lerCodigo(const string& mensagem);
+
+    /**
+     * @brief Lê um nome do teclado com validação
+     * @return string Nome lido
+     */
+    string lerNome();
+
+    /**
+     * @brief Lê uma data do teclado com validação de formato
+     * @param mensagem Mensagem a ser exibida
+     * @return string Data lida
+     */
+    string lerData(const string& mensagem);
+
 public:
-    void executar(const Email&);
-    void setCntrSPlanoSprint(ISPlanoSprint*);
+    /**
+     * @brief Construtor da controladora de projeto
+     * @param s Ponteiro para o serviço de projeto
+     */
+    ControladoraProjeto(IServicoProjeto* s);
+
+    /**
+     * @brief Executa o menu principal de projeto
+     */
+    void executarMenu();
+
+    /**
+     * @brief Fluxo de criação de projeto
+     */
+    void criarProjetoFlow();
+
+    /**
+     * @brief Fluxo de listagem de projetos
+     */
+    void listarProjetosFlow();
+
+    /**
+     * @brief Fluxo de consulta de projeto
+     */
+    void consultarProjetoFlow();
+
+    /**
+     * @brief Fluxo de atualização de projeto
+     */
+    void atualizarProjetoFlow();
+
+    /**
+     * @brief Fluxo de exclusão de projeto
+     */
+    void excluirProjetoFlow();
 };
 
-//-----------------------------------------------------------------------------------//
-//CONTROLADORAS DA CAMADA DE SERVIÇOS
-//-----------------------------------------------------------------------------------//
+// ============================================
+// CONTROLADORA DE PLANO DE SPRINT
+// ============================================
 
+/**
+ * @brief Controladora de apresentação para entidade PlanoSprint
+ * 
+ * @details Gerencia as operações de CRUD para planos de sprint,
+ *          incluindo associação e desassociação de histórias.
+ */
+class ControladoraPlanoSprint {
+private:
+    IServicoPlanoSprint* servico;
 
+    /**
+     * @brief Lê um código do teclado com validação de formato
+     * @param mensagem Mensagem a ser exibida
+     * @return string Código lido
+     */
+    string lerCodigo(const string& mensagem);
 
-//--------------------------------------------------------------------------------
-// Classe controladora de apresentação e autenticação.
+    /**
+     * @brief Lê uma data do teclado com validação de formato
+     * @param mensagem Mensagem a ser exibida
+     * @return string Data lida
+     */
+    string lerData(const string& mensagem);
 
+    /**
+     * @brief Lê uma capacidade do teclado com validação
+     * @return int Capacidade lida
+     */
+    int lerCapacidade();
 
-class CntrSAutenticacao : public ISAutenticacao {
+    /**
+     * @brief Lê uma estimativa do teclado com validação
+     * @return int Estimativa lida
+     */
+    int lerEstimativa();
+
 public:
-    bool autenticar(const Email&, const Senha&);
+    /**
+     * @brief Construtor da controladora de plano de sprint
+     * @param s Ponteiro para o serviço de plano de sprint
+     */
+    ControladoraPlanoSprint(IServicoPlanoSprint* s);
+
+    /**
+     * @brief Executa o menu principal de plano de sprint
+     */
+    void executarMenu();
+
+    /**
+     * @brief Fluxo de criação de plano de sprint
+     */
+    void criarPlanoSprintFlow();
+
+    /**
+     * @brief Fluxo de listagem de planos de sprint
+     */
+    void listarPlanosFlow();
+
+    /**
+     * @brief Fluxo de consulta de plano de sprint
+     */
+    void consultarPlanoFlow();
+
+    /**
+     * @brief Fluxo de atualização de capacidade
+     */
+    void atualizarCapacidadeFlow();
+
+    /**
+     * @brief Fluxo de exclusão de plano de sprint
+     */
+    void excluirPlanoFlow();
+
+    /**
+     * @brief Fluxo de associação de história a sprint
+     */
+    void associarHistoriaFlow();
+
+    /**
+     * @brief Fluxo de desassociação de história do sprint
+     */
+    void desassociarHistoriaFlow();
+
+    /**
+     * @brief Fluxo de listagem de histórias do sprint
+     */
+    void listarHistoriasFlow();
 };
 
+// ============================================
+// CONTROLADORA DE HISTÓRIA DE USUÁRIO
+// ============================================
 
-//--------------------------------------------------------------------------------
-// Classe controladora de apresentação de pessoa
+/**
+ * @brief Controladora de apresentação para entidade HistoriaUsuario
+ * 
+ * @details Gerencia as operações de CRUD para histórias de usuário,
+ *          incluindo alteração de estado e atribuição de responsável.
+ */
+class ControladoraHistoriaUsuario {
+private:
+    IServicoHistoriaUsuario* servico;
 
+    /**
+     * @brief Lê um código do teclado com validação de formato
+     * @param mensagem Mensagem a ser exibida
+     * @return string Código lido
+     */
+    string lerCodigo(const string& mensagem);
 
-class CntrServicoPessoa : public ISPessoa {
+    /**
+     * @brief Lê um nome do teclado com validação
+     * @return string Nome lido
+     */
+    string lerNome();
+
+    /**
+     * @brief Lê uma descrição do teclado com validação
+     * @return string Descrição lida
+     */
+    string lerDescricao();
+
+    /**
+     * @brief Lê uma prioridade do teclado com validação
+     * @return string Prioridade lida
+     */
+    string lerPrioridade();
+
+    /**
+     * @brief Lê um estado do teclado com validação
+     * @return string Estado lido
+     */
+    string lerEstado();
+
+    /**
+     * @brief Lê uma estimativa do teclado com validação
+     * @return int Estimativa lida
+     */
+    int lerEstimativa();
+
 public:
-    void criarPessoa(const string& email,
-                     const string& nome,
-                     const string& senha,
-                     const string& papel);
+    /**
+     * @brief Construtor da controladora de história de usuário
+     * @param s Ponteiro para o serviço de história de usuário
+     */
+    ControladoraHistoriaUsuario(IServicoHistoriaUsuario* s);
 
-    void consultarPessoa(const string& email);
+    /**
+     * @brief Executa o menu principal de história de usuário
+     */
+    void executarMenu();
 
-    void atualizarPessoa(const string& email,
-                         const string& nome,
-                         const string& senha,
-                         const string& papel);
+    /**
+     * @brief Fluxo de criação de história
+     */
+    void criarHistoriaFlow();
 
-    void excluirPessoa(const string& email);
+    /**
+     * @brief Fluxo de listagem de histórias
+     */
+    void listarHistoriasFlow();
+
+    /**
+     * @brief Fluxo de consulta de história
+     */
+    void consultarHistoriaFlow();
+
+    /**
+     * @brief Fluxo de alteração de estado
+     */
+    void alterarEstadoFlow();
+
+    /**
+     * @brief Fluxo de atualização de história
+     */
+    void atualizarHistoriaFlow();
+
+    /**
+     * @brief Fluxo de exclusão de história
+     */
+    void excluirHistoriaFlow();
+
+    /**
+     * @brief Fluxo de atribuição de responsável
+     */
+    void atribuirResponsavelFlow();
+
+    /**
+     * @brief Fluxo de remoção de responsável
+     */
+    void removerResponsavelFlow();
+
+    /**
+     * @brief Fluxo de listagem de histórias por projeto
+     */
+    void listarPorProjetoFlow();
 };
 
-//--------------------------------------------------------------------------------
-// Classe controladora de apresentação de projeto
+// ============================================
+// CONTROLADORA PRINCIPAL (MENU)
+// ============================================
 
+/**
+ * @brief Controladora principal do sistema
+ * 
+ * @details Coordena todas as controladoras e exibe o menu principal.
+ *          Responsável por autenticar o usuário e direcionar para os
+ *          módulos apropriados.
+ */
+class ControladoraPrincipal {
+private:
+    ControladoraAutenticacao ctrlAutenticacao;
+    ControladoraPessoa ctrlPessoa;
+    ControladoraProjeto ctrlProjeto;
+    ControladoraPlanoSprint ctrlPlanoSprint;
+    ControladoraHistoriaUsuario ctrlHistoria;
 
-class CntrSProjeto : public ISProjeto {
+    /**
+     * @brief Exibe o menu principal e gerencia as opções
+     */
+    void executarMenuPrincipal();
+
+    /**
+     * @brief Exibe o cabeçalho do sistema
+     */
+    void exibirCabecalho();
+
 public:
-    bool criar(Projeto);
-    bool ler(Projeto);
-    bool atualizar(Projeto);
-    bool excluir(Codigo);
+    /**
+     * @brief Construtor da controladora principal
+     * @param sp Serviço de pessoa
+     * @param spr Serviço de projeto
+     * @param splan Serviço de plano de sprint
+     * @param shist Serviço de história de usuário
+     */
+    ControladoraPrincipal(IServicoPessoa* sp,
+                          IServicoProjeto* spr,
+                          IServicoPlanoSprint* splan,
+                          IServicoHistoriaUsuario* shist);
+
+    /**
+     * @brief Inicia a execução do sistema
+     */
+    void executar();
 };
 
-
-//--------------------------------------------------------------------------------
-// Classe controladora de apresentação de plano de sprint
-
-
-
-class CntrSPlanoSprint : public ISPlanoSprint {
-public:
-    void criarPlanoSprint(const std::string& codigo,
-                          int capacidade,
-                          const std::string& dataInicio,
-                          const std::string& dataTermino,
-                          const std::string& codigoProjeto);
-
-    void listarPlanosSprint();
-
-    void consultarPlanoSprint(const std::string& codigo);
-
-    void atualizarCapacidade(const std::string& codigo,
-                             int novaCapacidade);
-
-    void excluirPlanoSprint(const std::string& codigo);
-
-    void associarHistoria(const std::string& codigoSprint,
-                          const std::string& codigoHistoria,
-                          int estimativa);
-
-    void desassociarHistoria(const std::string& codigoSprint,
-                             const std::string& codigoHistoria,
-                             int estimativa);
-
-    void listarHistoriasDoSprint(const std::string& codigoSprint);
-};
-
-#endif // CONTROLADORA_HPP_INCLUDED
+#endif // CONTROLADORAS_HPP_INCLUDED

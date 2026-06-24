@@ -30,6 +30,10 @@ class Codigo;
 class Projeto;
 
 
+
+
+
+
 // ============================================
 // INTERFACE AUTENTICAÇÃO
 // ============================================
@@ -47,26 +51,27 @@ public:
 };
 
 
+
+
+
+
+
+
+
+
 // ============================================
 // INTERFACE PARA PESSOA
 // ============================================
 
-class IAPessoa{
-public:
-    virtual void criar() = 0;
-    virtual void executar(const Email&) = 0;
-    virtual ~IAPessoa(){};
-};
-
 /**
- * @brief Interface para serviços da entidade PlanoSprint
+ * @brief Interface para serviços da entidade Pessoa.
  *
- * @details Define todas as operações que podem ser realizadas sobre
- *          planos de sprint, incluindo associação de histórias.
+ * @details Define as operações de criação, leitura, atualização e exclusão
+ *          de pessoas cadastradas no sistema.
  */
-class ISPessoa {
+class IServicoPessoa {
 public:
-    virtual ~ISPessoa() {}
+    virtual ~IServicoPessoa() {}
 
     /**
      * @brief Cria uma nova pessoa.
@@ -94,19 +99,15 @@ public:
      * @param papel Novo papel.
      */
     virtual void atualizarPessoa(const string& email,
-                             const string& nome,
-                             const string& senha,
-                             const string& papel) = 0;
-
-    virtual void excluirPessoa(const string& email) = 0;
-
-};
+                                 const string& nome,
+                                 const string& senha,
+                                 const string& papel) = 0;
 
     /**
-     * @brief Lista projetos associados a um sprint
-     * @param codigoProjeto Código do sprint
+     * @brief Exclui uma pessoa pelo email.
+     * @param email Email da pessoa.
      */
-    virtual void listarProjetos(const std::string& codigoProjeto) = 0;
+    virtual void excluirPessoa(const string& email) = 0;
 };
 
 
@@ -123,9 +124,11 @@ public:
 
 
 
- // ============================================
- // INTERFACE PARA PLANO DE SPRINT
- // ============================================
+
+
+// ============================================
+// INTERFACE PARA PLANO DE SPRINT (SOFYA)
+// ============================================
 
 class IAPlanoSprint{
 public:
@@ -133,81 +136,217 @@ public:
     virtual ~IAPlanoSprint(){};
 };
 
- /**
-  * @brief Interface para serviços da entidade PlanoSprint
-  * 
-  * @details Define todas as operações que podem ser realizadas sobre
-  *          planos de sprint, incluindo associação de histórias.
-  */
- class ISPlanoSprint {
- public:
-     virtual ~ISPlanoSprint() {}
+/**
+ * @brief Interface para serviços da entidade PlanoSprint
+ * 
+ * @details Define todas as operações que podem ser realizadas sobre
+ *          planos de sprint, incluindo associação de histórias.
+ */
+class ISPlanoSprint {
+public:
+    virtual ~ISPlanoSprint() {}
 
-     /**
-      * @brief Cria um novo plano de sprint
-      * @param codigo Identificador único (2 letras + 3 dígitos)
-      * @param capacidade Capacidade em dias (1-365)
-      * @param dataInicio Data de início (DD/MM/AAAA)
-      * @param dataTermino Data de término (DD/MM/AAAA)
-      * @param codigoProjeto Código do projeto associado
-      */
+    /**
+     * @brief Cria um novo plano de sprint
+     * @param codigo Identificador único (2 letras + 3 dígitos)
+     * @param capacidade Capacidade em dias (1-365)
+     * @param dataInicio Data de início (DD/MM/AAAA)
+     * @param dataTermino Data de término (DD/MM/AAAA)
+     * @param codigoProjeto Código do projeto associado
+     */
     virtual void criarPlanoSprint(const std::string& codigo,
                                     int capacidade,
                                     const std::string& dataInicio,
                                     const std::string& dataTermino,
                                     const std::string& codigoProjeto) = 0;
 
-     /**
-      * @brief Lista todos os planos de sprint
-      */
-     virtual void listarPlanosSprint() = 0;
+    /**
+     * @brief Lista todos os planos de sprint
+     */
+    virtual void listarPlanosSprint() = 0;
 
-     /**
-      * @brief Consulta um plano de sprint específico
-      * @param codigo Código do sprint
-      */
-     virtual void consultarPlanoSprint(const std::string& codigo) = 0;
+    /**
+     * @brief Consulta um plano de sprint específico
+     * @param codigo Código do sprint
+     */
+    virtual void consultarPlanoSprint(const std::string& codigo) = 0;
 
-     /**
-      * @brief Atualiza a capacidade de um sprint
-      * @param codigo Código do sprint
-      * @param novaCapacidade Nova capacidade em dias
-      */
-     virtual void atualizarCapacidade(const std::string& codigo, 
-                                       int novaCapacidade) = 0;
+    /**
+     * @brief Atualiza a capacidade de um sprint
+     * @param codigo Código do sprint
+     * @param novaCapacidade Nova capacidade em dias
+     */
+    virtual void atualizarCapacidade(const std::string& codigo, 
+                                    int novaCapacidade) = 0;
 
-     /**
-      * @brief Exclui um plano de sprint
-      * @param codigo Código do sprint
-      */
-     virtual void excluirPlanoSprint(const std::string& codigo) = 0;
+    /**
+     * @brief Exclui um plano de sprint
+     * @param codigo Código do sprint
+     */
+    virtual void excluirPlanoSprint(const std::string& codigo) = 0;
 
-     /**
-      * @brief Associa uma história de usuário a um sprint
-      * @param codigoSprint Código do sprint
-      * @param codigoHistoria Código da história
-      * @param estimativa Estimativa em dias
-      */
-     virtual void associarHistoria(const std::string& codigoSprint,
+    /**
+     * @brief Associa uma história de usuário a um sprint
+     * @param codigoSprint Código do sprint
+     * @param codigoHistoria Código da história
+     * @param estimativa Estimativa em dias
+     */
+    virtual void associarHistoria(const std::string& codigoSprint,
                                     const std::string& codigoHistoria,
                                     int estimativa) = 0;
 
-     /**
-      * @brief Remove associação de uma história
-      * @param codigoSprint Código do sprint
-      * @param codigoHistoria Código da história
-      * @param estimativa Estimativa da história
-      */
-     virtual void desassociarHistoria(const std::string& codigoSprint,
-                                       const std::string& codigoHistoria,
-                                       int estimativa) = 0;
+    /**
+     * @brief Remove associação de uma história
+     * @param codigoSprint Código do sprint
+     * @param codigoHistoria Código da história
+     * @param estimativa Estimativa da história
+     */
+    virtual void desassociarHistoria(const std::string& codigoSprint,
+                                    const std::string& codigoHistoria,
+                                    int estimativa) = 0;
 
-     /**
-      * @brief Lista histórias associadas a um sprint
-      * @param codigoSprint Código do sprint
-      */
-     virtual void listarHistoriasDoSprint(const std::string& codigoSprint) = 0;
- };
+    /**
+     * @brief Lista histórias associadas a um sprint
+     * @param codigoSprint Código do sprint
+     */
+    virtual void listarHistoriasDoSprint(const std::string& codigoSprint) = 0;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ============================================
+// INTERFACE PARA PLANO DE SPRINT
+// ============================================
+
+/**
+ * @brief Interface para serviços da entidade PlanoSprint
+ * 
+ * @details Define todas as operações que podem ser realizadas sobre
+ *          planos de sprint, incluindo associação de histórias.
+ */
+class IServicoPlanoSprint {
+public:
+    virtual ~IServicoPlanoSprint() {}
+
+    /**
+     * @brief Cria um novo plano de sprint
+     * @param codigo Identificador único (2 letras + 3 dígitos)
+     * @param capacidade Capacidade em dias (1-365)
+     * @param dataInicio Data de início (DD/MM/AAAA)
+     * @param dataTermino Data de término (DD/MM/AAAA)
+     * @param codigoProjeto Código do projeto associado
+     */
+    virtual void criarPlanoSprint(const std::string& codigo,
+                                  int capacidade,
+                                  const std::string& dataInicio,
+                                  const std::string& dataTermino,
+                                  const std::string& codigoProjeto) = 0;
+
+    /**
+     * @brief Lista todos os planos de sprint
+     */
+    virtual void listarPlanosSprint() = 0;
+
+    /**
+     * @brief Consulta um plano de sprint específico
+     * @param codigo Código do sprint
+     */
+    virtual void consultarPlanoSprint(const std::string& codigo) = 0;
+
+    /**
+     * @brief Atualiza a capacidade de um sprint
+     * @param codigo Código do sprint
+     * @param novaCapacidade Nova capacidade em dias
+     */
+    virtual void atualizarCapacidade(const std::string& codigo,
+                                     int novaCapacidade) = 0;
+
+    /**
+     * @brief Exclui um plano de sprint
+     * @param codigo Código do sprint
+     */
+    virtual void excluirPlanoSprint(const std::string& codigo) = 0;
+
+    /**
+     * @brief Associa uma história de usuário a um sprint
+     * @param codigoSprint Código do sprint
+     * @param codigoHistoria Código da história
+     * @param estimativa Estimativa em dias
+     */
+    virtual void associarHistoria(const std::string& codigoSprint,
+                                  const std::string& codigoHistoria,
+                                  int estimativa) = 0;
+
+    /**
+     * @brief Remove associação de uma história
+     * @param codigoSprint Código do sprint
+     * @param codigoHistoria Código da história
+     * @param estimativa Estimativa da história
+     */
+    virtual void desassociarHistoria(const std::string& codigoSprint,
+                                     const std::string& codigoHistoria,
+                                     int estimativa) = 0;
+
+    /**
+     * @brief Lista histórias associadas a um sprint
+     * @param codigoSprint Código do sprint
+     */
+    virtual void listarHistoriasDoSprint(const std::string& codigoSprint) = 0;
+};
+
+
+
+
+
+
+
+/*
 
 // ============================================
 // INTERFACE PROJETO
@@ -228,13 +367,7 @@ public:
     virtual ~ISProjeto(){};
 };
 
-
-
-
-
-
-
-
+*/
 
 
 // ============================================
@@ -290,6 +423,12 @@ public:
      */
     virtual void excluirProjeto(const std::string& codigo) = 0;
 };
+
+
+
+
+
+
 
 
 

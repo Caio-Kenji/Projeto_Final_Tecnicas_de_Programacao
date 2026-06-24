@@ -658,6 +658,23 @@ void ControladoraProjeto::excluirProjetoFlow() {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ============================================
 // IMPLEMENTAÇÃO: CONTROLADORA HISTORIA USUARIO
 // ============================================
@@ -938,6 +955,14 @@ void ControladoraHistoriaUsuario::listarPorProjetoFlow() {
         cout << "✗ Erro: " << e.what() << endl;
     }
 }
+
+
+
+
+
+
+
+
 
 // ============================================
 // IMPLEMENTAÇÃO: MENU PRINCIPAL

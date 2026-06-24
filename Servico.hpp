@@ -66,7 +66,7 @@ public:
 
 
 // ============================================
-// SERVIÇO PARA PLANO DE SPRINT (CORRIGIDO)
+// SERVIÇO PARA PLANO DE SPRINT
 // ============================================
 
 /**
@@ -90,28 +90,24 @@ public:
     ServicoPlanoSprint();
 
     void criarPlanoSprint(const std::string& codigo,
-                           int capacidade,
-                           const std::string& dataInicio,
-                           const std::string& dataTermino,
-                           const std::string& codigoProjeto) override;
+                          int capacidade,
+                          const std::string& dataInicio,
+                          const std::string& dataTermino,
+                          const std::string& codigoProjeto) override;
 
     void listarPlanosSprint() override;
     void consultarPlanoSprint(const std::string& codigo) override;
     void atualizarCapacidade(const std::string& codigo,
-                              int novaCapacidade) override;
+                             int novaCapacidade) override;
     void excluirPlanoSprint(const std::string& codigo) override;
     void associarHistoria(const std::string& codigoSprint,
-                           const std::string& codigoHistoria,
-                           int estimativa) override;
+                          const std::string& codigoHistoria,
+                          int estimativa) override;
     void desassociarHistoria(const std::string& codigoSprint,
-                              const std::string& codigoHistoria,
-                              int estimativa) override;
+                             const std::string& codigoHistoria,
+                             int estimativa) override;
     void listarHistoriasDoSprint(const std::string& codigoSprint) override;
 };
-
-
-
-
 
 
 

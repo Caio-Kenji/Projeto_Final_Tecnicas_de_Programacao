@@ -6,20 +6,13 @@
  * @date 2024
  */
 
-#include "Apresentacao.hpp"
+#include "Controladora.hpp"
 #include "Servico.hpp"
 
-using namespace std;  // ← APENAS UM using namespace
+using namespace std;
 
 int main() {
     try {
-        cout << "╔═══════════════════════════════════════════════════════╗" << endl;
-        cout << "║                                                       ║" << endl;
-        cout << "║   SISTEMA DE GERENCIAMENTO DE PROJETOS SCRUM         ║" << endl;
-        cout << "║                                                       ║" << endl;
-        cout << "╚═══════════════════════════════════════════════════════╝" << endl;
-        cout << endl;
-
         // ============================================
         // 1. CRIAR OS SERVIÇOS
         // ============================================
@@ -29,33 +22,22 @@ int main() {
         ServicoPlanoSprint servicoPlanoSprint;
         ServicoHistoriaUsuario servicoHistoria;
 
-        cout << "✓ Serviços inicializados com sucesso!" << endl;
-        cout << endl;
-
         // ============================================
-        // 2. CRIAR O MENU PRINCIPAL
+        // 2. CRIAR E EXECUTAR A CONTROLADORA PRINCIPAL
         // ============================================
 
-        MenuPrincipal menu(&servicoPessoa,
-                          &servicoProjeto,
-                          &servicoPlanoSprint,
-                          &servicoHistoria);
+        ControladoraPrincipal controladora(&servicoPessoa,
+                                           &servicoProjeto,
+                                           &servicoPlanoSprint,
+                                           &servicoHistoria);
 
-        // ============================================
-        // 3. EXECUTAR O SISTEMA
-        // ============================================
+        controladora.executar();
 
-        menu.executar();
-
-        cout << "\n╔═══════════════════════════════════════════════════════╗" << endl;
-        cout << "║           Sistema finalizado com sucesso!             ║" << endl;
-        cout << "╚═══════════════════════════════════════════════════════╝" << endl;
+        return 0;
 
     } catch (const exception& e) {
         cout << "\n❌ ERRO FATAL: " << e.what() << endl;
         cout << "O programa sera encerrado." << endl;
         return 1;
     }
-
-    return 0;
 }
