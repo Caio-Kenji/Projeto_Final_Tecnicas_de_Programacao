@@ -11,6 +11,8 @@
 #include <stdexcept>
 using namespace std;
 
+// ----------------DEFINIÇÕES: PROJETO ------------------------------------------
+
 
 /**
  * @brief Classe que representa uma atividade identificada por um nome e um código, além de um início e fim.
@@ -36,6 +38,7 @@ private:
     Codigo codigo;
     Nome nome;
     Data data_inicio, data_termino;
+    Email email_proprietario, email_mestre;
 
 public:
 
@@ -71,6 +74,22 @@ public:
      */
     void setDataTermino(const Data&);
 
+     /**
+     * @brief Define o email do proprietário do projeto.
+     * @param email_proprietario Objeto Email válido a ser atribuído.
+     * @post O atributo email_proprietario é atualizado com o valor informado.
+     * @see Email::validar()
+     */
+    void setProprietario(const Email&);
+
+     /**
+     * @brief Define o email do mestre scrum do projeto.
+     * @param email_mestre Objeto Email válido a ser atribuído.
+     * @post O atributo email_mestre é atualizado com o valor informado.
+     * @see Email::validar()
+     */
+    void setMestre(const Email&);// documentar
+
     /**
      * @brief Retorna o código do projeto.
      * @return Codigo Objeto Codigo contendo o código do projeto.
@@ -98,6 +117,22 @@ public:
      * @see setDataTermino()
      */
     Data getDataTermino() const;
+
+
+     /**
+     * @brief Retorna o email do proprietário do projeto.
+     * @return Email Objeto Email contendo o email do proprietário.
+     * @see setProprietario()
+     */
+    Email getProprietario() const;
+
+     /**
+     * @brief Retorna o email do mestre do projeto.
+     * @return Email Objeto Email contendo o email do mestre.
+     * @see setMestre()
+     */
+    Email getMestre() const;//documentar
+
 };
 
 /**
@@ -135,6 +170,29 @@ inline Data Projeto::getDataInicio() const{
 inline Data Projeto::getDataTermino() const{
     return data_termino;
 }
+
+/**
+ * @brief Retorna o email do proprietário do projeto.
+ * @details Implementação inline que retorna uma cópia do atributo email_proprietario.
+ * @return Email Cópia do email do proprietário armazenado.
+ * @see setProprietario()
+ */
+inline Email Projeto::getProprietario() const{
+    return email_proprietario;
+}
+
+/**
+ * @brief Retorna o email do mestre do projeto.
+ * @details Implementação inline que retorna uma cópia do atributo email_mestre.
+ * @return Email Cópia do email do mestre armazenado.
+ * @see setMestre()
+ */
+inline Email Projeto::getMestre() const{
+    return email_mestre;
+}
+
+
+// ----------------DEFINIÇÕES: PESSOA ------------------------------------------
 
 
 /**
@@ -525,6 +583,9 @@ public:
 };
 
 
+<<<<<<< HEAD
+#endif // ENTIDADE_HPP_INCLUDED
+=======
 
 
 // -------------------DEFINIÇÕES: PESSOA -------------------------------------------------------------------------------
@@ -1244,3 +1305,4 @@ inline bool HistoriaUsuario::podeSerAtribuida() const {
 
 
 #endif // ENTIDADE_HPP_INCLUDED
+>>>>>>> 3adc8f729f518f28b82f8769a911d39c615851be

@@ -23,6 +23,13 @@
 #include <stdexcept>
 using namespace std;
 
+
+class Email;
+class Senha;
+class Codigo;
+class Projeto;
+
+
 // ============================================
 // INTERFACE AUTENTICAÇÃO
 // ============================================
@@ -44,15 +51,22 @@ public:
 // INTERFACE PARA PESSOA
 // ============================================
 
+class IAPessoa{
+public:
+    virtual void criar() = 0;
+    virtual void executar(const Email&) = 0;
+    virtual ~IAPessoa(){};
+};
+
 /**
  * @brief Interface para serviços da entidade PlanoSprint
  *
  * @details Define todas as operações que podem ser realizadas sobre
  *          planos de sprint, incluindo associação de histórias.
  */
-class IServicoPessoa {
+class ISPessoa {
 public:
-    virtual ~IServicoPessoa() {}
+    virtual ~ISPessoa() {}
 
     /**
      * @brief Cria uma nova pessoa.
@@ -88,6 +102,13 @@ public:
 
 };
 
+    /**
+     * @brief Lista projetos associados a um sprint
+     * @param codigoProjeto Código do sprint
+     */
+    virtual void listarProjetos(const std::string& codigoProjeto) = 0;
+};
+
 
 
 
@@ -106,15 +127,21 @@ public:
  // INTERFACE PARA PLANO DE SPRINT
  // ============================================
 
+class IAPlanoSprint{
+public:
+    virtual void executar(const Email&) = 0;
+    virtual ~IAPlanoSprint(){};
+};
+
  /**
   * @brief Interface para serviços da entidade PlanoSprint
   * 
   * @details Define todas as operações que podem ser realizadas sobre
   *          planos de sprint, incluindo associação de histórias.
   */
- class IServicoPlanoSprint {
+ class ISPlanoSprint {
  public:
-     virtual ~IServicoPlanoSprint() {}
+     virtual ~ISPlanoSprint() {}
 
      /**
       * @brief Cria um novo plano de sprint
@@ -182,7 +209,24 @@ public:
      virtual void listarHistoriasDoSprint(const std::string& codigoSprint) = 0;
  };
 
+// ============================================
+// INTERFACE PROJETO
+// ============================================
 
+class IAProjeto {
+public:
+    virtual void executar(const Email&) = 0;
+    virtual ~IAProjeto() {}
+};
+
+class ISProjeto{
+public:
+    virtual bool criar(Projeto) = 0;
+    virtual bool ler(Projeto) = 0;
+    virtual bool atualizar(Projeto) = 0;
+    virtual bool excluir(Codigo) = 0;
+    virtual ~ISProjeto(){};
+};
 
 
 
