@@ -24,6 +24,11 @@ public:
 
 // ----------------------------------------------------------------------
 
+
+
+
+
+
 class ContainerProjeto{
 private:
     map<string, Projeto> containerPro;
@@ -35,6 +40,14 @@ public:
     bool excluir(Codigo);
     bool ler(Projeto*);
     bool atualizar(Projeto);
+
+    // MÉTODOS ADICIONAIS (igual ao PlanoSprint)
+    bool existe(const string& codigo) const;
+    vector<Projeto> listarTodas() const;
+    Projeto* buscar(const string& codigo);
+    const Projeto* buscar(const string& codigo) const;
+
+
 };
 
 // ----------------------------------------------------------------------
@@ -74,6 +87,19 @@ public:
     bool excluir(Codigo);
     bool ler(HistoriaUsuario*);
     bool atualizar(HistoriaUsuario);
+
+
+    // MÉTODOS ADICIONAIS (igual ao PlanoSprint)
+    bool existe(const string& codigo) const;
+    vector<HistoriaUsuario> listarTodas() const;
+    HistoriaUsuario* buscar(const string& codigo);
+    const HistoriaUsuario* buscar(const string& codigo) const;
+
+    // MÉTODOS ESPECÍFICOS PARA HISTÓRIA
+    vector<HistoriaUsuario> listarPorProjeto(const string& codigoProjeto) const;
+
+
+
 };
 
 

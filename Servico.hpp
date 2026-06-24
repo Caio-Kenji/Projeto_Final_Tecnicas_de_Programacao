@@ -56,8 +56,15 @@ public:
 };
 
 
+
+
+
+
+
+
+
 // ============================================
-// SERVIÇO PARA PLANO DE SPRINT (COMPLETO)
+// SERVIÇO PARA PLANO DE SPRINT (CORRIGIDO)
 // ============================================
 
 /**
@@ -69,18 +76,16 @@ public:
  */
 class ServicoPlanoSprint : public IServicoPlanoSprint {
 private:
-    ContainerPlanoSprint container;
-    ContainerProjeto* containerProjeto;           // Dependência injetada
-    ContainerHistoriaUsuario* containerHistoria;  // Dependência injetada
+    ContainerPlanoSprint* container;              // Ponteiro para Singleton
+    ContainerProjeto* containerProjeto;           // Ponteiro para Singleton
+    ContainerHistoriaUsuario* containerHistoria;  // Ponteiro para Singleton
 
 public:
     /**
-     * @brief Construtor com injeção de dependências
-     * @param contProjeto Ponteiro para container de projetos
-     * @param contHistoria Ponteiro para container de histórias
+     * @brief Construtor do serviço de plano de sprint.
+     * @details Obtém as instâncias Singleton dos containers.
      */
-    ServicoPlanoSprint(ContainerProjeto* contProjeto,
-                       ContainerHistoriaUsuario* contHistoria);
+    ServicoPlanoSprint();
 
     void criarPlanoSprint(const std::string& codigo,
                            int capacidade,
@@ -104,6 +109,99 @@ public:
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+// ============================================
+// SERVIÇO PARA PROJETO
+// ============================================
+
+/**
+ * @brief Implementação concreta do serviço de Projeto.
+ *
+ * @details Implementa IServicoProjeto e utiliza ContainerProjeto
+ *          para armazenar projetos em memória.
+ */
+class ServicoProjeto : public IServicoProjeto {
+private:
+    ContainerProjeto* container;  // Usa ponteiro para Singleton
+
+public:
+    ServicoProjeto();
+
+    void criarProjeto(const std::string& codigo,
+                      const std::string& nome,
+                      const std::string& dataInicio,
+                      const std::string& dataTermino,
+                      const std::string& codigoScrumMaster) override;
+
+    void listarProjetos() override;
+    void consultarProjeto(const std::string& codigo) override;
+    void atualizarProjeto(const std::string& codigo,
+                          const std::string& novoNome) override;
+    void excluirProjeto(const std::string& codigo) override;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+// ============================================
+// SERVIÇO PARA HISTÓRIA DE USUÁRIO
+// ============================================
+
+/**
+ * @brief Implementação concreta do serviço de HistoriaUsuario.
+ *
+ * @details Implementa IServicoHistoriaUsuario e utiliza ContainerHistoriaUsuario
+ *          para armazenar histórias em memória.
+ */
+class ServicoHistoriaUsuario : public IServicoHistoriaUsuario {
+private:
+    ContainerHistoriaUsuario* container;  // Usa ponteiro para Singleton
+    ContainerProjeto* containerProjeto;   // Para validar projeto
+
+public:
+    ServicoHistoriaUsuario();
+
+    void criarHistoria(const std::string& codigo,
+                       const std::string& nome,
+                       const std::string& descricao,
+                       const std::string& prioridade,
+                       const std::string& codigoProjeto,
+                       int estimativa) override;
+
+    void listarHistorias() override;
+    void consultarHistoria(const std::string& codigo) override;
+    void alterarEstado(const std::string& codigo,
+                       const std::string& novoEstado) override;
+    void atualizarHistoria(const std::string& codigo,
+                           const std::string& nome,
+                           const std::string& descricao,
+                           const std::string& prioridade,
+                           int estimativa) override;
+    void excluirHistoria(const std::string& codigo) override;
+    void atribuirResponsavel(const std::string& codigoHistoria,
+                             const std::string& codigoPessoa) override;
+    void removerResponsavel(const std::string& codigoHistoria) override;
+    void listarHistoriasPorProjeto(const std::string& codigoProjeto) override;
+};
 
 
 

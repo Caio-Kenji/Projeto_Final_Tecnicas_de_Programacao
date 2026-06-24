@@ -145,6 +145,18 @@ public:
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
  // ============================================
  // INTERFACE PARA PLANO DE SPRINT
  // ============================================
@@ -249,6 +261,176 @@ public:
     virtual bool excluir(Codigo) = 0;
     virtual ~ISProjeto(){};
 };
+
+
+
+
+
+
+
+
+
+
+// ============================================
+// INTERFACE PARA PROJETO
+// ============================================
+
+/**
+ * @brief Interface para serviços da entidade Projeto.
+ *
+ * @details Define as operações de criação, leitura, atualização e exclusão
+ *          de projetos no sistema.
+ */
+class IServicoProjeto {
+public:
+    virtual ~IServicoProjeto() {}
+
+    /**
+     * @brief Cria um novo projeto.
+     * @param codigo Código do projeto (2 letras + 3 dígitos)
+     * @param nome Nome do projeto (max 10 caracteres)
+     * @param dataInicio Data de início (DD/MM/AAAA)
+     * @param dataTermino Data de término (DD/MM/AAAA)
+     * @param codigoScrumMaster Código do Scrum Master responsável
+     */
+    virtual void criarProjeto(const std::string& codigo,
+                              const std::string& nome,
+                              const std::string& dataInicio,
+                              const std::string& dataTermino,
+                              const std::string& codigoScrumMaster) = 0;
+
+    /**
+     * @brief Lista todos os projetos cadastrados.
+     */
+    virtual void listarProjetos() = 0;
+
+    /**
+     * @brief Consulta um projeto específico.
+     * @param codigo Código do projeto.
+     */
+    virtual void consultarProjeto(const std::string& codigo) = 0;
+
+    /**
+     * @brief Atualiza o nome de um projeto.
+     * @param codigo Código do projeto.
+     * @param novoNome Novo nome do projeto.
+     */
+    virtual void atualizarProjeto(const std::string& codigo,
+                                  const std::string& novoNome) = 0;
+
+    /**
+     * @brief Exclui um projeto.
+     * @param codigo Código do projeto.
+     */
+    virtual void excluirProjeto(const std::string& codigo) = 0;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ============================================
+// INTERFACE PARA HISTÓRIA DE USUÁRIO
+// ============================================
+
+/**
+ * @brief Interface para serviços da entidade HistoriaUsuario.
+ *
+ * @details Define as operações de criação, leitura, atualização, exclusão
+ *          e alteração de estado de histórias de usuário.
+ */
+class IServicoHistoriaUsuario {
+public:
+    virtual ~IServicoHistoriaUsuario() {}
+
+    /**
+     * @brief Cria uma nova história de usuário.
+     * @param codigo Código da história (2 letras + 3 dígitos)
+     * @param nome Nome da história (max 10 caracteres)
+     * @param descricao Descrição da história (max 40 caracteres)
+     * @param prioridade Prioridade (ALTA, MEDIA, BAIXA)
+     * @param codigoProjeto Código do projeto associado
+     * @param estimativa Estimativa em dias (1-365)
+     */
+    virtual void criarHistoria(const std::string& codigo,
+                               const std::string& nome,
+                               const std::string& descricao,
+                               const std::string& prioridade,
+                               const std::string& codigoProjeto,
+                               int estimativa) = 0;
+
+    /**
+     * @brief Lista todas as histórias cadastradas.
+     */
+    virtual void listarHistorias() = 0;
+
+    /**
+     * @brief Consulta uma história específica.
+     * @param codigo Código da história.
+     */
+    virtual void consultarHistoria(const std::string& codigo) = 0;
+
+    /**
+     * @brief Altera o estado de uma história.
+     * @param codigo Código da história.
+     * @param novoEstado Novo estado (A FAZER, FAZENDO, FEITO)
+     */
+    virtual void alterarEstado(const std::string& codigo,
+                               const std::string& novoEstado) = 0;
+
+    /**
+     * @brief Atualiza os dados de uma história.
+     * @param codigo Código da história.
+     * @param nome Novo nome.
+     * @param descricao Nova descrição.
+     * @param prioridade Nova prioridade.
+     * @param estimativa Nova estimativa.
+     */
+    virtual void atualizarHistoria(const std::string& codigo,
+                                   const std::string& nome,
+                                   const std::string& descricao,
+                                   const std::string& prioridade,
+                                   int estimativa) = 0;
+
+    /**
+     * @brief Exclui uma história.
+     * @param codigo Código da história.
+     */
+    virtual void excluirHistoria(const std::string& codigo) = 0;
+
+    /**
+     * @brief Atribui uma pessoa como responsável pela história.
+     * @param codigoHistoria Código da história.
+     * @param codigoPessoa Código da pessoa responsável.
+     */
+    virtual void atribuirResponsavel(const std::string& codigoHistoria,
+                                     const std::string& codigoPessoa) = 0;
+
+    /**
+     * @brief Remove o responsável de uma história.
+     * @param codigoHistoria Código da história.
+     */
+    virtual void removerResponsavel(const std::string& codigoHistoria) = 0;
+
+    /**
+     * @brief Lista histórias por projeto.
+     * @param codigoProjeto Código do projeto.
+     */
+    virtual void listarHistoriasPorProjeto(const std::string& codigoProjeto) = 0;
+};
+
 
 
 

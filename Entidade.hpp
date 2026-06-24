@@ -825,7 +825,7 @@ inline Papel Pessoa::getPapel() const {
 
 
 // ============================================
-// CLASSE HISTORIA USUARIO (COMPLETA E DOCUMENTADA)
+// CLASSE HISTORIA USUARIO (ATUALIZADA)
 // ============================================
 
 /**
@@ -835,7 +835,10 @@ inline Papel Pessoa::getPapel() const {
  *          sob a perspectiva do usuário, seguindo o formato:
  *          **"Como [papel], eu quero [ação] para [valor]"**
  *
- *          Cada história pertence a um projeto e pode ser associada a um sprint.
+ *          Cada história pertence a um projeto e pode ser:
+ *          - Associada a um plano de sprint (quando em execução)
+ *          - Atribuída a uma pessoa (desenvolvedor responsável)
+ *
  *          Seu estado evolui ao longo do desenvolvimento: A FAZER → FAZENDO → FEITO.
  *
  * @invariant Todos os atributos armazenam valores válidos, pois são instâncias
@@ -850,6 +853,7 @@ inline Papel Pessoa::getPapel() const {
  * @see Codigo, Nome, Texto, Prioridade, Estado, Tempo
  * @see ServicoHistoriaUsuario
  * @see PlanoSprint
+ * @see Pessoa
  *
  * @example
  * @code
@@ -864,9 +868,12 @@ inline Papel Pessoa::getPapel() const {
  *     Codigo codigoProjeto("PR001");
  *     Tempo estimativa;
  *     estimativa.setTempo(5);
+ *     Codigo codigoPessoa("AD001");
+ *     Codigo codigoSprint("SP001");
  *
  *     HistoriaUsuario historia(codigo, nome, descricao, prioridade,
- *                              estado, codigoProjeto, estimativa);
+ *                              estado, codigoProjeto, estimativa,
+ *                              codigoPessoa, codigoSprint);
  *     cout << "Historia criada: " << historia.getNome().getNome() << endl;
  * } catch (const invalid_argument& e) {
  *     cout << "Erro: " << e.what() << endl;
@@ -890,11 +897,17 @@ private:
     /** @brief Estado atual da história (A FAZER, FAZENDO, FEITO) */
     Estado estado;
 
-    /** @brief Código do projeto a que pertence */
+    /** @brief Código do projeto a que pertence (relacionamento com Projeto) */
     Codigo codigoProjeto;
 
     /** @brief Estimativa de esforço em dias (1-365) */
     Tempo estimativa;
+
+    /** @brief Código da pessoa (desenvolvedor) responsável pela história */
+    Codigo codigoPessoa;
+
+    /** @brief Código do plano de sprint ao qual a história está associada */
+    Codigo codigoPlanoSprint;
 
 public:
     // ========== CONSTRUTOR ==========
@@ -909,6 +922,8 @@ public:
      * @param estadoObj Estado inicial (deve ser "A FAZER").
      * @param codigoProjetoObj Código do projeto associado.
      * @param estimativaObj Estimativa em dias (1-365).
+     * @param codigoPessoaObj Código da pessoa responsável (opcional - pode ser vazio).
+     * @param codigoPlanoSprintObj Código do sprint associado (opcional - pode ser vazio).
      *
      * @throw invalid_argument Se algum domínio for inválido (repassado pelos domínios).
      *
@@ -917,6 +932,7 @@ public:
      *
      * @note O estado inicial deve ser "A FAZER". Alterações de estado
      *       devem ser feitas através do método setEstado().
+     * @note Os códigos de pessoa e sprint podem ser vazios ("") inicialmente.
      */
     HistoriaUsuario(const Codigo& codigoObj,
                     const Nome& nomeObj,
@@ -924,7 +940,9 @@ public:
                     const Prioridade& prioridadeObj,
                     const Estado& estadoObj,
                     const Codigo& codigoProjetoObj,
-                    const Tempo& estimativaObj);
+                    const Tempo& estimativaObj,
+                    const Codigo& codigoPessoaObj = Codigo(),
+                    const Codigo& codigoPlanoSprintObj = Codigo());
 
     // ========== GETTERS ==========
 
@@ -976,6 +994,22 @@ public:
      * @note Método constante (não modifica o objeto).
      */
     Tempo getEstimativa() const;
+
+    /**
+     * @brief Retorna o código da pessoa (desenvolvedor) responsável.
+     * @return Codigo Objeto Codigo contendo o código da pessoa.
+     * @note Método constante (não modifica o objeto).
+     * @note Retorna código vazio ("") se não houver responsável atribuído.
+     */
+    Codigo getCodigoPessoa() const;
+
+    /**
+     * @brief Retorna o código do plano de sprint associado.
+     * @return Codigo Objeto Codigo contendo o código do sprint.
+     * @note Método constante (não modifica o objeto).
+     * @note Retorna código vazio ("") se não houver sprint associado.
+     */
+    Codigo getCodigoPlanoSprint() const;
 
     // ========== SETTERS ==========
 
@@ -1039,6 +1073,26 @@ public:
      */
     void setEstimativa(const Tempo& novaEstimativa);
 
+    /**
+     * @brief Define a pessoa (desenvolvedor) responsável pela história.
+     * @param novoCodigoPessoa Objeto Codigo válido.
+     * @post O atributo codigoPessoa é atualizado.
+     * @throw invalid_argument Se o código for inválido (repassado pelo domínio).
+     *
+     * @note Pode ser usado um código vazio ("") para remover a associação.
+     */
+    void setCodigoPessoa(const Codigo& novoCodigoPessoa);
+
+    /**
+     * @brief Define o plano de sprint associado à história.
+     * @param novoCodigoPlanoSprint Objeto Codigo válido.
+     * @post O atributo codigoPlanoSprint é atualizado.
+     * @throw invalid_argument Se o código for inválido (repassado pelo domínio).
+     *
+     * @note Pode ser usado um código vazio ("") para remover a associação.
+     */
+    void setCodigoPlanoSprint(const Codigo& novoCodigoPlanoSprint);
+
     // ========== MÉTODOS DE VALIDAÇÃO ==========
 
     /**
@@ -1061,6 +1115,18 @@ public:
     bool isFeito() const;
 
     /**
+     * @brief Verifica se a história tem um responsável atribuído.
+     * @return true se codigoPessoa não for vazio, false caso contrário.
+     */
+    bool temResponsavel() const;
+
+    /**
+     * @brief Verifica se a história está associada a um sprint.
+     * @return true se codigoPlanoSprint não for vazio, false caso contrário.
+     */
+    bool estaAssociadaASprint() const;
+
+    /**
      * @brief Avança o estado da história para o próximo estágio.
      * @details A FAZER → FAZENDO → FEITO
      * @return true se o estado foi alterado, false se já está em FEITO.
@@ -1074,6 +1140,18 @@ public:
      * @return string "A FAZER", "FAZENDO" ou "FEITO".
      */
     string getEstadoStr() const;
+
+    /**
+     * @brief Verifica se a história pode ser associada a um sprint.
+     * @return true se a história estiver em "A FAZER" e não estiver associada a um sprint.
+     */
+    bool podeSerAssociadaASprint() const;
+
+    /**
+     * @brief Verifica se a história pode ser atribuída a uma pessoa.
+     * @return true se a história estiver em "A FAZER" ou "FAZENDO".
+     */
+    bool podeSerAtribuida() const;
 };
 
 // ============================================
@@ -1144,6 +1222,24 @@ inline Tempo HistoriaUsuario::getEstimativa() const {
 }
 
 /**
+ * @brief Retorna o código da pessoa responsável.
+ * @details Implementação inline que retorna uma cópia do atributo codigoPessoa.
+ * @return Codigo Cópia do código da pessoa.
+ */
+inline Codigo HistoriaUsuario::getCodigoPessoa() const {
+    return codigoPessoa;
+}
+
+/**
+ * @brief Retorna o código do sprint associado.
+ * @details Implementação inline que retorna uma cópia do atributo codigoPlanoSprint.
+ * @return Codigo Cópia do código do sprint.
+ */
+inline Codigo HistoriaUsuario::getCodigoPlanoSprint() const {
+    return codigoPlanoSprint;
+}
+
+/**
  * @brief Verifica se a história está em estado "A FAZER".
  * @return true se o estado for "A FAZER".
  */
@@ -1168,11 +1264,43 @@ inline bool HistoriaUsuario::isFeito() const {
 }
 
 /**
+ * @brief Verifica se a história tem um responsável atribuído.
+ * @return true se codigoPessoa não for vazio.
+ */
+inline bool HistoriaUsuario::temResponsavel() const {
+    return !codigoPessoa.getValor().empty();
+}
+
+/**
+ * @brief Verifica se a história está associada a um sprint.
+ * @return true se codigoPlanoSprint não for vazio.
+ */
+inline bool HistoriaUsuario::estaAssociadaASprint() const {
+    return !codigoPlanoSprint.getValor().empty();
+}
+
+/**
  * @brief Retorna uma representação textual do estado atual.
  * @return string "A FAZER", "FAZENDO" ou "FEITO".
  */
 inline string HistoriaUsuario::getEstadoStr() const {
     return estado.getValor();
+}
+
+/**
+ * @brief Verifica se a história pode ser associada a um sprint.
+ * @return true se estiver em "A FAZER" e não estiver associada.
+ */
+inline bool HistoriaUsuario::podeSerAssociadaASprint() const {
+    return isAFazer() && !estaAssociadaASprint();
+}
+
+/**
+ * @brief Verifica se a história pode ser atribuída a uma pessoa.
+ * @return true se estiver em "A FAZER" ou "FAZENDO".
+ */
+inline bool HistoriaUsuario::podeSerAtribuida() const {
+    return isAFazer() || isFazendo();
 }
 
 
