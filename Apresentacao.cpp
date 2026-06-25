@@ -45,6 +45,28 @@ void pausar() {
 }
 
 
+/**
+ * @brief Valida o formato de um código (2 letras + 3 dígitos)
+ * @param codigo String a ser validada
+ * @return true se o formato for válido
+ */
+bool validarFormatoCodigo(const string& codigo) {
+    if (codigo.length() != 5) return false;
+    if (!isupper(codigo[0]) || !isupper(codigo[1])) return false;
+    if (!isdigit(codigo[2]) || !isdigit(codigo[3]) || !isdigit(codigo[4])) return false;
+    return true;
+}
+
+/**
+ * @brief Valida o formato de uma data (DD/MM/AAAA)
+ * @param data String a ser validada
+ * @return true se o formato for válido
+ */
+bool validarFormatoData(const string& data) {
+    if (data.length() != 10) return false;
+    if (data[2] != '/' || data[5] != '/') return false;
+    return true;
+}
 
 
 

@@ -6,7 +6,7 @@
  * @date 2024
  */
 
-#include "Controladora.hpp"
+#include "Apresentacao.hpp"
 #include "Servico.hpp"
 
 using namespace std;
@@ -26,12 +26,13 @@ int main() {
         // 2. CRIAR E EXECUTAR A CONTROLADORA PRINCIPAL
         // ============================================
 
-        ControladoraPrincipal controladora(&servicoPessoa,
-                                           &servicoProjeto,
-                                           &servicoPlanoSprint,
-                                           &servicoHistoria);
+        MenuPrincipal menu(&servicoPessoa,
+                        &servicoProjeto,
+                        &servicoPlanoSprint,
+                        &servicoHistoria);
 
-        controladora.executar();
+
+        menu.executar();
 
         return 0;
 
