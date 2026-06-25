@@ -60,8 +60,72 @@ public:
 
 
 // ============================================
-// INTERFACE PARA PESSOA
+// INTERFACE PARA PESSOA (SOFYA)
 // ============================================
+
+class IAPessoa{
+public:
+    virtual void criar() = 0;
+    virtual void executar(const Email&) = 0;
+    virtual ~IAPessoa(){};
+};
+
+/**
+ * @brief Interface para serviços da entidade Pessoa.
+ *
+ * @details Define as operações de criação, leitura, atualização e exclusão
+ *          de pessoas cadastradas no sistema.
+ */
+class ISPessoa {
+public:
+    virtual ~ISPessoa() {}
+
+    /**
+     * @brief Cria uma nova pessoa.
+     * @param email Email da pessoa.
+     * @param nome Nome da pessoa.
+     * @param senha Senha da pessoa.
+     * @param papel Papel da pessoa no projeto.
+     */
+    virtual void criarPessoa(const string& email,
+                             const string& nome,
+                             const string& senha,
+                             const string& papel) = 0;
+
+    /**
+     * @brief Consulta uma pessoa pelo email.
+     * @param email Email da pessoa.
+     */
+    virtual void consultarPessoa(const string& email) = 0;
+
+    /**
+     * @brief Atualiza os dados de uma pessoa.
+     * @param email Email da pessoa.
+     * @param nome Novo nome.
+     * @param senha Nova senha.
+     * @param papel Novo papel.
+     */
+    virtual void atualizarPessoa(const string& email,
+                                 const string& nome,
+                                 const string& senha,
+                                 const string& papel) = 0;
+
+    /**
+     * @brief Exclui uma pessoa pelo email.
+     * @param email Email da pessoa.
+     */
+    virtual void excluirPessoa(const string& email) = 0;
+};
+
+
+
+
+// ============================================
+// INTERFACE PARA PESSOA 
+// ============================================
+
+
+
 
 /**
  * @brief Interface para serviços da entidade Pessoa.
@@ -109,11 +173,6 @@ public:
      */
     virtual void excluirPessoa(const string& email) = 0;
 };
-
-
-
-
-
 
 
 

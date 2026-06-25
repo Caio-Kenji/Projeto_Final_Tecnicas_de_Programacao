@@ -48,6 +48,7 @@ private:
     Nome nome;
     Data data_inicio, data_termino;
     Email email_proprietario, email_mestre;
+    Email email_proprietario, email_mestre;
 
 public:
 
@@ -99,6 +100,22 @@ public:
      */
     void setMestre(const Email&);// documentar
 
+     /**
+     * @brief Define o email do proprietário do projeto.
+     * @param email_proprietario Objeto Email válido a ser atribuído.
+     * @post O atributo email_proprietario é atualizado com o valor informado.
+     * @see Email::validar()
+     */
+    void setProprietario(const Email&);
+
+     /**
+     * @brief Define o email do mestre scrum do projeto.
+     * @param email_mestre Objeto Email válido a ser atribuído.
+     * @post O atributo email_mestre é atualizado com o valor informado.
+     * @see Email::validar()
+     */
+    void setMestre(const Email&);// documentar
+
     /**
      * @brief Retorna o código do projeto.
      * @return Codigo Objeto Codigo contendo o código do projeto.
@@ -126,6 +143,22 @@ public:
      * @see setDataTermino()
      */
     Data getDataTermino() const;
+
+
+     /**
+     * @brief Retorna o email do proprietário do projeto.
+     * @return Email Objeto Email contendo o email do proprietário.
+     * @see setProprietario()
+     */
+    Email getProprietario() const;
+
+     /**
+     * @brief Retorna o email do mestre do projeto.
+     * @return Email Objeto Email contendo o email do mestre.
+     * @see setMestre()
+     */
+    Email getMestre() const;//documentar
+
 
 
      /**
