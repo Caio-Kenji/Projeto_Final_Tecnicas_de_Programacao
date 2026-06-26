@@ -637,7 +637,9 @@ void ServicoProjeto::criarProjeto(const string& codigo,
                                   const string& nome,
                                   const string& dataInicio,
                                   const string& dataTermino,
-                                  const string& codigoScrumMaster) {
+                                  const string& emailScrumMaster) {
+    
+   
     // 1. Verifica se o código já existe
     if (container->existe(codigo)) {
         throw runtime_error("Erro: Projeto com codigo '" + codigo + "' ja existe");
@@ -651,7 +653,7 @@ void ServicoProjeto::criarProjeto(const string& codigo,
     di.setValor(dataInicio);
     Data dt;
     dt.setValor(dataTermino);
-    Email scrummaster(codigoScrumMaster);
+    Email scrummaster(emailScrumMaster);
 
     // 3. Cria o projeto
     Projeto projeto;
@@ -670,6 +672,7 @@ void ServicoProjeto::criarProjeto(const string& codigo,
     cout << "  Codigo: " << codigo << endl;
     cout << "  Nome: " << nome << endl;
     cout << "  Periodo: " << dataInicio << " a " << dataTermino << endl;
+    cout << "  Scrum Master: " << emailScrumMaster << endl;
 }
 
 void ServicoProjeto::listarProjetos() {

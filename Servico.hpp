@@ -140,7 +140,7 @@ public:
                       const std::string& nome,
                       const std::string& dataInicio,
                       const std::string& dataTermino,
-                      const std::string& codigoScrumMaster) override;
+                      const std::string& emailScrumMaster) override;
 
     void listarProjetos() override;
     void consultarProjeto(const std::string& codigo) override;

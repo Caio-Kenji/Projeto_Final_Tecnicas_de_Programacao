@@ -72,6 +72,7 @@ private:
     string lerCodigo(const string& mensagem);
     string lerNome();
     string lerData(const string& mensagem);
+    string lerEmail();
 
 public:
     ControladoraProjeto(IServicoProjeto* s);

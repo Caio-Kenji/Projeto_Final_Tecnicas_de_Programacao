@@ -264,13 +264,13 @@ public:
      * @param nome Nome do projeto (max 10 caracteres)
      * @param dataInicio Data de início (DD/MM/AAAA)
      * @param dataTermino Data de término (DD/MM/AAAA)
-     * @param codigoScrumMaster Código do Scrum Master responsável
+     * @param emailScrumMaster Email do Scrum Master responsável
      */
     virtual void criarProjeto(const std::string& codigo,
                               const std::string& nome,
                               const std::string& dataInicio,
                               const std::string& dataTermino,
-                              const std::string& codigoScrumMaster) = 0;
+                              const std::string& emailScrumMaster) = 0;
 
     /**
      * @brief Lista todos os projetos cadastrados.
@@ -414,4 +414,4 @@ public:
 
 
 
-#endif // INTERFACES_HPP_INCLUDED
+#endif // INTERFACES_HPP_INCLUDE

@@ -525,6 +525,33 @@ ControladoraProjeto::ControladoraProjeto(IServicoProjeto* s) : servico(s) {
     }
 }
 
+
+
+/**
+ * @brief Lê um email do teclado com validação básica
+ * @return string Email lido
+ */
+string ControladoraProjeto::lerEmail() {
+    string email;
+    do {
+        cout << "Email do Scrum Master: ";
+        getline(cin, email);
+        
+        if (email.find('@') == string::npos) {
+            cout << "✗ Email deve conter '@'" << endl;
+        } else if (email.find('@') == 0 || email.find('@') == email.length() - 1) {
+            cout << "✗ '@' nao pode estar no inicio ou fim" << endl;
+        } else if (email.find(' ') != string::npos) {
+            cout << "✗ Email nao pode conter espacos!" << endl;
+        } else {
+            break;
+        }
+    } while (true);
+    return email;
+}
+
+
+
 string ControladoraProjeto::lerCodigo(const string& mensagem) {
     string codigo;
     do {
@@ -618,10 +645,11 @@ void ControladoraProjeto::criarProjetoFlow() {
     string nome = lerNome();
     string dataInicio = lerData("Data de inicio");
     string dataTermino = lerData("Data de termino");
-    string codigoScrumMaster = lerCodigo("Codigo do Scrum Master: ");
+    string emailScrumMaster = lerEmail();  // ← Lê um EMAIL, não um código
+    servico->criarProjeto(codigo, nome, dataInicio, dataTermino, emailScrumMaster);
 
     try {
-        servico->criarProjeto(codigo, nome, dataInicio, dataTermino, codigoScrumMaster);
+        servico->criarProjeto(codigo, nome, dataInicio, dataTermino, emailScrumMaster);
     } catch (const exception& e) {
         cout << "✗ Erro: " << e.what() << endl;
     }
