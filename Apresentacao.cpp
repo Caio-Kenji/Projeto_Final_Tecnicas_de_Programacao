@@ -111,7 +111,7 @@ string ControladoraPlanoSprint::lerCodigo(const string& mensagem) {
         getline(cin, codigo);
         
         if (!validarFormatoCodigo(codigo)) {
-            cout << "✗ Codigo invalido! Deve ter 2 letras maiusculas + 3 digitos (ex: AB123)" << endl;
+            cout << "Codigo invalido! Deve ter 2 letras maiusculas + 3 digitos (ex: AB123)" << endl;
         } else {
             break;
         }
@@ -126,7 +126,7 @@ string ControladoraPlanoSprint::lerData(const string& mensagem) {
         getline(cin, data);
         
         if (!validarFormatoData(data)) {
-            cout << "✗ Formato invalido! Use DD/MM/AAAA" << endl;
+            cout << "Formato invalido! Use DD/MM/AAAA" << endl;
         } else {
             break;
         }
@@ -146,9 +146,9 @@ int ControladoraPlanoSprint::lerCapacidade() {
             if (cap >= 1 && cap <= 365) {
                 break;
             }
-            cout << "✗ Capacidade deve estar entre 1 e 365!" << endl;
+            cout << "Capacidade deve estar entre 1 e 365!" << endl;
         } catch (...) {
-            cout << "✗ Digite um numero valido!" << endl;
+            cout << "Digite um numero valido!" << endl;
         }
     } while (true);
     return cap;
@@ -166,9 +166,9 @@ int ControladoraPlanoSprint::lerEstimativa() {
             if (est >= 1 && est <= 365) {
                 break;
             }
-            cout << "✗ Estimativa deve estar entre 1 e 365!" << endl;
+            cout << "Estimativa deve estar entre 1 e 365!" << endl;
         } catch (...) {
-            cout << "✗ Digite um numero valido!" << endl;
+            cout << "Digite um numero valido!" << endl;
         }
     } while (true);
     return est;
@@ -177,20 +177,16 @@ int ControladoraPlanoSprint::lerEstimativa() {
 void ControladoraPlanoSprint::executarMenu() {
     int opcao;
     do {
-        cout << "\n╔════════════════════════════════════╗" << endl;
-        cout << "║       MENU PLANO DE SPRINT         ║" << endl;
-        cout << "╠════════════════════════════════════╣" << endl;
-        cout << "║ 1 - Criar Sprint                   ║" << endl;
-        cout << "║ 2 - Listar Sprints                 ║" << endl;
-        cout << "║ 3 - Consultar Sprint               ║" << endl;
-        cout << "║ 4 - Atualizar Capacidade           ║" << endl;
-        cout << "║ 5 - Excluir Sprint                 ║" << endl;
-        cout << "║ 6 - Associar Historia ao Sprint    ║" << endl;
-        cout << "║ 7 - Remover Historia do Sprint     ║" << endl;
-        cout << "║ 8 - Listar Historias do Sprint     ║" << endl;
-        cout << "║ 0 - Voltar                         ║" << endl;
-        cout << "╚════════════════════════════════════╝" << endl;
-        cout << "Opcao: ";
+    cout << "\n========================================" << endl;
+    cout << "        SISTEMA SCRUM - MENU PRINCIPAL  " << endl;
+    cout << "========================================" << endl;
+    cout << "1 - Gerenciar Pessoas" << endl;
+    cout << "2 - Gerenciar Projetos" << endl;
+    cout << "3 - Gerenciar Planos de Sprint" << endl;
+    cout << "4 - Gerenciar Historias de Usuario" << endl;
+    cout << "0 - Sair" << endl;
+    cout << "========================================" << endl;
+    cout << "Opcao: ";
         
         cin >> opcao;
         limparBuffer();
@@ -205,7 +201,7 @@ void ControladoraPlanoSprint::executarMenu() {
             case 7: desassociarHistoriaFlow(); break;
             case 8: listarHistoriasFlow(); break;
             case 0: cout << "Voltando..." << endl; break;
-            default: cout << "✗ Opcao invalida!" << endl;
+            default: cout << "Opcao invalida!" << endl;
         }
         
         if (opcao != 0) pausar();
@@ -224,7 +220,7 @@ void ControladoraPlanoSprint::criarPlanoSprintFlow() {
     try {
         servico->criarPlanoSprint(codigo, capacidade, dataInicio, dataTermino, codigoProjeto);
     } catch (const exception& e) {
-        cout << "✗ Erro: " << e.what() << endl;
+        cout << "Erro: " << e.what() << endl;
     }
 }
 
@@ -233,7 +229,7 @@ void ControladoraPlanoSprint::listarPlanosFlow() {
     try {
         servico->listarPlanosSprint();
     } catch (const exception& e) {
-        cout << "✗ Erro: " << e.what() << endl;
+        cout << "Erro: " << e.what() << endl;
     }
 }
 
@@ -244,7 +240,7 @@ void ControladoraPlanoSprint::consultarPlanoFlow() {
     try {
         servico->consultarPlanoSprint(codigo);
     } catch (const exception& e) {
-        cout << "✗ Erro: " << e.what() << endl;
+        cout << "Erro: " << e.what() << endl;
     }
 }
 
@@ -256,7 +252,7 @@ void ControladoraPlanoSprint::atualizarCapacidadeFlow() {
     try {
         servico->atualizarCapacidade(codigo, novaCapacidade);
     } catch (const exception& e) {
-        cout << "✗ Erro: " << e.what() << endl;
+        cout << "Erro: " << e.what() << endl;
     }
 }
 
@@ -273,7 +269,7 @@ void ControladoraPlanoSprint::excluirPlanoFlow() {
         try {
             servico->excluirPlanoSprint(codigo);
         } catch (const exception& e) {
-            cout << "✗ Erro: " << e.what() << endl;
+            cout << "Erro: " << e.what() << endl;
         }
     } else {
         cout << "Operacao cancelada." << endl;
@@ -289,7 +285,7 @@ void ControladoraPlanoSprint::associarHistoriaFlow() {
     try {
         servico->associarHistoria(codigoSprint, codigoHistoria, estimativa);
     } catch (const exception& e) {
-        cout << "✗ Erro: " << e.what() << endl;
+        cout << "Erro: " << e.what() << endl;
     }
 }
 
@@ -302,7 +298,7 @@ void ControladoraPlanoSprint::desassociarHistoriaFlow() {
     try {
         servico->desassociarHistoria(codigoSprint, codigoHistoria, estimativa);
     } catch (const exception& e) {
-        cout << "✗ Erro: " << e.what() << endl;
+        cout << "Erro: " << e.what() << endl;
     }
 }
 
@@ -313,7 +309,7 @@ void ControladoraPlanoSprint::listarHistoriasFlow() {
     try {
         servico->listarHistoriasDoSprint(codigoSprint);
     } catch (const exception& e) {
-        cout << "✗ Erro: " << e.what() << endl;
+        cout << "Erro: " << e.what() << endl;
     }
 }
 
@@ -348,7 +344,7 @@ string ControladoraPessoa::lerEmail() {
         cout << "Email: ";
         getline(cin, email);
         if (email.find('@') == string::npos) {
-            cout << "✗ Email deve conter '@'" << endl;
+            cout << "Email deve conter '@'" << endl;
         } else {
             break;
         }
@@ -362,9 +358,9 @@ string ControladoraPessoa::lerNome() {
         cout << "Nome (max 10 caracteres): ";
         getline(cin, nome);
         if (nome.empty() || nome.length() > 10) {
-            cout << "✗ Nome deve ter entre 1 e 10 caracteres!" << endl;
+            cout << "Nome deve ter entre 1 e 10 caracteres!" << endl;
         } else if (nome[0] == ' ' || nome.back() == ' ') {
-            cout << "✗ Nome nao pode comecar ou terminar com espaco!" << endl;
+            cout << "Nome nao pode comecar ou terminar com espaco!" << endl;
         } else {
             bool valido = true;
             for (char c : nome) {
@@ -374,7 +370,7 @@ string ControladoraPessoa::lerNome() {
                 }
             }
             if (!valido) {
-                cout << "✗ Nome deve conter apenas letras e espacos!" << endl;
+                cout << "Nome deve conter apenas letras e espacos!" << endl;
             } else {
                 break;
             }
@@ -389,7 +385,7 @@ string ControladoraPessoa::lerSenha() {
         cout << "Senha (6 caracteres): ";
         getline(cin, senha);
         if (senha.length() != 6) {
-            cout << "✗ Senha deve ter exatamente 6 caracteres!" << endl;
+            cout << "Senha deve ter exatamente 6 caracteres!" << endl;
         } else {
             break;
         }
@@ -405,7 +401,7 @@ string ControladoraPessoa::lerPapel() {
         if (papel == "DESENVOLVEDOR" || papel == "MESTRE SCRUM" || papel == "PROPRIETARIO DE PRODUTO") {
             break;
         }
-        cout << "✗ Papel invalido!" << endl;
+        cout << "Papel invalido!" << endl;
     } while (true);
     return papel;
 }
@@ -413,16 +409,16 @@ string ControladoraPessoa::lerPapel() {
 void ControladoraPessoa::executarMenu() {
     int opcao;
     do {
-        cout << "\n╔════════════════════════════════╗" << endl;
-        cout << "║       MENU PESSOA               ║" << endl;
-        cout << "╠════════════════════════════════╣" << endl;
-        cout << "║ 1 - Criar Pessoa                ║" << endl;
-        cout << "║ 2 - Consultar Pessoa            ║" << endl;
-        cout << "║ 3 - Atualizar Pessoa            ║" << endl;
-        cout << "║ 4 - Excluir Pessoa              ║" << endl;
-        cout << "║ 0 - Voltar                      ║" << endl;
-        cout << "╚════════════════════════════════╝" << endl;
-        cout << "Opcao: ";
+    cout << "\n==================================" << endl;
+    cout << "          MENU PESSOA" << endl;
+    cout << "==================================" << endl;
+    cout << "1 - Criar Pessoa" << endl;
+    cout << "2 - Consultar Pessoa" << endl;
+    cout << "3 - Atualizar Pessoa" << endl;
+    cout << "4 - Excluir Pessoa" << endl;
+    cout << "0 - Voltar" << endl;
+    cout << "==================================" << endl;
+    cout << "Opcao: ";
 
         cin >> opcao;
         limparBuffer();
@@ -433,7 +429,7 @@ void ControladoraPessoa::executarMenu() {
             case 3: atualizarPessoaFlow(); break;
             case 4: excluirPessoaFlow(); break;
             case 0: cout << "Voltando..." << endl; break;
-            default: cout << "✗ Opcao invalida!" << endl;
+            default: cout << "Opcao invalida!" << endl;
         }
 
         if (opcao != 0) pausar();
@@ -450,7 +446,7 @@ void ControladoraPessoa::criarPessoaFlow() {
     try {
         servico->criarPessoa(email, nome, senha, papel);
     } catch (const exception& e) {
-        cout << "✗ Erro: " << e.what() << endl;
+        cout << "Erro: " << e.what() << endl;
     }
 }
 
@@ -461,7 +457,7 @@ void ControladoraPessoa::consultarPessoaFlow() {
     try {
         servico->consultarPessoa(email);
     } catch (const exception& e) {
-        cout << "✗ Erro: " << e.what() << endl;
+        cout << "Erro: " << e.what() << endl;
     }
 }
 
@@ -475,7 +471,7 @@ void ControladoraPessoa::atualizarPessoaFlow() {
     try {
         servico->atualizarPessoa(email, nome, senha, papel);
     } catch (const exception& e) {
-        cout << "✗ Erro: " << e.what() << endl;
+        cout << "Erro: " << e.what() << endl;
     }
 }
 
@@ -492,7 +488,7 @@ void ControladoraPessoa::excluirPessoaFlow() {
         try {
             servico->excluirPessoa(email);
         } catch (const exception& e) {
-            cout << "✗ Erro: " << e.what() << endl;
+            cout << "Erro: " << e.what() << endl;
         }
     } else {
         cout << "Operacao cancelada." << endl;
@@ -538,11 +534,11 @@ string ControladoraProjeto::lerEmail() {
         getline(cin, email);
         
         if (email.find('@') == string::npos) {
-            cout << "✗ Email deve conter '@'" << endl;
+            cout << "Email deve conter '@'" << endl;
         } else if (email.find('@') == 0 || email.find('@') == email.length() - 1) {
-            cout << "✗ '@' nao pode estar no inicio ou fim" << endl;
+            cout << "'@' nao pode estar no inicio ou fim" << endl;
         } else if (email.find(' ') != string::npos) {
-            cout << "✗ Email nao pode conter espacos!" << endl;
+            cout << "Email nao pode conter espacos!" << endl;
         } else {
             break;
         }
@@ -558,7 +554,7 @@ string ControladoraProjeto::lerCodigo(const string& mensagem) {
         cout << mensagem;
         getline(cin, codigo);
         if (!validarFormatoCodigo(codigo)) {
-            cout << "✗ Codigo invalido! Deve ter 2 letras maiusculas + 3 digitos (ex: AB123)" << endl;
+            cout << "Codigo invalido! Deve ter 2 letras maiusculas + 3 digitos (ex: AB123)" << endl;
         } else {
             break;
         }
@@ -572,9 +568,9 @@ string ControladoraProjeto::lerNome() {
         cout << "Nome (max 10 caracteres): ";
         getline(cin, nome);
         if (nome.empty() || nome.length() > 10) {
-            cout << "✗ Nome deve ter entre 1 e 10 caracteres!" << endl;
+            cout << "Nome deve ter entre 1 e 10 caracteres!" << endl;
         } else if (nome[0] == ' ' || nome.back() == ' ') {
-            cout << "✗ Nome nao pode comecar ou terminar com espaco!" << endl;
+            cout << "Nome nao pode comecar ou terminar com espaco!" << endl;
         } else {
             bool valido = true;
             for (char c : nome) {
@@ -584,7 +580,7 @@ string ControladoraProjeto::lerNome() {
                 }
             }
             if (!valido) {
-                cout << "✗ Nome deve conter apenas letras, digitos e espacos!" << endl;
+                cout << "Nome deve conter apenas letras, digitos e espacos!" << endl;
             } else {
                 break;
             }
@@ -599,7 +595,7 @@ string ControladoraProjeto::lerData(const string& mensagem) {
         cout << mensagem << " (DD/MM/AAAA): ";
         getline(cin, data);
         if (data.length() != 10 || data[2] != '/' || data[5] != '/') {
-            cout << "✗ Formato invalido! Use DD/MM/AAAA" << endl;
+            cout << "Formato invalido! Use DD/MM/AAAA" << endl;
         } else {
             break;
         }
@@ -610,17 +606,17 @@ string ControladoraProjeto::lerData(const string& mensagem) {
 void ControladoraProjeto::executarMenu() {
     int opcao;
     do {
-        cout << "\n╔════════════════════════════════╗" << endl;
-        cout << "║       MENU PROJETO              ║" << endl;
-        cout << "╠════════════════════════════════╣" << endl;
-        cout << "║ 1 - Criar Projeto               ║" << endl;
-        cout << "║ 2 - Listar Projetos             ║" << endl;
-        cout << "║ 3 - Consultar Projeto           ║" << endl;
-        cout << "║ 4 - Atualizar Projeto           ║" << endl;
-        cout << "║ 5 - Excluir Projeto             ║" << endl;
-        cout << "║ 0 - Voltar                      ║" << endl;
-        cout << "╚════════════════════════════════╝" << endl;
-        cout << "Opcao: ";
+        cout << "\n==================================" << endl;
+    cout << "         MENU PROJETO" << endl;
+    cout << "==================================" << endl;
+    cout << "1 - Criar Projeto" << endl;
+    cout << "2 - Listar Projetos" << endl;
+    cout << "3 - Consultar Projeto" << endl;
+    cout << "4 - Atualizar Projeto" << endl;
+    cout << "5 - Excluir Projeto" << endl;
+    cout << "0 - Voltar" << endl;
+    cout << "==================================" << endl;
+    cout << "Opcao: ";
 
         cin >> opcao;
         limparBuffer();
@@ -632,7 +628,7 @@ void ControladoraProjeto::executarMenu() {
             case 4: atualizarProjetoFlow(); break;
             case 5: excluirProjetoFlow(); break;
             case 0: cout << "Voltando..." << endl; break;
-            default: cout << "✗ Opcao invalida!" << endl;
+            default: cout << "Opcao invalida!" << endl;
         }
 
         if (opcao != 0) pausar();
@@ -645,13 +641,12 @@ void ControladoraProjeto::criarProjetoFlow() {
     string nome = lerNome();
     string dataInicio = lerData("Data de inicio");
     string dataTermino = lerData("Data de termino");
-    string emailScrumMaster = lerEmail();  // ← Lê um EMAIL, não um código
-    servico->criarProjeto(codigo, nome, dataInicio, dataTermino, emailScrumMaster);
+    string emailScrumMaster = lerEmail();
 
     try {
         servico->criarProjeto(codigo, nome, dataInicio, dataTermino, emailScrumMaster);
     } catch (const exception& e) {
-        cout << "✗ Erro: " << e.what() << endl;
+         cout << "Erro: " << e.what() << endl;
     }
 }
 
@@ -660,7 +655,7 @@ void ControladoraProjeto::listarProjetosFlow() {
     try {
         servico->listarProjetos();
     } catch (const exception& e) {
-        cout << "✗ Erro: " << e.what() << endl;
+        cout << "Erro: " << e.what() << endl;
     }
 }
 
@@ -671,7 +666,7 @@ void ControladoraProjeto::consultarProjetoFlow() {
     try {
         servico->consultarProjeto(codigo);
     } catch (const exception& e) {
-        cout << "✗ Erro: " << e.what() << endl;
+        cout << "Erro: " << e.what() << endl;
     }
 }
 
@@ -683,7 +678,7 @@ void ControladoraProjeto::atualizarProjetoFlow() {
     try {
         servico->atualizarProjeto(codigo, novoNome);
     } catch (const exception& e) {
-        cout << "✗ Erro: " << e.what() << endl;
+        cout << "Erro: " << e.what() << endl;
     }
 }
 
@@ -700,7 +695,7 @@ void ControladoraProjeto::excluirProjetoFlow() {
         try {
             servico->excluirProjeto(codigo);
         } catch (const exception& e) {
-            cout << "✗ Erro: " << e.what() << endl;
+            cout << "Erro: " << e.what() << endl;
         }
     } else {
         cout << "Operacao cancelada." << endl;
@@ -741,7 +736,7 @@ string ControladoraHistoriaUsuario::lerCodigo(const string& mensagem) {
         cout << mensagem;
         getline(cin, codigo);
         if (!validarFormatoCodigo(codigo)) {
-            cout << "✗ Codigo invalido! Deve ter 2 letras maiusculas + 3 digitos (ex: AB123)" << endl;
+            cout << "Codigo invalido! Deve ter 2 letras maiusculas + 3 digitos (ex: AB123)" << endl;
         } else {
             break;
         }
@@ -755,9 +750,9 @@ string ControladoraHistoriaUsuario::lerNome() {
         cout << "Nome (max 10 caracteres): ";
         getline(cin, nome);
         if (nome.empty() || nome.length() > 10) {
-            cout << "✗ Nome deve ter entre 1 e 10 caracteres!" << endl;
+            cout << "Nome deve ter entre 1 e 10 caracteres!" << endl;
         } else if (nome[0] == ' ' || nome.back() == ' ') {
-            cout << "✗ Nome nao pode comecar ou terminar com espaco!" << endl;
+            cout << "Nome nao pode comecar ou terminar com espaco!" << endl;
         } else {
             bool valido = true;
             char ant = ' ';
@@ -773,7 +768,7 @@ string ControladoraHistoriaUsuario::lerNome() {
                 ant = c;
             }
             if (!valido) {
-                cout << "✗ Nome invalido! Use apenas letras, digitos e espacos (sem espacos duplos)" << endl;
+                cout << "Nome invalido! Use apenas letras, digitos e espacos (sem espacos duplos)" << endl;
             } else {
                 break;
             }
@@ -788,11 +783,11 @@ string ControladoraHistoriaUsuario::lerDescricao() {
         cout << "Descricao (max 40 caracteres): ";
         getline(cin, descricao);
         if (descricao.empty() || descricao.length() > 40) {
-            cout << "✗ Descricao deve ter entre 1 e 40 caracteres!" << endl;
+            cout << "Descricao deve ter entre 1 e 40 caracteres!" << endl;
         } else if (descricao[0] == ',' || descricao[0] == '.' || descricao[0] == ' ') {
-            cout << "✗ Descricao nao pode comecar com virgula, ponto ou espaco!" << endl;
+            cout << "Descricao nao pode comecar com virgula, ponto ou espaco!" << endl;
         } else if (descricao.back() == ',' || descricao.back() == '.' || descricao.back() == ' ') {
-            cout << "✗ Descricao nao pode terminar com virgula, ponto ou espaco!" << endl;
+            cout << "Descricao nao pode terminar com virgula, ponto ou espaco!" << endl;
         } else {
             break;
         }
@@ -808,7 +803,7 @@ string ControladoraHistoriaUsuario::lerPrioridade() {
         if (prioridade == "ALTA" || prioridade == "MEDIA" || prioridade == "BAIXA") {
             break;
         }
-        cout << "✗ Prioridade invalida! Opcoes: ALTA, MEDIA, BAIXA" << endl;
+        cout << "Prioridade invalida! Opcoes: ALTA, MEDIA, BAIXA" << endl;
     } while (true);
     return prioridade;
 }
@@ -821,7 +816,7 @@ string ControladoraHistoriaUsuario::lerEstado() {
         if (estado == "A FAZER" || estado == "FAZENDO" || estado == "FEITO") {
             break;
         }
-        cout << "✗ Estado invalido! Opcoes: A FAZER, FAZENDO, FEITO" << endl;
+        cout << "Estado invalido! Opcoes: A FAZER, FAZENDO, FEITO" << endl;
     } while (true);
     return estado;
 }
@@ -837,9 +832,9 @@ int ControladoraHistoriaUsuario::lerEstimativa() {
             if (est >= 1 && est <= 365) {
                 break;
             }
-            cout << "✗ Estimativa deve estar entre 1 e 365!" << endl;
+            cout << "Estimativa deve estar entre 1 e 365!" << endl;
         } catch (...) {
-            cout << "✗ Digite um numero valido!" << endl;
+            cout << "Digite um numero valido!" << endl;
         }
     } while (true);
     return est;
@@ -852,21 +847,21 @@ string ControladoraHistoriaUsuario::lerCodigoPessoa() {
 void ControladoraHistoriaUsuario::executarMenu() {
     int opcao;
     do {
-        cout << "\n╔════════════════════════════════════╗" << endl;
-        cout << "║       MENU HISTORIA USUARIO         ║" << endl;
-        cout << "╠════════════════════════════════════╣" << endl;
-        cout << "║ 1 - Criar Historia                 ║" << endl;
-        cout << "║ 2 - Listar Historias               ║" << endl;
-        cout << "║ 3 - Consultar Historia             ║" << endl;
-        cout << "║ 4 - Alterar Estado                 ║" << endl;
-        cout << "║ 5 - Atualizar Historia             ║" << endl;
-        cout << "║ 6 - Excluir Historia               ║" << endl;
-        cout << "║ 7 - Atribuir Responsavel           ║" << endl;
-        cout << "║ 8 - Remover Responsavel            ║" << endl;
-        cout << "║ 9 - Listar por Projeto             ║" << endl;
-        cout << "║ 0 - Voltar                         ║" << endl;
-        cout << "╚════════════════════════════════════╝" << endl;
-        cout << "Opcao: ";
+    cout << "\n=========================================" << endl;
+    cout << "      MENU HISTORIA DE USUARIO" << endl;
+    cout << "=========================================" << endl;
+    cout << "1 - Criar Historia" << endl;
+    cout << "2 - Listar Historias" << endl;
+    cout << "3 - Consultar Historia" << endl;
+    cout << "4 - Alterar Estado" << endl;
+    cout << "5 - Atualizar Historia" << endl;
+    cout << "6 - Excluir Historia" << endl;
+    cout << "7 - Atribuir Responsavel" << endl;
+    cout << "8 - Remover Responsavel" << endl;
+    cout << "9 - Listar por Projeto" << endl;
+    cout << "0 - Voltar" << endl;
+    cout << "=========================================" << endl;
+    cout << "Opcao: ";
 
         cin >> opcao;
         limparBuffer();
@@ -882,7 +877,7 @@ void ControladoraHistoriaUsuario::executarMenu() {
             case 8: removerResponsavelFlow(); break;
             case 9: listarPorProjetoFlow(); break;
             case 0: cout << "Voltando..." << endl; break;
-            default: cout << "✗ Opcao invalida!" << endl;
+            default: cout << "Opcao invalida!" << endl;
         }
 
         if (opcao != 0) pausar();
@@ -901,7 +896,7 @@ void ControladoraHistoriaUsuario::criarHistoriaFlow() {
     try {
         servico->criarHistoria(codigo, nome, descricao, prioridade, codigoProjeto, estimativa);
     } catch (const exception& e) {
-        cout << "✗ Erro: " << e.what() << endl;
+        cout << "Erro: " << e.what() << endl;
     }
 }
 
@@ -910,7 +905,7 @@ void ControladoraHistoriaUsuario::listarHistoriasFlow() {
     try {
         servico->listarHistorias();
     } catch (const exception& e) {
-        cout << "✗ Erro: " << e.what() << endl;
+        cout << "Erro: " << e.what() << endl;
     }
 }
 
@@ -921,7 +916,7 @@ void ControladoraHistoriaUsuario::consultarHistoriaFlow() {
     try {
         servico->consultarHistoria(codigo);
     } catch (const exception& e) {
-        cout << "✗ Erro: " << e.what() << endl;
+        cout << "Erro: " << e.what() << endl;
     }
 }
 
@@ -933,7 +928,7 @@ void ControladoraHistoriaUsuario::alterarEstadoFlow() {
     try {
         servico->alterarEstado(codigo, novoEstado);
     } catch (const exception& e) {
-        cout << "✗ Erro: " << e.what() << endl;
+        cout << "Erro: " << e.what() << endl;
     }
 }
 
@@ -948,7 +943,7 @@ void ControladoraHistoriaUsuario::atualizarHistoriaFlow() {
     try {
         servico->atualizarHistoria(codigo, nome, descricao, prioridade, estimativa);
     } catch (const exception& e) {
-        cout << "✗ Erro: " << e.what() << endl;
+        cout << "Erro: " << e.what() << endl;
     }
 }
 
@@ -965,7 +960,7 @@ void ControladoraHistoriaUsuario::excluirHistoriaFlow() {
         try {
             servico->excluirHistoria(codigo);
         } catch (const exception& e) {
-            cout << "✗ Erro: " << e.what() << endl;
+            cout << "Erro: " << e.what() << endl;
         }
     } else {
         cout << "Operacao cancelada." << endl;
@@ -980,7 +975,7 @@ void ControladoraHistoriaUsuario::atribuirResponsavelFlow() {
     try {
         servico->atribuirResponsavel(codigoHistoria, codigoPessoa);
     } catch (const exception& e) {
-        cout << "✗ Erro: " << e.what() << endl;
+        cout << "Erro: " << e.what() << endl;
     }
 }
 
@@ -991,7 +986,7 @@ void ControladoraHistoriaUsuario::removerResponsavelFlow() {
     try {
         servico->removerResponsavel(codigoHistoria);
     } catch (const exception& e) {
-        cout << "✗ Erro: " << e.what() << endl;
+        cout << "Erro: " << e.what() << endl;
     }
 }
 
@@ -1002,7 +997,7 @@ void ControladoraHistoriaUsuario::listarPorProjetoFlow() {
     try {
         servico->listarHistoriasPorProjeto(codigoProjeto);
     } catch (const exception& e) {
-        cout << "✗ Erro: " << e.what() << endl;
+        cout << "Erro: " << e.what() << endl;
     }
 }
 
@@ -1028,16 +1023,16 @@ MenuPrincipal::MenuPrincipal(IServicoPessoa* sp,
 void MenuPrincipal::executar() {
     int opcao;
     do {
-        cout << "\n╔═══════════════════════════════════════════════════════╗" << endl;
-        cout << "║              SISTEMA SCRUM - MENU PRINCIPAL            ║" << endl;
-        cout << "╠═══════════════════════════════════════════════════════╣" << endl;
-        cout << "║  1 - Gerenciar Pessoas                                ║" << endl;
-        cout << "║  2 - Gerenciar Projetos                               ║" << endl;
-        cout << "║  3 - Gerenciar Planos de Sprint                       ║" << endl;
-        cout << "║  4 - Gerenciar Historias de Usuario                   ║" << endl;
-        cout << "║  0 - Sair                                             ║" << endl;
-        cout << "╚═══════════════════════════════════════════════════════╝" << endl;
-        cout << "Opcao: ";
+    cout << "\n========================================" << endl;
+    cout << "        SISTEMA SCRUM - MENU PRINCIPAL  " << endl;
+    cout << "========================================" << endl;
+    cout << "1 - Gerenciar Pessoas" << endl;
+    cout << "2 - Gerenciar Projetos" << endl;
+    cout << "3 - Gerenciar Planos de Sprint" << endl;
+    cout << "4 - Gerenciar Historias de Usuario" << endl;
+    cout << "0 - Sair" << endl;
+    cout << "========================================" << endl;
+    cout << "Opcao: ";
 
         cin >> opcao;
         limparBuffer();
@@ -1048,7 +1043,7 @@ void MenuPrincipal::executar() {
             case 3: ctrlPlanoSprint.executarMenu(); break;
             case 4: ctrlHistoria.executarMenu(); break;
             case 0: cout << "Saindo..." << endl; break;
-            default: cout << "✗ Opcao invalida!" << endl;
+            default: cout << "Opcao invalida!" << endl;
         }
 
         if (opcao != 0) pausar();

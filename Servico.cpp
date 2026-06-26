@@ -55,7 +55,7 @@ void ServicoPessoa::criarPessoa(const string& email,
         throw runtime_error("Erro: Pessoa com email '" + email + "' ja existe");
     }
 
-    cout << "✓ Pessoa criada com sucesso!" << endl;
+    cout << "[SUCESSO] Pessoa criada com sucesso!" << endl;
     cout << "  Email: " << email << endl;
     cout << "  Nome: " << nome << endl;
     cout << "  Papel: " << papel << endl;
@@ -100,7 +100,7 @@ void ServicoPessoa::atualizarPessoa(const string& email,
         throw runtime_error("Erro: Pessoa com email '" + email + "' nao encontrada");
     }
 
-    cout << "✓ Pessoa '" << email << "' atualizada com sucesso!" << endl;
+    cout << "[SUCESSO] Pessoa '" << email << "' atualizada com sucesso!" << endl;
 }
 
 void ServicoPessoa::excluirPessoa(const string& email) {
@@ -110,7 +110,7 @@ void ServicoPessoa::excluirPessoa(const string& email) {
         throw runtime_error("Erro: Pessoa com email '" + email + "' nao encontrada");
     }
 
-    cout << "✓ Pessoa '" << email << "' excluida com sucesso!" << endl;
+    cout << "[SUCESSO] Pessoa '" << email << "' excluida com sucesso!" << endl;
 }
 
 
@@ -172,7 +172,7 @@ void ServicoPlanoSprint::criarPlanoSprint(const string& codigo,
         throw runtime_error("Erro: Falha ao criar plano de sprint");
     }
 
-    cout << "✓ Plano de sprint criado com sucesso!" << endl;
+    cout << "[SUCESSO] Plano de sprint criado com sucesso!" << endl;
     cout << "  Codigo: " << codigo << endl;
     cout << "  Capacidade: " << capacidade << " dias" << endl;
     cout << "  Periodo: " << dataInicio << " a " << dataTermino << endl;
@@ -235,7 +235,7 @@ void ServicoPlanoSprint::atualizarCapacidade(const string& codigo,
         throw runtime_error("Erro: Falha ao atualizar capacidade");
     }
 
-    cout << "✓ Capacidade do sprint '" << codigo
+    cout << "[SUCESSO] Capacidade do sprint '" << codigo
          << "' atualizada para " << novaCapacidade << " dias" << endl;
 }
 
@@ -246,7 +246,7 @@ void ServicoPlanoSprint::excluirPlanoSprint(const string& codigo) {
         throw runtime_error("Erro: Plano de sprint '" + codigo + "' nao encontrado");
     }
 
-    cout << "✓ Plano de sprint '" << codigo << "' removido com sucesso" << endl;
+    cout << "[SUCESSO] Plano de sprint '" << codigo << "' removido com sucesso" << endl;
 }
 
 void ServicoPlanoSprint::associarHistoria(const string& codigoSprint,
@@ -289,7 +289,7 @@ void ServicoPlanoSprint::associarHistoria(const string& codigoSprint,
         }
     }
 
-    cout << "✓ Historia '" << codigoHistoria
+    cout << "[SUCESSO] Historia '" << codigoHistoria
          << "' associada ao sprint '" << codigoSprint << "'" << endl;
     cout << "  Estimativa: " << estimativa << " dias" << endl;
     cout << "  Soma atual: " << s->getSomaEstimativas()
@@ -327,7 +327,7 @@ void ServicoPlanoSprint::desassociarHistoria(const string& codigoSprint,
         throw runtime_error("Erro: Falha ao atualizar historia");
     }
 
-    cout << "✓ Historia '" << codigoHistoria
+    cout << "[SUCESSO] Historia '" << codigoHistoria
          << "' removida do sprint '" << codigoSprint << "'" << endl;
 }
 
@@ -426,7 +426,7 @@ void ServicoHistoriaUsuario::criarHistoria(const string& codigo,
         throw runtime_error("Erro: Falha ao criar historia");
     }
 
-    cout << "✓ Historia criada com sucesso!" << endl;
+    cout << "[SUCESSO] Historia criada com sucesso!" << endl;
     cout << "  Codigo: " << codigo << endl;
     cout << "  Nome: " << nome << endl;
     cout << "  Estado: A FAZER" << endl;
@@ -509,7 +509,7 @@ void ServicoHistoriaUsuario::alterarEstado(const string& codigo,
         throw runtime_error("Erro: Falha ao atualizar estado");
     }
 
-    cout << "✓ Estado da historia '" << codigo
+    cout << "[SUCESSO] Estado da historia '" << codigo
          << "' alterado para: " << novoEstado << endl;
 }
 
@@ -541,7 +541,7 @@ void ServicoHistoriaUsuario::atualizarHistoria(const string& codigo,
         throw runtime_error("Erro: Falha ao atualizar historia");
     }
 
-    cout << "✓ Historia '" << codigo << "' atualizada com sucesso!" << endl;
+    cout << "[SUCESSO] Historia '" << codigo << "' atualizada com sucesso!" << endl;
 }
 
 void ServicoHistoriaUsuario::excluirHistoria(const string& codigo) {
@@ -549,7 +549,7 @@ void ServicoHistoriaUsuario::excluirHistoria(const string& codigo) {
     if (!container->excluir(c)) {
         throw runtime_error("Erro: Historia '" + codigo + "' nao encontrada");
     }
-    cout << "✓ Historia '" << codigo << "' removida com sucesso" << endl;
+    cout << "[SUCESSO] Historia '" << codigo << "' removida com sucesso" << endl;
 }
 
 void ServicoHistoriaUsuario::atribuirResponsavel(const string& codigoHistoria,
@@ -572,7 +572,7 @@ void ServicoHistoriaUsuario::atribuirResponsavel(const string& codigoHistoria,
         throw runtime_error("Erro: Falha ao atribuir responsavel");
     }
 
-    cout << "✓ Responsavel '" << codigoPessoa
+    cout << "[SUCESSO] Responsavel '" << codigoPessoa
          << "' atribuido a historia '" << codigoHistoria << "'" << endl;
 }
 
@@ -588,7 +588,7 @@ void ServicoHistoriaUsuario::removerResponsavel(const string& codigoHistoria) {
         throw runtime_error("Erro: Falha ao remover responsavel");
     }
 
-    cout << "✓ Responsavel removido da historia '" << codigoHistoria << "'" << endl;
+    cout << "[SUCESSO] Responsavel removido da historia '" << codigoHistoria << "'" << endl;
 }
 
 void ServicoHistoriaUsuario::listarHistoriasPorProjeto(const string& codigoProjeto) {
@@ -668,7 +668,7 @@ void ServicoProjeto::criarProjeto(const string& codigo,
         throw runtime_error("Erro: Falha ao criar projeto");
     }
 
-    cout << "✓ Projeto criado com sucesso!" << endl;
+    cout << "[SUCESSO] Projeto criado com sucesso!" << endl;
     cout << "  Codigo: " << codigo << endl;
     cout << "  Nome: " << nome << endl;
     cout << "  Periodo: " << dataInicio << " a " << dataTermino << endl;
@@ -729,7 +729,7 @@ void ServicoProjeto::atualizarProjeto(const string& codigo,
         throw runtime_error("Erro: Falha ao atualizar projeto");
     }
 
-    cout << "✓ Projeto '" << codigo << "' atualizado para: " << novoNome << endl;
+    cout << "[SUCESSO] Projeto '" << codigo << "' atualizado para: " << novoNome << endl;
 }
 
 void ServicoProjeto::excluirProjeto(const string& codigo) {
@@ -737,5 +737,5 @@ void ServicoProjeto::excluirProjeto(const string& codigo) {
     if (!container->excluir(c)) {
         throw runtime_error("Erro: Projeto '" + codigo + "' nao encontrado");
     }
-    cout << "✓ Projeto '" << codigo << "' removido com sucesso" << endl;
+    cout << "[SUCESSO] Projeto '" << codigo << "' removido com sucesso" << endl;
 }
