@@ -46,23 +46,35 @@ void Data::validar(string valor){
         if(!isdigit(valor[i]))
             throw invalid_argument("Data invalida.");
     }
+
     int dia = stoi(valor.substr(0,2));
     int mes = stoi(valor.substr(3,2));
     int ano = stoi(valor.substr(6,4));
+
     bool ehBissexto = false;
-    if( (ano % 4 == 0 && ano % 100 != 0) || ano % 400 == 0) ehBissexto=true;
-    else if(ano > 2999 || ano < 2000) throw invalid_argument("Data invalida.");
-    else if(mes > 12 || mes < 1) throw invalid_argument("Data invalida.");
-    else if(mes == 2){
-        if(ehBissexto && (dia > 29 || dia < 1)) throw invalid_argument("Data invalida.");
-        else if(dia > 28 || dia < 1) throw invalid_argument("Data invalida.");
+
+    if((ano % 4 == 0 && ano % 100 != 0) || ano % 400 == 0)
+        ehBissexto = true;
+
+    if(ano > 2999 || ano < 2000)
+        throw invalid_argument("Data invalida.");
+
+    if(mes > 12 || mes < 1)
+        throw invalid_argument("Data invalida.");
+
+    if(mes == 2){
+        if(ehBissexto && (dia > 29 || dia < 1))
+            throw invalid_argument("Data invalida.");
+        else if(dia > 28 || dia < 1)
+            throw invalid_argument("Data invalida.");
     }
     else if(mes == 4 || mes == 6 || mes == 9 || mes == 11){
-        if(dia > 30 || dia < 1) throw invalid_argument("Data invalida.");
+        if(dia > 30 || dia < 1)
+            throw invalid_argument("Data invalida.");
     }
-    else if(dia > 31 || dia < 1)throw invalid_argument("Data invalida.");
+    else if(dia > 31 || dia < 1)
+        throw invalid_argument("Data invalida.");
 }
-
 
 //-------------IMPLEMENTAÇÕES: ESTADO---------------------------------------------------------------------
 
