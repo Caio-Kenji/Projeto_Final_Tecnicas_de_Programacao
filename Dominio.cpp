@@ -34,6 +34,18 @@ void Codigo::validar(string valor){
 
 
 void Data::validar(string valor){
+    if(valor.size() != 10)
+        throw invalid_argument("Data invalida.");
+
+    if(valor[2] != '/' || valor[5] != '/')
+        throw invalid_argument("Data invalida.");
+
+    for(int i = 0; i < 10; i++){
+        if(i == 2 || i == 5) continue;
+
+        if(!isdigit(valor[i]))
+            throw invalid_argument("Data invalida.");
+    }
     int dia = stoi(valor.substr(0,2));
     int mes = stoi(valor.substr(3,2));
     int ano = stoi(valor.substr(6,4));
