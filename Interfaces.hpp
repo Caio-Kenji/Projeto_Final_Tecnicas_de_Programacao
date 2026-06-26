@@ -146,6 +146,8 @@ public:
  */
 class IServicoPlanoSprint {
 public:
+    virtual void listarPlanosPorProjeto(const string& codigoProjeto) = 0;
+
     virtual ~IServicoPlanoSprint() {}
 
     /**
@@ -256,6 +258,8 @@ public:
  */
 class IServicoProjeto {
 public:
+    virtual void listarProjetosPorPessoa(const string& emailPessoa) = 0;
+
     virtual ~IServicoProjeto() {}
 
     /**
@@ -332,6 +336,7 @@ public:
  */
 class IServicoHistoriaUsuario {
 public:
+    virtual void listarHistoriasPorPessoa(const string& codigoPessoa) = 0;
     virtual ~IServicoHistoriaUsuario() {}
 
     /**

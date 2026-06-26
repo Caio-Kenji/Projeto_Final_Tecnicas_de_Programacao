@@ -8,6 +8,7 @@
 
 #include "Servico.hpp"
 #include "Entidade.hpp"
+#include "Sessao.hpp"
 
 #include <iostream>
 #include <iomanip>
@@ -18,9 +19,43 @@
 #include <stdexcept>
 using namespace std;
 
+int dataParaInteiro(const string& data) {
+    int dia = stoi(data.substr(0, 2));
+    int mes = stoi(data.substr(3, 2));
+    int ano = stoi(data.substr(6, 4));
 
+    return ano * 10000 + mes * 100 + dia;
+}
 
+bool ehBissexto(int ano) {
+    return (ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0);
+}
 
+int diasNoMes(int mes, int ano) {
+    if (mes == 2) return ehBissexto(ano) ? 29 : 28;
+    if (mes == 4 || mes == 6 || mes == 9 || mes == 11) return 30;
+    return 31;
+}
+
+int diasDesde2000(const string& data) {
+    int dia = stoi(data.substr(0, 2));
+    int mes = stoi(data.substr(3, 2));
+    int ano = stoi(data.substr(6, 4));
+
+    int total = 0;
+
+    for (int a = 2000; a < ano; a++) {
+        total += ehBissexto(a) ? 366 : 365;
+    }
+
+    for (int m = 1; m < mes; m++) {
+        total += diasNoMes(m, ano);
+    }
+
+    total += dia;
+
+    return total;
+}
 
 
 
@@ -97,7 +132,7 @@ void ServicoPessoa::atualizarPessoa(const string& email,
     Pessoa pessoa(emailObj, nomeObj, senhaObj, papelObj);
 
     if (!container->atualizar(pessoa)) {
-        throw runtime_error("Erro: Pessoa com email '" + email + "' nao encontrada");
+        throw runtime_error("pessoa com email '" + email + "' nao encontrada");
     }
 
     cout << "[SUCESSO] Pessoa '" << email << "' atualizada com sucesso!" << endl;
@@ -105,9 +140,23 @@ void ServicoPessoa::atualizarPessoa(const string& email,
 
 void ServicoPessoa::excluirPessoa(const string& email) {
     Email emailObj(email);
+    ContainerProjeto* cp = ContainerProjeto::getInstancia();
+    ContainerHistoriaUsuario* ch = ContainerHistoriaUsuario::getInstancia();
+
+    for (const auto& projeto : cp->listarTodas()) {
+        if (projeto.getProprietario().get() == email || projeto.getMestre().get() == email) {
+            throw runtime_error("pessoa possui projeto associado.");
+        }
+    }
+
+    for (const auto& historia : ch->listarTodas()) {
+        if (historia.getCodigoPessoa().getValor() == email) {
+            throw runtime_error("pessoa possui historia associada.");
+        }
+    }
 
     if (!container->excluir(emailObj)) {
-        throw runtime_error("Erro: Pessoa com email '" + email + "' nao encontrada");
+        throw runtime_error("pessoa com email '" + email + "' nao encontrada");
     }
 
     cout << "[SUCESSO] Pessoa '" << email << "' excluida com sucesso!" << endl;
@@ -154,6 +203,11 @@ void ServicoPlanoSprint::criarPlanoSprint(const string& codigo,
                                           const string& dataInicio,
                                           const string& dataTermino,
                                           const string& codigoProjeto) {
+
+    if (dataParaInteiro(dataTermino) < dataParaInteiro(dataInicio)) {
+        throw runtime_error("Erro: data de termino nao pode ser anterior a data de inicio.");
+    }
+
     // 1. Verifica se o código do sprint já existe
     if (container->existe(codigo)) {
         throw runtime_error("Erro: Sprint com codigo '" + codigo + "' ja existe");
@@ -163,6 +217,24 @@ void ServicoPlanoSprint::criarPlanoSprint(const string& codigo,
     if (!containerProjeto->existe(codigoProjeto)) {
         throw runtime_error("Erro: Projeto com codigo '" + codigoProjeto + "' nao encontrado");
     }
+
+    Projeto* projeto = containerProjeto->buscar(codigoProjeto);
+
+    int duracaoProjeto = diasDesde2000(projeto->getDataTermino().getValor())
+                    - diasDesde2000(projeto->getDataInicio().getValor())
+                    + 1;
+
+    int somaCapacidades = 0;
+
+    for (const auto& sprint : container->listarTodas()) {
+        if (sprint.getCodigoProjeto() == codigoProjeto) {
+            somaCapacidades += sprint.getCapacidade();
+        }
+    }
+
+if (somaCapacidades + capacidade > duracaoProjeto) {
+    throw runtime_error("soma das capacidades dos sprints excede a duracao do projeto.");
+}
 
     // 3. Cria o objeto PlanoSprint (o construtor valida todos os domínios)
     PlanoSprint novoSprint(codigo, capacidade, dataInicio, dataTermino, codigoProjeto);
@@ -241,6 +313,11 @@ void ServicoPlanoSprint::atualizarCapacidade(const string& codigo,
 
 void ServicoPlanoSprint::excluirPlanoSprint(const string& codigo) {
     Codigo codigoObj(codigo);
+    PlanoSprint* sprint = container->buscar(codigo);
+
+    if (sprint != nullptr && !sprint->getHistoriasAssociadas().empty()) {
+        throw runtime_error("Erro: sprint possui historias associadas.");
+    }
 
     if (!container->excluir(codigoObj)) {
         throw runtime_error("Erro: Plano de sprint '" + codigo + "' nao encontrado");
@@ -653,6 +730,9 @@ void ServicoProjeto::criarProjeto(const string& codigo,
     di.setValor(dataInicio);
     Data dt;
     dt.setValor(dataTermino);
+    if (dataParaInteiro(dataTermino) < dataParaInteiro(dataInicio)) {
+       throw runtime_error("Erro: data de termino nao pode ser anterior a data de inicio.");
+    }
     Email scrummaster(emailScrumMaster);
 
     // 3. Cria o projeto
@@ -662,6 +742,8 @@ void ServicoProjeto::criarProjeto(const string& codigo,
     projeto.setDataInicio(di);
     projeto.setDataTermino(dt);
     projeto.setMestre(scrummaster);
+    Email proprietario(Sessao::emailLogado);
+    projeto.setProprietario(proprietario);
 
     // 4. Armazena
     if (!container->criar(projeto)) {
@@ -734,8 +816,129 @@ void ServicoProjeto::atualizarProjeto(const string& codigo,
 
 void ServicoProjeto::excluirProjeto(const string& codigo) {
     Codigo c(codigo);
+    ContainerPlanoSprint* cps = ContainerPlanoSprint::getInstancia();
+    ContainerHistoriaUsuario* chu = ContainerHistoriaUsuario::getInstancia();
+
+    for (const auto& sprint : cps->listarTodas()) {
+        if (sprint.getCodigoProjeto() == codigo) {
+            throw runtime_error("Erro: projeto possui plano de sprint associado.");
+        }
+    }
+
+    for (const auto& historia : chu->listarTodas()) {
+        if (historia.getCodigoProjeto().getValor() == codigo) {
+            throw runtime_error("Erro: projeto possui historia associada.");
+        }
+    }
     if (!container->excluir(c)) {
         throw runtime_error("Erro: Projeto '" + codigo + "' nao encontrado");
     }
     cout << "[SUCESSO] Projeto '" << codigo << "' removido com sucesso" << endl;
+}
+
+ServicoAutenticacao::ServicoAutenticacao() {
+    containerPessoa = ContainerPessoa::getInstancia();
+}
+
+bool ServicoAutenticacao::autenticar(const string& email, const string& senha, Pessoa* pessoaLogada) {
+    Email emailObj(email);
+
+    Nome nomeTemp;
+    nomeTemp.setNome("Temp");
+
+    Senha senhaTemp;
+    senhaTemp.setSenha("a1B2c3");
+
+    Papel papelTemp("DESENVOLVEDOR");
+
+    Pessoa pessoa(emailObj, nomeTemp, senhaTemp, papelTemp);
+
+    if (!containerPessoa->ler(&pessoa)) {
+        return false;
+    }
+
+    if (pessoa.getSenha().getSenha() != senha) {
+        return false;
+    }
+
+    *pessoaLogada = pessoa;
+    return true;
+}
+
+void ServicoPlanoSprint::listarPlanosPorProjeto(const string& codigoProjeto) {
+    vector<PlanoSprint> lista = container->listarTodas();
+
+    bool encontrou = false;
+
+    cout << "\n=== PLANOS DO PROJETO " << codigoProjeto << " ===" << endl;
+
+    for (const auto& sprint : lista) {
+        if (sprint.getCodigoProjeto() == codigoProjeto) {
+            encontrou = true;
+            cout << "Codigo: " << sprint.getCodigo() << endl;
+            cout << "Capacidade: " << sprint.getCapacidade() << endl;
+            cout << "Inicio: " << sprint.getDataInicio() << endl;
+            cout << "Termino: " << sprint.getDataTermino() << endl;
+            cout << "-----------------------------" << endl;
+        }
+    }
+
+    if (!encontrou) {
+        cout << "Nenhum plano associado a esse projeto." << endl;
+    }
+}
+
+void ServicoProjeto::listarProjetosPorPessoa(const string& emailPessoa) {
+    vector<Projeto> lista = container->listarTodas();
+
+    bool encontrou = false;
+
+    cout << "\n=== PROJETOS ASSOCIADOS A " << emailPessoa << " ===" << endl;
+
+    for (const auto& projeto : lista) {
+        bool ehProprietario = projeto.getProprietario().get() == emailPessoa;
+        bool ehMestre = projeto.getMestre().get() == emailPessoa;
+
+        if (ehProprietario || ehMestre) {
+            encontrou = true;
+
+            cout << "Codigo: " << projeto.getCodigo().getValor() << endl;
+            cout << "Nome: " << projeto.getNome().getNome() << endl;
+            cout << "Inicio: " << projeto.getDataInicio().getValor() << endl;
+            cout << "Termino: " << projeto.getDataTermino().getValor() << endl;
+            cout << "Proprietario: " << projeto.getProprietario().get() << endl;
+            cout << "Mestre Scrum: " << projeto.getMestre().get() << endl;
+            cout << "-----------------------------" << endl;
+        }
+    }
+
+    if (!encontrou) {
+        cout << "Nenhum projeto associado a essa pessoa." << endl;
+    }
+}
+
+void ServicoHistoriaUsuario::listarHistoriasPorPessoa(const string& codigoPessoa) {
+    vector<HistoriaUsuario> lista = container->listarTodas();
+
+    bool encontrou = false;
+
+    cout << "\n=== HISTORIAS ASSOCIADAS A PESSOA " << codigoPessoa << " ===" << endl;
+
+    for (const auto& h : lista) {
+        if (h.getCodigoPessoa().getValor() == codigoPessoa) {
+            encontrou = true;
+
+            cout << "Codigo: " << h.getCodigo().getValor() << endl;
+            cout << "Nome: " << h.getNome().getNome() << endl;
+            cout << "Prioridade: " << h.getPrioridade().getValor() << endl;
+            cout << "Estado: " << h.getEstadoStr() << endl;
+            cout << "Projeto: " << h.getCodigoProjeto().getValor() << endl;
+            cout << "Estimativa: " << h.getEstimativa().getTempo() << " dias" << endl;
+            cout << "-----------------------------" << endl;
+        }
+    }
+
+    if (!encontrou) {
+        cout << "Nenhuma historia associada a essa pessoa." << endl;
+    }
 }

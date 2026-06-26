@@ -83,6 +83,7 @@ private:
     ContainerHistoriaUsuario* containerHistoria;  // Ponteiro para Singleton
 
 public:
+    void listarPlanosPorProjeto(const string& codigoProjeto) override;
     /**
      * @brief Construtor do serviço de plano de sprint.
      * @details Obtém as instâncias Singleton dos containers.
@@ -134,6 +135,7 @@ private:
     ContainerProjeto* container;  // Usa ponteiro para Singleton
 
 public:
+    void listarProjetosPorPessoa(const string& emailPessoa) override;
     ServicoProjeto();
 
     void criarProjeto(const std::string& codigo,
@@ -176,6 +178,7 @@ private:
     ContainerProjeto* containerProjeto;   // Para validar projeto
 
 public:
+    void listarHistoriasPorPessoa(const string& codigoPessoa) override;
     ServicoHistoriaUsuario();
 
     void criarHistoria(const std::string& codigo,
@@ -199,6 +202,16 @@ public:
                              const std::string& codigoPessoa) override;
     void removerResponsavel(const std::string& codigoHistoria) override;
     void listarHistoriasPorProjeto(const std::string& codigoProjeto) override;
+};
+
+class ServicoAutenticacao {
+private:
+    ContainerPessoa* containerPessoa;
+
+public:
+    ServicoAutenticacao();
+
+    bool autenticar(const string& email, const string& senha, Pessoa* pessoaLogada);
 };
 
 

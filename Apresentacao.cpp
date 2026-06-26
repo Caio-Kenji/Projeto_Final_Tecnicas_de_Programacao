@@ -10,6 +10,8 @@
  */
 
 #include "Apresentacao.hpp"
+#include "Sessao.hpp"
+#include <cstdlib>
 
 #include <iostream>
 #include <limits>
@@ -22,7 +24,13 @@
 
 using namespace std;
 
-
+void limparTela() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
 
 // ============================================
 // UTILITÁRIOS AUXILIARES
@@ -111,7 +119,7 @@ string ControladoraPlanoSprint::lerCodigo(const string& mensagem) {
         getline(cin, codigo);
         
         if (!validarFormatoCodigo(codigo)) {
-            cout << "Codigo invalido! Deve ter 2 letras maiusculas + 3 digitos (ex: AB123)" << endl;
+            cout << "Codigo invalido! Deve ter 2 letras maiusculas + 3 digitos" << endl;
         } else {
             break;
         }
@@ -177,38 +185,51 @@ int ControladoraPlanoSprint::lerEstimativa() {
 void ControladoraPlanoSprint::executarMenu() {
     int opcao;
     do {
-    cout << "\n========================================" << endl;
-    cout << "        SISTEMA SCRUM - MENU PRINCIPAL  " << endl;
-    cout << "========================================" << endl;
-    cout << "1 - Gerenciar Pessoas" << endl;
-    cout << "2 - Gerenciar Projetos" << endl;
-    cout << "3 - Gerenciar Planos de Sprint" << endl;
-    cout << "4 - Gerenciar Historias de Usuario" << endl;
-    cout << "0 - Sair" << endl;
-    cout << "========================================" << endl;
+    limparTela();
+    cout << "\n=========================================" << endl;
+    cout << "       MENU PLANO DE SPRINT" << endl;
+    cout << "=========================================" << endl;
+    cout << "1 - Criar Plano de Sprint" << endl;
+    cout << "2 - Listar Planos de Sprint" << endl;
+    cout << "3 - Consultar Plano de Sprint" << endl;
+    cout << "4 - Atualizar Capacidade" << endl;
+    cout << "5 - Excluir Plano de Sprint" << endl;
+    cout << "6 - Associar Historia ao Sprint" << endl;
+    cout << "7 - Remover Historia do Sprint" << endl;
+    cout << "8 - Listar Historias do Sprint" << endl;
+    cout << "9 - Listar Sprints por Projeto" << endl;
+    cout << "0 - Voltar" << endl;
+    cout << "=========================================" << endl;
     cout << "Opcao: ";
         
         cin >> opcao;
         limparBuffer();
         
-        switch (opcao) {
-            case 1: criarPlanoSprintFlow(); break;
-            case 2: listarPlanosFlow(); break;
-            case 3: consultarPlanoFlow(); break;
-            case 4: atualizarCapacidadeFlow(); break;
-            case 5: excluirPlanoFlow(); break;
-            case 6: associarHistoriaFlow(); break;
-            case 7: desassociarHistoriaFlow(); break;
-            case 8: listarHistoriasFlow(); break;
-            case 0: cout << "Voltando..." << endl; break;
-            default: cout << "Opcao invalida!" << endl;
-        }
+    switch (opcao) {
+        case 1: criarPlanoSprintFlow(); break;
+        case 2: listarPlanosFlow(); break;
+        case 3: consultarPlanoFlow(); break;
+        case 4: atualizarCapacidadeFlow(); break;
+        case 5: excluirPlanoFlow(); break;
+        case 6: associarHistoriaFlow(); break;
+        case 7: desassociarHistoriaFlow(); break;
+        case 8: listarHistoriasFlow(); break;
+        case 9: listarPlanosPorProjetoFlow(); break;
+        case 0: cout << "Voltando..." << endl; break;
+        default: cout << "Opcao invalida!" << endl;
+    }
         
-        if (opcao != 0) pausar();
-    } while (opcao != 0);
+      //  if (opcao != 0) pausar();
+    } while (opcao != 0 && !Sessao::logout);
 }
 
 void ControladoraPlanoSprint::criarPlanoSprintFlow() {
+    limparTela();
+    if (Sessao::papelLogado != "MESTRE SCRUM") {
+        cout << "Acesso negado." << endl;
+        pausar();
+        return;
+    }
     cout << "\n=== CRIAR PLANO DE SPRINT ===" << endl;
     
     string codigo = lerCodigo("Codigo do sprint: ");
@@ -222,18 +243,22 @@ void ControladoraPlanoSprint::criarPlanoSprintFlow() {
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }
+    pausar();
 }
 
 void ControladoraPlanoSprint::listarPlanosFlow() {
+    limparTela();
     cout << "\n=== LISTAR PLANOS DE SPRINT ===" << endl;
     try {
         servico->listarPlanosSprint();
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }
+    pausar();
 }
 
 void ControladoraPlanoSprint::consultarPlanoFlow() {
+    limparTela();
     cout << "\n=== CONSULTAR PLANO DE SPRINT ===" << endl;
     string codigo = lerCodigo("Codigo do sprint: ");
     
@@ -242,9 +267,16 @@ void ControladoraPlanoSprint::consultarPlanoFlow() {
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }
+    pausar();
 }
 
 void ControladoraPlanoSprint::atualizarCapacidadeFlow() {
+    limparTela();
+    if (Sessao::papelLogado != "MESTRE SCRUM") {
+        cout << "Acesso negado." << endl;
+        pausar();
+        return;
+    }
     cout << "\n=== ATUALIZAR CAPACIDADE DO SPRINT ===" << endl;
     string codigo = lerCodigo("Codigo do sprint: ");
     int novaCapacidade = lerCapacidade();
@@ -254,9 +286,16 @@ void ControladoraPlanoSprint::atualizarCapacidadeFlow() {
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }
+    pausar();
 }
 
 void ControladoraPlanoSprint::excluirPlanoFlow() {
+    limparTela();
+    if (Sessao::papelLogado != "MESTRE SCRUM") {
+        cout << "Acesso negado." << endl;
+        pausar();
+        return;
+    }
     cout << "\n=== EXCLUIR PLANO DE SPRINT ===" << endl;
     string codigo = lerCodigo("Codigo do sprint: ");
     
@@ -274,9 +313,16 @@ void ControladoraPlanoSprint::excluirPlanoFlow() {
     } else {
         cout << "Operacao cancelada." << endl;
     }
+    pausar();
 }
 
 void ControladoraPlanoSprint::associarHistoriaFlow() {
+    limparTela();
+    if (Sessao::papelLogado != "MESTRE SCRUM") {
+        cout << "Acesso negado." << endl;
+        pausar();
+        return;
+    }
     cout << "\n=== ASSOCIAR HISTORIA AO SPRINT ===" << endl;
     string codigoSprint = lerCodigo("Codigo do sprint: ");
     string codigoHistoria = lerCodigo("Codigo da historia: ");
@@ -287,9 +333,16 @@ void ControladoraPlanoSprint::associarHistoriaFlow() {
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }
+    pausar();
 }
 
 void ControladoraPlanoSprint::desassociarHistoriaFlow() {
+    limparTela();
+    if (Sessao::papelLogado != "MESTRE SCRUM") {
+        cout << "Acesso negado." << endl;
+        pausar();
+        return;
+    }
     cout << "\n=== REMOVER HISTORIA DO SPRINT ===" << endl;
     string codigoSprint = lerCodigo("Codigo do sprint: ");
     string codigoHistoria = lerCodigo("Codigo da historia: ");
@@ -300,9 +353,11 @@ void ControladoraPlanoSprint::desassociarHistoriaFlow() {
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }
+    pausar();
 }
 
 void ControladoraPlanoSprint::listarHistoriasFlow() {
+    limparTela();
     cout << "\n=== LISTAR HISTORIAS DO SPRINT ===" << endl;
     string codigoSprint = lerCodigo("Codigo do sprint: ");
     
@@ -311,6 +366,7 @@ void ControladoraPlanoSprint::listarHistoriasFlow() {
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }
+    pausar();
 }
 
 
@@ -409,6 +465,7 @@ string ControladoraPessoa::lerPapel() {
 void ControladoraPessoa::executarMenu() {
     int opcao;
     do {
+    limparTela();
     cout << "\n==================================" << endl;
     cout << "          MENU PESSOA" << endl;
     cout << "==================================" << endl;
@@ -432,11 +489,12 @@ void ControladoraPessoa::executarMenu() {
             default: cout << "Opcao invalida!" << endl;
         }
 
-        if (opcao != 0) pausar();
-    } while (opcao != 0);
+     //   if (opcao != 0) pausar();
+    } while (opcao != 0 && !Sessao::logout);
 }
 
 void ControladoraPessoa::criarPessoaFlow() {
+    limparTela();
     cout << "\n=== CRIAR PESSOA ===" << endl;
     string email = lerEmail();
     string nome = lerNome();
@@ -448,9 +506,11 @@ void ControladoraPessoa::criarPessoaFlow() {
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }
+    pausar();
 }
 
 void ControladoraPessoa::consultarPessoaFlow() {
+    limparTela();
     cout << "\n=== CONSULTAR PESSOA ===" << endl;
     string email = lerEmail();
 
@@ -459,9 +519,11 @@ void ControladoraPessoa::consultarPessoaFlow() {
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }
+    pausar();
 }
 
 void ControladoraPessoa::atualizarPessoaFlow() {
+    limparTela();
     cout << "\n=== ATUALIZAR PESSOA ===" << endl;
     string email = lerEmail();
     string nome = lerNome();
@@ -473,9 +535,11 @@ void ControladoraPessoa::atualizarPessoaFlow() {
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }
+    pausar();
 }
 
 void ControladoraPessoa::excluirPessoaFlow() {
+    limparTela();
     cout << "\n=== EXCLUIR PESSOA ===" << endl;
     string email = lerEmail();
 
@@ -487,12 +551,18 @@ void ControladoraPessoa::excluirPessoaFlow() {
     if (toupper(confirm) == 'S') {
         try {
             servico->excluirPessoa(email);
+
+            if (email == Sessao::emailLogado) {
+                Sessao::logout = true;
+                cout << "\nSua conta foi excluida. Retornando para a tela de login..." << endl;
+            }
         } catch (const exception& e) {
             cout << "Erro: " << e.what() << endl;
         }
     } else {
         cout << "Operacao cancelada." << endl;
     }
+    pausar();
 }
 
 
@@ -554,7 +624,7 @@ string ControladoraProjeto::lerCodigo(const string& mensagem) {
         cout << mensagem;
         getline(cin, codigo);
         if (!validarFormatoCodigo(codigo)) {
-            cout << "Codigo invalido! Deve ter 2 letras maiusculas + 3 digitos (ex: AB123)" << endl;
+            cout << "Codigo invalido! Deve ter 2 letras maiusculas + 3 digitos" << endl;
         } else {
             break;
         }
@@ -606,7 +676,8 @@ string ControladoraProjeto::lerData(const string& mensagem) {
 void ControladoraProjeto::executarMenu() {
     int opcao;
     do {
-        cout << "\n==================================" << endl;
+    limparTela();
+    cout << "\n==================================" << endl;
     cout << "         MENU PROJETO" << endl;
     cout << "==================================" << endl;
     cout << "1 - Criar Projeto" << endl;
@@ -614,6 +685,7 @@ void ControladoraProjeto::executarMenu() {
     cout << "3 - Consultar Projeto" << endl;
     cout << "4 - Atualizar Projeto" << endl;
     cout << "5 - Excluir Projeto" << endl;
+    cout << "6 - Listar Projetos por Pessoa" << endl;
     cout << "0 - Voltar" << endl;
     cout << "==================================" << endl;
     cout << "Opcao: ";
@@ -627,15 +699,22 @@ void ControladoraProjeto::executarMenu() {
             case 3: consultarProjetoFlow(); break;
             case 4: atualizarProjetoFlow(); break;
             case 5: excluirProjetoFlow(); break;
+            case 6: listarProjetosPorPessoaFlow(); break;
             case 0: cout << "Voltando..." << endl; break;
             default: cout << "Opcao invalida!" << endl;
         }
 
-        if (opcao != 0) pausar();
-    } while (opcao != 0);
+     //   if (opcao != 0) pausar();
+    } while (opcao != 0 && !Sessao::logout);
 }
 
 void ControladoraProjeto::criarProjetoFlow() {
+    limparTela();
+    if (Sessao::papelLogado != "PROPRIETARIO DE PRODUTO") {
+        cout << "Acesso negado. Apenas o Proprietario de Produto pode criar projetos." << endl;
+        pausar();
+        return;
+    }
     cout << "\n=== CRIAR PROJETO ===" << endl;
     string codigo = lerCodigo("Codigo do projeto: ");
     string nome = lerNome();
@@ -648,18 +727,22 @@ void ControladoraProjeto::criarProjetoFlow() {
     } catch (const exception& e) {
          cout << "Erro: " << e.what() << endl;
     }
+    pausar();
 }
 
 void ControladoraProjeto::listarProjetosFlow() {
+    limparTela();
     cout << "\n=== LISTAR PROJETOS ===" << endl;
     try {
         servico->listarProjetos();
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }
+    pausar();
 }
 
 void ControladoraProjeto::consultarProjetoFlow() {
+    limparTela();
     cout << "\n=== CONSULTAR PROJETO ===" << endl;
     string codigo = lerCodigo("Codigo do projeto: ");
 
@@ -668,9 +751,16 @@ void ControladoraProjeto::consultarProjetoFlow() {
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }
+    pausar();
 }
 
 void ControladoraProjeto::atualizarProjetoFlow() {
+    limparTela();
+    if (Sessao::papelLogado != "PROPRIETARIO DE PRODUTO") {
+        cout << "Acesso negado." << endl;
+        pausar();
+        return;
+    }
     cout << "\n=== ATUALIZAR PROJETO ===" << endl;
     string codigo = lerCodigo("Codigo do projeto: ");
     string novoNome = lerNome();
@@ -680,9 +770,16 @@ void ControladoraProjeto::atualizarProjetoFlow() {
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }
+    pausar();
 }
 
 void ControladoraProjeto::excluirProjetoFlow() {
+    limparTela();
+    if (Sessao::papelLogado != "PROPRIETARIO DE PRODUTO") {
+        cout << "Acesso negado." << endl;
+        pausar();
+        return;
+    }
     cout << "\n=== EXCLUIR PROJETO ===" << endl;
     string codigo = lerCodigo("Codigo do projeto: ");
 
@@ -700,6 +797,7 @@ void ControladoraProjeto::excluirProjetoFlow() {
     } else {
         cout << "Operacao cancelada." << endl;
     }
+    pausar();
 }
 
 
@@ -736,7 +834,7 @@ string ControladoraHistoriaUsuario::lerCodigo(const string& mensagem) {
         cout << mensagem;
         getline(cin, codigo);
         if (!validarFormatoCodigo(codigo)) {
-            cout << "Codigo invalido! Deve ter 2 letras maiusculas + 3 digitos (ex: AB123)" << endl;
+            cout << "Codigo invalido! Deve ter 2 letras maiusculas + 3 digitos" << endl;
         } else {
             break;
         }
@@ -847,6 +945,7 @@ string ControladoraHistoriaUsuario::lerCodigoPessoa() {
 void ControladoraHistoriaUsuario::executarMenu() {
     int opcao;
     do {
+    limparTela();
     cout << "\n=========================================" << endl;
     cout << "      MENU HISTORIA DE USUARIO" << endl;
     cout << "=========================================" << endl;
@@ -859,6 +958,7 @@ void ControladoraHistoriaUsuario::executarMenu() {
     cout << "7 - Atribuir Responsavel" << endl;
     cout << "8 - Remover Responsavel" << endl;
     cout << "9 - Listar por Projeto" << endl;
+    cout << "10 - Listar por Pessoa" << endl;
     cout << "0 - Voltar" << endl;
     cout << "=========================================" << endl;
     cout << "Opcao: ";
@@ -876,15 +976,22 @@ void ControladoraHistoriaUsuario::executarMenu() {
             case 7: atribuirResponsavelFlow(); break;
             case 8: removerResponsavelFlow(); break;
             case 9: listarPorProjetoFlow(); break;
+            case 10: listarPorPessoaFlow(); break;
             case 0: cout << "Voltando..." << endl; break;
             default: cout << "Opcao invalida!" << endl;
         }
 
-        if (opcao != 0) pausar();
-    } while (opcao != 0);
+      //  if (opcao != 0) pausar();
+    } while (opcao != 0 && !Sessao::logout);
 }
 
 void ControladoraHistoriaUsuario::criarHistoriaFlow() {
+    limparTela();
+    if (Sessao::papelLogado != "PROPRIETARIO DE PRODUTO") {
+        cout << "Acesso negado." << endl;
+        pausar();
+        return;
+    }
     cout << "\n=== CRIAR HISTORIA USUARIO ===" << endl;
     string codigo = lerCodigo("Codigo da historia: ");
     string nome = lerNome();
@@ -898,18 +1005,22 @@ void ControladoraHistoriaUsuario::criarHistoriaFlow() {
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }
+    pausar();
 }
 
 void ControladoraHistoriaUsuario::listarHistoriasFlow() {
+    limparTela();
     cout << "\n=== LISTAR HISTORIAS ===" << endl;
     try {
         servico->listarHistorias();
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }
+    pausar();
 }
 
 void ControladoraHistoriaUsuario::consultarHistoriaFlow() {
+    limparTela();
     cout << "\n=== CONSULTAR HISTORIA ===" << endl;
     string codigo = lerCodigo("Codigo da historia: ");
 
@@ -918,9 +1029,18 @@ void ControladoraHistoriaUsuario::consultarHistoriaFlow() {
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }
+    pausar();
 }
 
 void ControladoraHistoriaUsuario::alterarEstadoFlow() {
+    limparTela();
+    if (Sessao::papelLogado != "PROPRIETARIO DE PRODUTO" &&
+        Sessao::papelLogado != "MESTRE SCRUM") {
+
+        cout << "Acesso negado." << endl;
+        pausar();
+        return;
+    }
     cout << "\n=== ALTERAR ESTADO ===" << endl;
     string codigo = lerCodigo("Codigo da historia: ");
     string novoEstado = lerEstado();
@@ -930,9 +1050,16 @@ void ControladoraHistoriaUsuario::alterarEstadoFlow() {
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }
+    pausar();
 }
 
 void ControladoraHistoriaUsuario::atualizarHistoriaFlow() {
+    limparTela();
+    if (Sessao::papelLogado != "PROPRIETARIO DE PRODUTO") {
+        cout << "Acesso negado." << endl;
+        pausar();
+        return;
+    }
     cout << "\n=== ATUALIZAR HISTORIA ===" << endl;
     string codigo = lerCodigo("Codigo da historia: ");
     string nome = lerNome();
@@ -945,9 +1072,16 @@ void ControladoraHistoriaUsuario::atualizarHistoriaFlow() {
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }
+    pausar();
 }
 
 void ControladoraHistoriaUsuario::excluirHistoriaFlow() {
+    limparTela();
+    if (Sessao::papelLogado != "PROPRIETARIO DE PRODUTO") {
+        cout << "Acesso negado." << endl;
+        pausar();
+        return;
+    }
     cout << "\n=== EXCLUIR HISTORIA ===" << endl;
     string codigo = lerCodigo("Codigo da historia: ");
 
@@ -965,9 +1099,16 @@ void ControladoraHistoriaUsuario::excluirHistoriaFlow() {
     } else {
         cout << "Operacao cancelada." << endl;
     }
+    pausar();
 }
 
 void ControladoraHistoriaUsuario::atribuirResponsavelFlow() {
+    limparTela();
+    if (Sessao::papelLogado != "MESTRE SCRUM") {
+        cout << "Acesso negado." << endl;
+        pausar();
+        return;
+    }
     cout << "\n=== ATRIBUIR RESPONSAVEL ===" << endl;
     string codigoHistoria = lerCodigo("Codigo da historia: ");
     string codigoPessoa = lerCodigoPessoa();
@@ -977,9 +1118,16 @@ void ControladoraHistoriaUsuario::atribuirResponsavelFlow() {
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }
+    pausar();
 }
 
 void ControladoraHistoriaUsuario::removerResponsavelFlow() {
+    limparTela();
+    if (Sessao::papelLogado != "MESTRE SCRUM") {
+        cout << "Acesso negado." << endl;
+        pausar();
+        return;
+    }
     cout << "\n=== REMOVER RESPONSAVEL ===" << endl;
     string codigoHistoria = lerCodigo("Codigo da historia: ");
 
@@ -988,9 +1136,11 @@ void ControladoraHistoriaUsuario::removerResponsavelFlow() {
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }
+    pausar();
 }
 
 void ControladoraHistoriaUsuario::listarPorProjetoFlow() {
+    limparTela();
     cout << "\n=== LISTAR HISTORIAS POR PROJETO ===" << endl;
     string codigoProjeto = lerCodigo("Codigo do projeto: ");
 
@@ -999,6 +1149,7 @@ void ControladoraHistoriaUsuario::listarPorProjetoFlow() {
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }
+    pausar();
 }
 
 
@@ -1023,6 +1174,7 @@ MenuPrincipal::MenuPrincipal(IServicoPessoa* sp,
 void MenuPrincipal::executar() {
     int opcao;
     do {
+    limparTela();
     cout << "\n========================================" << endl;
     cout << "        SISTEMA SCRUM - MENU PRINCIPAL  " << endl;
     cout << "========================================" << endl;
@@ -1046,6 +1198,52 @@ void MenuPrincipal::executar() {
             default: cout << "Opcao invalida!" << endl;
         }
 
-        if (opcao != 0) pausar();
-    } while (opcao != 0);
+     //   if (opcao != 0) pausar();
+    } while (opcao != 0 && !Sessao::logout);
+}
+
+void ControladoraPlanoSprint::listarPlanosPorProjetoFlow() {
+    limparTela();
+    cout << "\n=== LISTAR PLANOS POR PROJETO ===" << endl;
+
+    string codigoProjeto = lerCodigo("Codigo do projeto: ");
+
+    try {
+        servico->listarPlanosPorProjeto(codigoProjeto);
+    } catch (const exception& e) {
+        cout << "[ERRO] " << e.what() << endl;
+    }
+    pausar();
+}
+
+void ControladoraProjeto::listarProjetosPorPessoaFlow() {
+    limparTela();
+
+    cout << "\n=== LISTAR PROJETOS POR PESSOA ===" << endl;
+
+    string email = lerEmail();
+
+    try {
+        servico->listarProjetosPorPessoa(email);
+    } catch (const exception& e) {
+        cout << "Erro: " << e.what() << endl;
+    }
+
+    pausar();
+}
+
+void ControladoraHistoriaUsuario::listarPorPessoaFlow() {
+    limparTela();
+
+    cout << "\n=== LISTAR HISTORIAS POR PESSOA ===" << endl;
+
+    string codigoPessoa = lerCodigoPessoa();
+
+    try {
+        servico->listarHistoriasPorPessoa(codigoPessoa);
+    } catch (const exception& e) {
+        cout << "Erro: " << e.what() << endl;
+    }
+
+    pausar();
 }

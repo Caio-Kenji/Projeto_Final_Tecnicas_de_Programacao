@@ -27,7 +27,7 @@ using namespace std;
 // ============================================
 // PROTÓTIPOS DAS FUNÇÕES AUXILIARES
 // ============================================
-
+void limparTela();
 void limparBuffer();
 void pausar();
 bool validarFormatoCodigo(const string& codigo);
@@ -75,6 +75,7 @@ private:
     string lerEmail();
 
 public:
+    void listarProjetosPorPessoaFlow();
     ControladoraProjeto(IServicoProjeto* s);
 
     void executarMenu();
@@ -104,6 +105,8 @@ private:
     int lerEstimativa();
 
 public:
+    void listarPlanosPorProjetoFlow();
+
     ControladoraPlanoSprint(IServicoPlanoSprint* s);
 
     void executarMenu();
@@ -137,6 +140,7 @@ private:
     string lerCodigoPessoa();
 
 public:
+    void listarPorPessoaFlow();
     ControladoraHistoriaUsuario(IServicoHistoriaUsuario* s);
 
     void executarMenu();
