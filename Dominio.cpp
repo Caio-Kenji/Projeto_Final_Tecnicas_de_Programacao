@@ -23,9 +23,9 @@ string Dominio::getValor() const{
 
 
 void Codigo::validar(string valor){
-    if(valor.size()>5) throw invalid_argument("Codigo invalido.");
-    if(islower(valor[0]) || islower(valor[1])) throw invalid_argument("Codigo invalido.");
-    if(isalpha(valor[2]) || isalpha(valor[3]) || isalpha(valor[4]))throw invalid_argument("Codigo invalido.");
+    if (valor.size() != 5) throw invalid_argument("Codigo invalido.");
+    if (!isupper(valor[0]) || !isupper(valor[1])) throw invalid_argument("Codigo invalido.");
+    if (!isdigit(valor[2]) || !isdigit(valor[3]) || isalpha(valor[4]))throw invalid_argument("Codigo invalido.");
 }
 
 
