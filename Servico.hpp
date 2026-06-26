@@ -176,9 +176,9 @@ class ServicoHistoriaUsuario : public IServicoHistoriaUsuario {
 private:
     ContainerHistoriaUsuario* container;  // Usa ponteiro para Singleton
     ContainerProjeto* containerProjeto;   // Para validar projeto
+    ContainerPessoa* containerPessoa;
 
 public:
-    void listarHistoriasPorPessoa(const string& codigoPessoa) override;
     ServicoHistoriaUsuario();
 
     void criarHistoria(const std::string& codigo,
@@ -199,9 +199,10 @@ public:
                            int estimativa) override;
     void excluirHistoria(const std::string& codigo) override;
     void atribuirResponsavel(const std::string& codigoHistoria,
-                             const std::string& codigoPessoa) override;
+                             const std::string& emailPessoa) override;
     void removerResponsavel(const std::string& codigoHistoria) override;
     void listarHistoriasPorProjeto(const std::string& codigoProjeto) override;
+    void listarHistoriasPorPessoa(const std::string& emailPessoa) override;
 };
 
 class ServicoAutenticacao {

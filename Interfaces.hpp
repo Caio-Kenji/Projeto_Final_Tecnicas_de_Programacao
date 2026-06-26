@@ -336,7 +336,7 @@ public:
  */
 class IServicoHistoriaUsuario {
 public:
-    virtual void listarHistoriasPorPessoa(const string& codigoPessoa) = 0;
+    virtual void listarHistoriasPorPessoa(const string& emailPessoa) = 0;
     virtual ~IServicoHistoriaUsuario() {}
 
     /**
@@ -397,10 +397,10 @@ public:
     /**
      * @brief Atribui uma pessoa como responsável pela história.
      * @param codigoHistoria Código da história.
-     * @param codigoPessoa Código da pessoa responsável.
+     * @param emailPessoa Email da pessoa responsável.
      */
     virtual void atribuirResponsavel(const std::string& codigoHistoria,
-                                     const std::string& codigoPessoa) = 0;
+                                     const std::string& emailPessoa) = 0;
 
     /**
      * @brief Remove o responsável de uma história.

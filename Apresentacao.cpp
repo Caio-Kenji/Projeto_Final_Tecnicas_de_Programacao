@@ -938,8 +938,11 @@ int ControladoraHistoriaUsuario::lerEstimativa() {
     return est;
 }
 
-string ControladoraHistoriaUsuario::lerCodigoPessoa() {
-    return lerCodigo("Codigo do responsavel: ");
+string ControladoraHistoriaUsuario::lerEmailPessoa() {
+    string email;
+    cout << "Email da pessoa: ";
+    getline(cin, email);
+    return email;
 }
 
 void ControladoraHistoriaUsuario::executarMenu() {
@@ -1111,10 +1114,12 @@ void ControladoraHistoriaUsuario::atribuirResponsavelFlow() {
     }
     cout << "\n=== ATRIBUIR RESPONSAVEL ===" << endl;
     string codigoHistoria = lerCodigo("Codigo da historia: ");
-    string codigoPessoa = lerCodigoPessoa();
+    string emailPessoa = lerEmailPessoa();
+
+
 
     try {
-        servico->atribuirResponsavel(codigoHistoria, codigoPessoa);
+        servico->atribuirResponsavel(codigoHistoria, emailPessoa);
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }
@@ -1237,10 +1242,10 @@ void ControladoraHistoriaUsuario::listarPorPessoaFlow() {
 
     cout << "\n=== LISTAR HISTORIAS POR PESSOA ===" << endl;
 
-    string codigoPessoa = lerCodigoPessoa();
+    string emailPessoa = lerEmailPessoa();
 
     try {
-        servico->listarHistoriasPorPessoa(codigoPessoa);
+        servico->listarHistoriasPorPessoa(emailPessoa);
     } catch (const exception& e) {
         cout << "Erro: " << e.what() << endl;
     }

@@ -671,12 +671,12 @@ public:
  *     Codigo codigoProjeto("PR001");
  *     Tempo estimativa;
  *     estimativa.setTempo(5);
- *     Codigo codigoPessoa("AD001");
+ *     Email emailPessoa(a@a);
  *     Codigo codigoSprint("SP001");
  *
  *     HistoriaUsuario historia(codigo, nome, descricao, prioridade,
  *                              estado, codigoProjeto, estimativa,
- *                              codigoPessoa, codigoSprint);
+ *                              emailPessoa, codigoSprint);
  *     cout << "Historia criada: " << historia.getNome().getNome() << endl;
  * } catch (const invalid_argument& e) {
  *     cout << "Erro: " << e.what() << endl;
@@ -706,8 +706,11 @@ private:
     /** @brief Estimativa de esforço em dias (1-365) */
     Tempo estimativa;
 
-    /** @brief Código da pessoa (desenvolvedor) responsável pela história */
-    Codigo codigoPessoa;
+    /** @brief Email da pessoa (desenvolvedor) responsável pela história */
+    Email emailPessoa;
+
+    /** @brief Indica se a história possui um responsável atribuído */
+    bool possuiResponsavel = false;
 
     /** @brief Código do plano de sprint ao qual a história está associada */
     Codigo codigoPlanoSprint;
@@ -725,7 +728,7 @@ public:
      * @param estadoObj Estado inicial (deve ser "A FAZER").
      * @param codigoProjetoObj Código do projeto associado.
      * @param estimativaObj Estimativa em dias (1-365).
-     * @param codigoPessoaObj Código da pessoa responsável (opcional - pode ser vazio).
+     * @param emailPessoaObj Email da pessoa responsável (opcional - pode ser vazio).
      * @param codigoPlanoSprintObj Código do sprint associado (opcional - pode ser vazio).
      *
      * @throw invalid_argument Se algum domínio for inválido (repassado pelos domínios).
@@ -738,14 +741,13 @@ public:
      * @note Os códigos de pessoa e sprint podem ser vazios ("") inicialmente.
      */
     HistoriaUsuario(const Codigo& codigoObj,
-                    const Nome& nomeObj,
-                    const Texto& descricaoObj,
-                    const Prioridade& prioridadeObj,
-                    const Estado& estadoObj,
-                    const Codigo& codigoProjetoObj,
-                    const Tempo& estimativaObj,
-                    const Codigo& codigoPessoaObj = Codigo(),
-                    const Codigo& codigoPlanoSprintObj = Codigo());
+                const Nome& nomeObj,
+                const Texto& descricaoObj,
+                const Prioridade& prioridadeObj,
+                const Estado& estadoObj,
+                const Codigo& codigoProjetoObj,
+                const Tempo& estimativaObj,
+                const Codigo& codigoPlanoSprintObj = Codigo());
 
     // ========== GETTERS ==========
 
@@ -799,12 +801,11 @@ public:
     Tempo getEstimativa() const;
 
     /**
-     * @brief Retorna o código da pessoa (desenvolvedor) responsável.
-     * @return Codigo Objeto Codigo contendo o código da pessoa.
+     * @brief Retorna o email da pessoa (desenvolvedor) responsável.
+     * @return Email Objeto Email contendo o email da pessoa.
      * @note Método constante (não modifica o objeto).
-     * @note Retorna código vazio ("") se não houver responsável atribuído.
      */
-    Codigo getCodigoPessoa() const;
+    Email getEmailPessoa() const;
 
     /**
      * @brief Retorna o código do plano de sprint associado.
@@ -878,13 +879,20 @@ public:
 
     /**
      * @brief Define a pessoa (desenvolvedor) responsável pela história.
-     * @param novoCodigoPessoa Objeto Codigo válido.
-     * @post O atributo codigoPessoa é atualizado.
+     * @param novoEmailPessoa Objeto Codigo válido.
+     * @post O atributo emailPessoa é atualizado.
      * @throw invalid_argument Se o código for inválido (repassado pelo domínio).
      *
      * @note Pode ser usado um código vazio ("") para remover a associação.
      */
-    void setCodigoPessoa(const Codigo& novoCodigoPessoa);
+    void setEmailPessoa(const Email& novoEmailPessoa);
+
+    /**
+     * @brief Remove o responsável da história.
+     *
+     * @post A história passa a não possuir responsável.
+     */
+    void removerResponsavel();
 
     /**
      * @brief Define o plano de sprint associado à história.
@@ -919,7 +927,7 @@ public:
 
     /**
      * @brief Verifica se a história tem um responsável atribuído.
-     * @return true se codigoPessoa não for vazio, false caso contrário.
+     * @return true se emailPessoa não for vazio, false caso contrário.
      */
     bool temResponsavel() const;
 
@@ -1029,8 +1037,8 @@ inline Tempo HistoriaUsuario::getEstimativa() const {
  * @details Implementação inline que retorna uma cópia do atributo codigoPessoa.
  * @return Codigo Cópia do código da pessoa.
  */
-inline Codigo HistoriaUsuario::getCodigoPessoa() const {
-    return codigoPessoa;
+inline Email HistoriaUsuario::getEmailPessoa() const {
+    return emailPessoa;
 }
 
 /**
@@ -1068,10 +1076,10 @@ inline bool HistoriaUsuario::isFeito() const {
 
 /**
  * @brief Verifica se a história tem um responsável atribuído.
- * @return true se codigoPessoa não for vazio.
+ * @return true se emailPessoa não for vazio.
  */
 inline bool HistoriaUsuario::temResponsavel() const {
-    return !codigoPessoa.getValor().empty();
+    return possuiResponsavel;
 }
 
 /**

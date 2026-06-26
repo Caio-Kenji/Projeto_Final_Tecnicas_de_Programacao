@@ -66,7 +66,7 @@ int diasDesde2000(const string& data) {
 ServicoPessoa::ServicoPessoa() {
     container = ContainerPessoa::getInstancia();
     if (container == nullptr) {
-        throw runtime_error("Erro: Falha ao obter instancia do container de pessoa");
+        throw runtime_error("falha ao obter instancia do container de pessoa");
     }
 }
 
@@ -87,7 +87,7 @@ void ServicoPessoa::criarPessoa(const string& email,
 
     // 3. Armazena no container (usando ->)
     if (!container->criar(pessoa)) {
-        throw runtime_error("Erro: Pessoa com email '" + email + "' ja existe");
+        throw runtime_error("pessoa com email '" + email + "' ja existe");
     }
 
     cout << "[SUCESSO] Pessoa criada com sucesso!" << endl;
@@ -108,7 +108,7 @@ void ServicoPessoa::consultarPessoa(const string& email) {
     Pessoa pessoa(emailObj, nomeTemp, senhaTemp, papelTemp);
 
     if (!container->ler(&pessoa)) {
-        throw runtime_error("Erro: Pessoa com email '" + email + "' nao encontrada");
+        throw runtime_error("pessoa com email '" + email + "' nao encontrada");
     }
 
     cout << "\n=== DADOS DA PESSOA ===" << endl;
@@ -150,7 +150,7 @@ void ServicoPessoa::excluirPessoa(const string& email) {
     }
 
     for (const auto& historia : ch->listarTodas()) {
-        if (historia.getCodigoPessoa().getValor() == email) {
+        if (historia.getEmailPessoa().get() == email) {
             throw runtime_error("pessoa possui historia associada.");
         }
     }
@@ -194,7 +194,7 @@ ServicoPlanoSprint::ServicoPlanoSprint() {
     containerHistoria = ContainerHistoriaUsuario::getInstancia();
 
     if (container == nullptr || containerProjeto == nullptr || containerHistoria == nullptr) {
-        throw runtime_error("Erro: Falha ao obter instancias dos containers");
+        throw runtime_error("falha ao obter instancias dos containers");
     }
 }
 
@@ -215,7 +215,7 @@ void ServicoPlanoSprint::criarPlanoSprint(const string& codigo,
 
     // 2. Verifica se o projeto associado existe
     if (!containerProjeto->existe(codigoProjeto)) {
-        throw runtime_error("Erro: Projeto com codigo '" + codigoProjeto + "' nao encontrado");
+        throw runtime_error("projeto com codigo '" + codigoProjeto + "' nao encontrado");
     }
 
     Projeto* projeto = containerProjeto->buscar(codigoProjeto);
@@ -241,7 +241,7 @@ if (somaCapacidades + capacidade > duracaoProjeto) {
 
     // 4. Armazena no container usando o método criar()
     if (!container->criar(novoSprint)) {
-        throw runtime_error("Erro: Falha ao criar plano de sprint");
+        throw runtime_error("falha ao criar plano de sprint");
     }
 
     cout << "[SUCESSO] Plano de sprint criado com sucesso!" << endl;
@@ -281,7 +281,7 @@ void ServicoPlanoSprint::listarPlanosSprint() {
 void ServicoPlanoSprint::consultarPlanoSprint(const string& codigo) {
     const PlanoSprint* s = container->buscar(codigo);
     if (s == nullptr) {
-        throw runtime_error("Erro: Plano de sprint '" + codigo + "' nao encontrado");
+        throw runtime_error("plano de sprint '" + codigo + "' nao encontrado");
     }
 
     cout << "\n=== DETALHES DO PLANO DE SPRINT ===" << endl;
@@ -298,13 +298,13 @@ void ServicoPlanoSprint::atualizarCapacidade(const string& codigo,
                                              int novaCapacidade) {
     PlanoSprint* s = container->buscar(codigo);
     if (s == nullptr) {
-        throw runtime_error("Erro: Plano de sprint '" + codigo + "' nao encontrado");
+        throw runtime_error("plano de sprint '" + codigo + "' nao encontrado");
     }
 
     s->setCapacidade(novaCapacidade);
 
     if (!container->atualizar(*s)) {
-        throw runtime_error("Erro: Falha ao atualizar capacidade");
+        throw runtime_error("falha ao atualizar capacidade");
     }
 
     cout << "[SUCESSO] Capacidade do sprint '" << codigo
@@ -320,7 +320,7 @@ void ServicoPlanoSprint::excluirPlanoSprint(const string& codigo) {
     }
 
     if (!container->excluir(codigoObj)) {
-        throw runtime_error("Erro: Plano de sprint '" + codigo + "' nao encontrado");
+        throw runtime_error("plano de sprint '" + codigo + "' nao encontrado");
     }
 
     cout << "[SUCESSO] Plano de sprint '" << codigo << "' removido com sucesso" << endl;
@@ -331,22 +331,22 @@ void ServicoPlanoSprint::associarHistoria(const string& codigoSprint,
                                           int estimativa) {
     PlanoSprint* s = container->buscar(codigoSprint);
     if (s == nullptr) {
-        throw runtime_error("Erro: Plano de sprint '" + codigoSprint + "' nao encontrado");
+        throw runtime_error("plano de sprint '" + codigoSprint + "' nao encontrado");
     }
 
     if (!containerHistoria->existe(codigoHistoria)) {
-        throw runtime_error("Erro: Historia de usuario '" + codigoHistoria + "' nao encontrada");
+        throw runtime_error("historia de usuario '" + codigoHistoria + "' nao encontrada");
     }
 
     const HistoriaUsuario* h = containerHistoria->buscar(codigoHistoria);
     if (h != nullptr && !h->isAFazer()) {
-        throw runtime_error("Erro: Historia '" + codigoHistoria +
+        throw runtime_error("historia '" + codigoHistoria +
                            "' nao pode ser associada a um sprint (estado: " +
                            h->getEstadoStr() + ")");
     }
 
     if (h != nullptr && h->estaAssociadaASprint()) {
-        throw runtime_error("Erro: Historia '" + codigoHistoria +
+        throw runtime_error("historia '" + codigoHistoria +
                            "' ja esta associada ao sprint '" +
                            h->getCodigoPlanoSprint().getValor() + "'");
     }
@@ -354,7 +354,7 @@ void ServicoPlanoSprint::associarHistoria(const string& codigoSprint,
     s->associarHistoria(codigoHistoria, estimativa);
 
     if (!container->atualizar(*s)) {
-        throw runtime_error("Erro: Falha ao atualizar sprint");
+        throw runtime_error("falha ao atualizar sprint");
     }
 
     if (h != nullptr) {
@@ -378,30 +378,30 @@ void ServicoPlanoSprint::desassociarHistoria(const string& codigoSprint,
                                              int estimativa) {
     PlanoSprint* s = container->buscar(codigoSprint);
     if (s == nullptr) {
-        throw runtime_error("Erro: Plano de sprint '" + codigoSprint + "' nao encontrado");
+        throw runtime_error("plano de sprint '" + codigoSprint + "' nao encontrado");
     }
 
     HistoriaUsuario* h = containerHistoria->buscar(codigoHistoria);
     if (h == nullptr) {
-        throw runtime_error("Erro: Historia '" + codigoHistoria + "' nao encontrada");
+        throw runtime_error("historia '" + codigoHistoria + "' nao encontrada");
     }
 
     if (h->getCodigoPlanoSprint().getValor() != codigoSprint) {
-        throw runtime_error("Erro: Historia '" + codigoHistoria +
+        throw runtime_error("historia '" + codigoHistoria +
                            "' nao esta associada ao sprint '" + codigoSprint + "'");
     }
 
     if (!s->desassociarHistoria(codigoHistoria, estimativa)) {
-        throw runtime_error("Erro: Falha ao remover historia do sprint");
+        throw runtime_error("falha ao remover historia do sprint");
     }
 
     if (!container->atualizar(*s)) {
-        throw runtime_error("Erro: Falha ao atualizar sprint");
+        throw runtime_error("falha ao atualizar sprint");
     }
 
     h->setCodigoPlanoSprint(Codigo());
     if (!containerHistoria->atualizar(*h)) {
-        throw runtime_error("Erro: Falha ao atualizar historia");
+        throw runtime_error("falha ao atualizar historia");
     }
 
     cout << "[SUCESSO] Historia '" << codigoHistoria
@@ -411,7 +411,7 @@ void ServicoPlanoSprint::desassociarHistoria(const string& codigoSprint,
 void ServicoPlanoSprint::listarHistoriasDoSprint(const string& codigoSprint) {
     const PlanoSprint* s = container->buscar(codigoSprint);
     if (s == nullptr) {
-        throw runtime_error("Erro: Plano de sprint '" + codigoSprint + "' nao encontrado");
+        throw runtime_error("plano de sprint '" + codigoSprint + "' nao encontrado");
     }
 
     const vector<string>& historias = s->getHistoriasAssociadas();
@@ -465,6 +465,7 @@ void ServicoPlanoSprint::listarHistoriasDoSprint(const string& codigoSprint) {
 ServicoHistoriaUsuario::ServicoHistoriaUsuario() {
     container = ContainerHistoriaUsuario::getInstancia();
     containerProjeto = ContainerProjeto::getInstancia();
+    containerPessoa = ContainerPessoa::getInstancia();
 }
 
 void ServicoHistoriaUsuario::criarHistoria(const string& codigo,
@@ -475,12 +476,12 @@ void ServicoHistoriaUsuario::criarHistoria(const string& codigo,
                                            int estimativa) {
     // 1. Verifica se o código já existe
     if (container->existe(codigo)) {
-        throw runtime_error("Erro: Historia com codigo '" + codigo + "' ja existe");
+        throw runtime_error("historia com codigo '" + codigo + "' ja existe");
     }
 
     // 2. Verifica se o projeto existe
     if (!containerProjeto->existe(codigoProjeto)) {
-        throw runtime_error("Erro: Projeto '" + codigoProjeto + "' nao encontrado");
+        throw runtime_error("projeto '" + codigoProjeto + "' nao encontrado");
     }
 
     // 3. Valida os domínios
@@ -500,7 +501,7 @@ void ServicoHistoriaUsuario::criarHistoria(const string& codigo,
 
     // 5. Armazena
     if (!container->criar(historia)) {
-        throw runtime_error("Erro: Falha ao criar historia");
+        throw runtime_error("falha ao criar historia");
     }
 
     cout << "[SUCESSO] Historia criada com sucesso!" << endl;
@@ -539,7 +540,7 @@ void ServicoHistoriaUsuario::listarHistorias() {
 void ServicoHistoriaUsuario::consultarHistoria(const string& codigo) {
     const HistoriaUsuario* h = container->buscar(codigo);
     if (h == nullptr) {
-        throw runtime_error("Erro: Historia '" + codigo + "' nao encontrada");
+        throw runtime_error("historia '" + codigo + "' nao encontrada");
     }
 
     cout << "\n=== DADOS DA HISTORIA ===" << endl;
@@ -551,8 +552,14 @@ void ServicoHistoriaUsuario::consultarHistoria(const string& codigo) {
     cout << "Projeto: " << h->getCodigoProjeto().getValor() << endl;
     cout << "Estimativa: " << h->getEstimativa().getTempo() << " dias" << endl;
 
-    string responsavel = h->getCodigoPessoa().getValor();
-    cout << "Responsavel: " << (responsavel.empty() ? "Nenhum" : responsavel) << endl;
+    if (h->temResponsavel()) {
+        cout << "Responsavel: "
+            << h->getEmailPessoa().get()
+            << endl;
+    }
+    else {
+        cout << "Responsavel: Nenhum" << endl;
+    }
 
     string sprint = h->getCodigoPlanoSprint().getValor();
     cout << "Sprint: " << (sprint.empty() ? "Nao associado" : sprint) << endl;
@@ -562,7 +569,7 @@ void ServicoHistoriaUsuario::alterarEstado(const string& codigo,
                                            const string& novoEstado) {
     HistoriaUsuario* h = container->buscar(codigo);
     if (h == nullptr) {
-        throw runtime_error("Erro: Historia '" + codigo + "' nao encontrada");
+        throw runtime_error("historia '" + codigo + "' nao encontrada");
     }
 
     // Valida o novo estado
@@ -571,7 +578,7 @@ void ServicoHistoriaUsuario::alterarEstado(const string& codigo,
     // Verifica se é uma transição válida (apenas avanço)
     string estadoAtual = h->getEstadoStr();
     if (estadoAtual == "FEITO") {
-        throw runtime_error("Erro: Historia ja esta em FEITO");
+        throw runtime_error("historia ja esta em FEITO");
     }
     if (estadoAtual == "FAZENDO" && novoEstado != "FEITO") {
         throw runtime_error("Erro: De FAZENDO so pode ir para FEITO");
@@ -583,7 +590,7 @@ void ServicoHistoriaUsuario::alterarEstado(const string& codigo,
     h->setEstado(e);
 
     if (!container->atualizar(*h)) {
-        throw runtime_error("Erro: Falha ao atualizar estado");
+        throw runtime_error("falha ao atualizar estado");
     }
 
     cout << "[SUCESSO] Estado da historia '" << codigo
@@ -597,7 +604,7 @@ void ServicoHistoriaUsuario::atualizarHistoria(const string& codigo,
                                                int estimativa) {
     HistoriaUsuario* h = container->buscar(codigo);
     if (h == nullptr) {
-        throw runtime_error("Erro: Historia '" + codigo + "' nao encontrada");
+        throw runtime_error("historia '" + codigo + "' nao encontrada");
     }
 
     // Valida os novos valores
@@ -615,7 +622,7 @@ void ServicoHistoriaUsuario::atualizarHistoria(const string& codigo,
     h->setEstimativa(tm);
 
     if (!container->atualizar(*h)) {
-        throw runtime_error("Erro: Falha ao atualizar historia");
+        throw runtime_error("falha ao atualizar historia");
     }
 
     cout << "[SUCESSO] Historia '" << codigo << "' atualizada com sucesso!" << endl;
@@ -624,45 +631,60 @@ void ServicoHistoriaUsuario::atualizarHistoria(const string& codigo,
 void ServicoHistoriaUsuario::excluirHistoria(const string& codigo) {
     Codigo c(codigo);
     if (!container->excluir(c)) {
-        throw runtime_error("Erro: Historia '" + codigo + "' nao encontrada");
+        throw runtime_error("historia '" + codigo + "' nao encontrada");
     }
     cout << "[SUCESSO] Historia '" << codigo << "' removida com sucesso" << endl;
 }
 
 void ServicoHistoriaUsuario::atribuirResponsavel(const string& codigoHistoria,
-                                                  const string& codigoPessoa) {
+                                                  const string& emailPessoa) {
     HistoriaUsuario* h = container->buscar(codigoHistoria);
     if (h == nullptr) {
-        throw runtime_error("Erro: Historia '" + codigoHistoria + "' nao encontrada");
+        throw runtime_error("historia '" + codigoHistoria + "' nao encontrada");
     }
 
     // Verifica se a história pode ser atribuída
     if (!h->podeSerAtribuida()) {
-        throw runtime_error("Erro: Historia em estado '" + h->getEstadoStr() +
+        throw runtime_error("historia em estado '" + h->getEstadoStr() +
                            "' nao pode ser atribuida");
     }
 
-    Codigo pessoa(codigoPessoa);  // Valida o código
-    h->setCodigoPessoa(pessoa);
+    Email emailObj(emailPessoa);
 
-    if (!container->atualizar(*h)) {
-        throw runtime_error("Erro: Falha ao atribuir responsavel");
+    Nome nomeTemp;
+    nomeTemp.setNome("Temp");
+
+    Senha senhaTemp;
+    senhaTemp.setSenha("a1B2c3");
+
+    Papel papelTemp("DESENVOLVEDOR");
+
+    Pessoa pessoaTemp(emailObj, nomeTemp, senhaTemp, papelTemp);
+
+    if (!containerPessoa->ler(&pessoaTemp)) {
+        throw runtime_error("pessoa com email '" + emailPessoa + "' nao encontrada");
     }
 
-    cout << "[SUCESSO] Responsavel '" << codigoPessoa
+    h->setEmailPessoa(emailObj);
+
+    if (!container->atualizar(*h)) {
+        throw runtime_error("falha ao atribuir responsavel");
+    }
+
+    cout << "[SUCESSO] Responsavel '" << emailPessoa
          << "' atribuido a historia '" << codigoHistoria << "'" << endl;
 }
 
 void ServicoHistoriaUsuario::removerResponsavel(const string& codigoHistoria) {
     HistoriaUsuario* h = container->buscar(codigoHistoria);
     if (h == nullptr) {
-        throw runtime_error("Erro: Historia '" + codigoHistoria + "' nao encontrada");
+        throw runtime_error("historia '" + codigoHistoria + "' nao encontrada");
     }
 
-    h->setCodigoPessoa(Codigo());  // Código vazio
+    h->removerResponsavel();
 
     if (!container->atualizar(*h)) {
-        throw runtime_error("Erro: Falha ao remover responsavel");
+        throw runtime_error("falha ao remover responsavel");
     }
 
     cout << "[SUCESSO] Responsavel removido da historia '" << codigoHistoria << "'" << endl;
@@ -706,7 +728,7 @@ void ServicoHistoriaUsuario::listarHistoriasPorProjeto(const string& codigoProje
 ServicoProjeto::ServicoProjeto() {
     container = ContainerProjeto::getInstancia();
     if (container == nullptr) {
-        throw runtime_error("Erro: Falha ao obter instancia do container de projeto");
+        throw runtime_error("falha ao obter instancia do container de projeto");
     }
 }
 
@@ -719,7 +741,7 @@ void ServicoProjeto::criarProjeto(const string& codigo,
    
     // 1. Verifica se o código já existe
     if (container->existe(codigo)) {
-        throw runtime_error("Erro: Projeto com codigo '" + codigo + "' ja existe");
+        throw runtime_error("projeto com codigo '" + codigo + "' ja existe");
     }
 
     // 2. Valida os domínios
@@ -735,6 +757,27 @@ void ServicoProjeto::criarProjeto(const string& codigo,
     }
     Email scrummaster(emailScrumMaster);
 
+    ContainerPessoa* containerPessoa = ContainerPessoa::getInstancia();
+
+    // Verifica se o e-mail existe
+    Nome nomeTemp;
+    nomeTemp.setNome("Temp");
+
+    Senha senhaTemp;
+    senhaTemp.setSenha("a1B2c3");
+
+    Papel papelTemp("DESENVOLVEDOR");
+
+    Pessoa pessoaScrum(scrummaster, nomeTemp, senhaTemp, papelTemp);
+
+    if (!containerPessoa->ler(&pessoaScrum)) {
+        throw runtime_error("mestre scrum com email '" + emailScrumMaster + "' nao encontrado");
+    }
+
+    if (pessoaScrum.getPapel().getValor() != "MESTRE SCRUM") {
+        throw runtime_error("pessoa informada nao possui papel MESTRE SCRUM");
+    }
+
     // 3. Cria o projeto
     Projeto projeto;
     projeto.setCodigo(c);
@@ -747,7 +790,7 @@ void ServicoProjeto::criarProjeto(const string& codigo,
 
     // 4. Armazena
     if (!container->criar(projeto)) {
-        throw runtime_error("Erro: Falha ao criar projeto");
+        throw runtime_error("falha ao criar projeto");
     }
 
     cout << "[SUCESSO] Projeto criado com sucesso!" << endl;
@@ -785,7 +828,7 @@ void ServicoProjeto::listarProjetos() {
 void ServicoProjeto::consultarProjeto(const string& codigo) {
     const Projeto* p = container->buscar(codigo);
     if (p == nullptr) {
-        throw runtime_error("Erro: Projeto '" + codigo + "' nao encontrado");
+        throw runtime_error("projeto '" + codigo + "' nao encontrado");
     }
 
     cout << "\n=== DADOS DO PROJETO ===" << endl;
@@ -800,7 +843,7 @@ void ServicoProjeto::atualizarProjeto(const string& codigo,
                                       const string& novoNome) {
     Projeto* p = container->buscar(codigo);
     if (p == nullptr) {
-        throw runtime_error("Erro: Projeto '" + codigo + "' nao encontrado");
+        throw runtime_error("projeto '" + codigo + "' nao encontrado");
     }
 
     Nome nome;
@@ -808,7 +851,7 @@ void ServicoProjeto::atualizarProjeto(const string& codigo,
     p->setNome(nome);
 
     if (!container->atualizar(*p)) {
-        throw runtime_error("Erro: Falha ao atualizar projeto");
+        throw runtime_error("falha ao atualizar projeto");
     }
 
     cout << "[SUCESSO] Projeto '" << codigo << "' atualizado para: " << novoNome << endl;
@@ -821,17 +864,17 @@ void ServicoProjeto::excluirProjeto(const string& codigo) {
 
     for (const auto& sprint : cps->listarTodas()) {
         if (sprint.getCodigoProjeto() == codigo) {
-            throw runtime_error("Erro: projeto possui plano de sprint associado.");
+            throw runtime_error("projeto possui plano de sprint associado.");
         }
     }
 
     for (const auto& historia : chu->listarTodas()) {
         if (historia.getCodigoProjeto().getValor() == codigo) {
-            throw runtime_error("Erro: projeto possui historia associada.");
+            throw runtime_error("projeto possui historia associada.");
         }
     }
     if (!container->excluir(c)) {
-        throw runtime_error("Erro: Projeto '" + codigo + "' nao encontrado");
+        throw runtime_error("projeto '" + codigo + "' nao encontrado");
     }
     cout << "[SUCESSO] Projeto '" << codigo << "' removido com sucesso" << endl;
 }
@@ -917,15 +960,15 @@ void ServicoProjeto::listarProjetosPorPessoa(const string& emailPessoa) {
     }
 }
 
-void ServicoHistoriaUsuario::listarHistoriasPorPessoa(const string& codigoPessoa) {
+void ServicoHistoriaUsuario::listarHistoriasPorPessoa(const string& emailPessoa) {
     vector<HistoriaUsuario> lista = container->listarTodas();
 
     bool encontrou = false;
 
-    cout << "\n=== HISTORIAS ASSOCIADAS A PESSOA " << codigoPessoa << " ===" << endl;
+    cout << "\n=== HISTORIAS ASSOCIADAS A PESSOA " << emailPessoa << " ===" << endl;
 
     for (const auto& h : lista) {
-        if (h.getCodigoPessoa().getValor() == codigoPessoa) {
+        if (h.temResponsavel() && h.getEmailPessoa().get() == emailPessoa) {
             encontrou = true;
 
             cout << "Codigo: " << h.getCodigo().getValor() << endl;

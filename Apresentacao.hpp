@@ -137,7 +137,7 @@ private:
     string lerPrioridade();
     string lerEstado();
     int lerEstimativa();
-    string lerCodigoPessoa();
+    string lerEmailPessoa();
 
 public:
     void listarPorPessoaFlow();

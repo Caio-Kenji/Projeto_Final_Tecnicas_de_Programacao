@@ -335,9 +335,9 @@ void Pessoa::setPapel(const Papel& papelNovo) {
  * @param estadoObj Estado inicial da história
  * @param codigoProjetoObj Código do projeto associado
  * @param estimativaObj Estimativa da história
- * @param codigoPessoaObj Código da pessoa responsável
  * @param codigoPlanoSprintObj Código do sprint associado
  */
+
 HistoriaUsuario::HistoriaUsuario(const Codigo& codigoObj,
                                  const Nome& nomeObj,
                                  const Texto& descricaoObj,
@@ -345,7 +345,6 @@ HistoriaUsuario::HistoriaUsuario(const Codigo& codigoObj,
                                  const Estado& estadoObj,
                                  const Codigo& codigoProjetoObj,
                                  const Tempo& estimativaObj,
-                                 const Codigo& codigoPessoaObj,
                                  const Codigo& codigoPlanoSprintObj)
     : codigo(codigoObj),
       nome(nomeObj),
@@ -354,10 +353,11 @@ HistoriaUsuario::HistoriaUsuario(const Codigo& codigoObj,
       estado(estadoObj),
       codigoProjeto(codigoProjetoObj),
       estimativa(estimativaObj),
-      codigoPessoa(codigoPessoaObj),
-      codigoPlanoSprint(codigoPlanoSprintObj) {
+      possuiResponsavel(false),
+      codigoPlanoSprint(codigoPlanoSprintObj)
     // Todos os atributos são inicializados na lista de inicialização
     // Nenhuma validação adicional é necessária, pois os domínios já validaram
+{
 }
 
 // ========== SETTERS ==========
@@ -392,12 +392,16 @@ void HistoriaUsuario::setEstimativa(const Tempo& novaEstimativa) {
 
 /**
  * @brief Define a pessoa (desenvolvedor) responsável pela história.
- * @param novoCodigoPessoa Objeto Codigo válido.
- * @post O atributo codigoPessoa é atualizado.
- * @note Pode ser usado um código vazio ("") para remover a associação.
+ * @param emailPessoa Objeto Email válido.
+ * @post O atributo emailPessoa é atualizado e a história passa a possuir responsável.
  */
-void HistoriaUsuario::setCodigoPessoa(const Codigo& novoCodigoPessoa) {
-    codigoPessoa = novoCodigoPessoa;
+void HistoriaUsuario::setEmailPessoa(const Email& emailPessoa) {
+    this->emailPessoa = emailPessoa;
+    possuiResponsavel = true;
+}
+
+void HistoriaUsuario::removerResponsavel() {
+    possuiResponsavel = false;
 }
 
 /**
