@@ -30,6 +30,8 @@ class Projeto;
 
 
 
+/*
+
 
 
 // ============================================
@@ -47,6 +49,32 @@ public:
     virtual bool autenticar(const Email&, const Senha&) = 0;
     virtual ~ISAutenticacao(){};
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/
+
+
+
+
+
+
+
+
 
 
 
