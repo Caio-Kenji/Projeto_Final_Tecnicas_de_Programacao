@@ -5,5 +5,7 @@ digraph "Graphical Class Hierarchy"
   edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
   node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
   rankdir="LR";
-  Node0 [id="Node000000",label="Senha",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classSenha.html",tooltip="Classe que representa uma senha válida."];
+  Node0 [id="Node000000",label="IServicoHistoriaUsuario",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_i_servico_historia_usuario.html",tooltip="Interface para serviços da entidade HistoriaUsuario."];
+  Node0 -> Node1 [id="edge6_Node000000_Node000001",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node1 [id="Node000001",label="ServicoHistoriaUsuario",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_servico_historia_usuario.html",tooltip="Implementação concreta do serviço de HistoriaUsuario."];
 }

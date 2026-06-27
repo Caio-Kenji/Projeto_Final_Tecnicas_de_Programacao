@@ -5,5 +5,7 @@ digraph "Graphical Class Hierarchy"
   edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
   node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
   rankdir="LR";
-  Node0 [id="Node000000",label="Projeto",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classProjeto.html",tooltip="Classe que representa uma atividade identificada por um nome e um código, além de um início e fim."];
+  Node0 [id="Node000000",label="ISAutenticacao",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_i_s_autenticacao.html",tooltip=" "];
+  Node0 -> Node1 [id="edge5_Node000000_Node000001",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node1 [id="Node000001",label="StubSAutenticacao",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_stub_s_autenticacao.html",tooltip=" "];
 }

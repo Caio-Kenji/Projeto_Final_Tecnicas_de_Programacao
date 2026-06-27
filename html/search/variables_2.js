@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['valor_0',['valor',['../classDominio.html#adf6b3cc90ca5abce6cd462cdb313220e',1,'Dominio']]]
+  ['papellogado_0',['papelLogado',['../class_sessao.html#af20488aa566c5943485ecfbfd4b32d9c',1,'Sessao']]]
 ];

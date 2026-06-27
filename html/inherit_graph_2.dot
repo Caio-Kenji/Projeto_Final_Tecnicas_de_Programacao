@@ -5,5 +5,5 @@ digraph "Graphical Class Hierarchy"
   edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
   node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
   rankdir="LR";
-  Node0 [id="Node000000",label="ContainerPlanoSprint",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classContainerPlanoSprint.html",tooltip="Container para armazenar e gerenciar planos de sprint."];
+  Node0 [id="Node000000",label="ContainerPlanoSprint",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_container_plano_sprint.html",tooltip="Contêiner responsável por armazenar objetos PlanoSprint em memória."];
 }

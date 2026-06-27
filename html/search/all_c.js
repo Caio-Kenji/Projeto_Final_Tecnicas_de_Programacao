@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['remover_0',['remover',['../classContainerPlanoSprint.html#adc502700d74097c666c7e7badfa9705c',1,'ContainerPlanoSprint']]],
-  ['run_1',['run',['../classTUCodigo.html#a4e6994bcde0011cdf0b0bb7a2c4d94d9',1,'TUCodigo::run()'],['../classTUData.html#a4fd95b821fa6d55bdc82be6f3a3cbef2',1,'TUData::run()'],['../classTUEstado.html#a4c5b9e56f2d1282e575dcf153139d972',1,'TUEstado::run()']]]
+  ['removerresponsavel_0',['removerResponsavel',['../class_historia_usuario.html#af85efc8636ffb043bfd4694bd850e8c8',1,'HistoriaUsuario::removerResponsavel()'],['../class_i_servico_historia_usuario.html#a2d9888ca6efc947dab20fab7c70ca73b',1,'IServicoHistoriaUsuario::removerResponsavel()'],['../class_servico_historia_usuario.html#a6d5bed2bd94f0fd58dd1eac90caa20b8',1,'ServicoHistoriaUsuario::removerResponsavel()']]],
+  ['removerresponsavelflow_1',['removerResponsavelFlow',['../class_controladora_historia_usuario.html#a85f452ac75f6ad352357c12f0814669c',1,'ControladoraHistoriaUsuario']]]
 ];

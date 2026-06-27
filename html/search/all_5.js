@@ -1,4 +1,27 @@
 var searchData=
 [
-  ['falha_0',['falha',['../classTUCodigo.html#abff6dd7b04006df40462c76f8b769123',1,'TUCodigo::FALHA'],['../classTUData.html#a691cfac8c7fc4b3da149ef868de44f35',1,'TUData::FALHA'],['../classTUEstado.html#abaa25c39bec7de39e56f56dfae0b8c6a',1,'TUEstado::FALHA']]]
+  ['get_0',['get',['../class_email.html#a44d14c25185ac8ab89abed8a52722de5',1,'Email::get() const'],['../class_email.html#a8fa1da6448b64f4ae89662984b10e6b6',1,'Email::get() const']]],
+  ['getcapacidade_1',['getCapacidade',['../class_plano_sprint.html#aa954bd87dad78a5240ac7ba913f5bda3',1,'PlanoSprint']]],
+  ['getcodigo_2',['getCodigo',['../class_projeto.html#a5d9c3bb6177e5c62176347461bd620a3',1,'Projeto::getCodigo()'],['../class_plano_sprint.html#aa76ea5ae8cdb94e4ec289795ff0ce07a',1,'PlanoSprint::getCodigo()'],['../class_historia_usuario.html#a20d74309dc8d5f5c274ceb928247c93f',1,'HistoriaUsuario::getCodigo() const']]],
+  ['getcodigoplanosprint_3',['getCodigoPlanoSprint',['../class_historia_usuario.html#a3b6e7b8ea3d0c9336d549beebd531dc0',1,'HistoriaUsuario']]],
+  ['getcodigoprojeto_4',['getCodigoProjeto',['../class_plano_sprint.html#a6fe1421c5a75eb39de42851d261b69b7',1,'PlanoSprint::getCodigoProjeto()'],['../class_historia_usuario.html#ad20e5637fc4377841d8165490bb0591d',1,'HistoriaUsuario::getCodigoProjeto()']]],
+  ['getdatainicio_5',['getDataInicio',['../class_projeto.html#a70f122cc010a8fa20acc7873d79daaca',1,'Projeto::getDataInicio()'],['../class_plano_sprint.html#a427b77769b07defe26ef9cdb4057f842',1,'PlanoSprint::getDataInicio()']]],
+  ['getdatatermino_6',['getDataTermino',['../class_projeto.html#a4149b37369115322162efefd05637e65',1,'Projeto::getDataTermino()'],['../class_plano_sprint.html#ac7141314f1b0964aa85a5d4e4bd12254',1,'PlanoSprint::getDataTermino()']]],
+  ['getdescricao_7',['getDescricao',['../class_historia_usuario.html#a565df479ce7a99c6b5e8a37e99971b9f',1,'HistoriaUsuario']]],
+  ['getemail_8',['getEmail',['../class_pessoa.html#a137a2a665a10ffa4880d1f7d726b07c7',1,'Pessoa']]],
+  ['getemailpessoa_9',['getEmailPessoa',['../class_historia_usuario.html#a5feea4d94c5e5071fdfdad873a39b582',1,'HistoriaUsuario']]],
+  ['getestado_10',['getEstado',['../class_historia_usuario.html#ad2773a4ff634386db5686dd8219874c4',1,'HistoriaUsuario']]],
+  ['getestadostr_11',['getEstadoStr',['../class_historia_usuario.html#a03cc15877096c38e39798b3c4fcc1877',1,'HistoriaUsuario']]],
+  ['getestimativa_12',['getEstimativa',['../class_historia_usuario.html#ab1c3f740e55bbb62ec1eac15f9da1525',1,'HistoriaUsuario']]],
+  ['gethistoriasassociadas_13',['getHistoriasAssociadas',['../class_plano_sprint.html#a0e0e6696cdb157b48807634db586b453',1,'PlanoSprint']]],
+  ['getinstancia_14',['getInstancia',['../class_container_pessoa.html#ae632da48290920caa4ae31a88084357b',1,'ContainerPessoa::getInstancia()'],['../class_container_projeto.html#abbf9ae8721e5cf6adc932e1bf006bde9',1,'ContainerProjeto::getInstancia()'],['../class_container_plano_sprint.html#a13aafaec80805f9484687283a8bcc854',1,'ContainerPlanoSprint::getInstancia()'],['../class_container_historia_usuario.html#afebf3ef658d0d2f7c77a645c382006ef',1,'ContainerHistoriaUsuario::getInstancia()']]],
+  ['getmestre_15',['getMestre',['../class_projeto.html#a9b5172fa0fb095fe9226fbd421cfb022',1,'Projeto']]],
+  ['getnome_16',['getNome',['../class_nome.html#aad41176173eec20cbbae1576447a3697',1,'Nome::getNome()'],['../class_projeto.html#a1eb1c0d356d0f662ac6fda75ff766004',1,'Projeto::getNome()'],['../class_pessoa.html#ad0c0448768ca2f5b5dfca86f156cdfe9',1,'Pessoa::getNome()'],['../class_historia_usuario.html#afedab83850cc4b4427bcd1d460ed1e13',1,'HistoriaUsuario::getNome()'],['../class_nome.html#aad41176173eec20cbbae1576447a3697',1,'Nome::getNome()']]],
+  ['getpapel_17',['getPapel',['../class_pessoa.html#a8c7e1938888e9e84b5c30ca977b98b9d',1,'Pessoa']]],
+  ['getprioridade_18',['getPrioridade',['../class_historia_usuario.html#a4932df4cb889365274edf09c8c3b82a7',1,'HistoriaUsuario']]],
+  ['getproprietario_19',['getProprietario',['../class_projeto.html#a8e182dc90d52121b1851be1729664edf',1,'Projeto']]],
+  ['getsenha_20',['getSenha',['../class_senha.html#a8786b3d03b1652e73df1cdce46cbbaaf',1,'Senha::getSenha()'],['../class_pessoa.html#a02498f338ca00cdd18e794f17d660281',1,'Pessoa::getSenha()'],['../class_senha.html#a8786b3d03b1652e73df1cdce46cbbaaf',1,'Senha::getSenha()']]],
+  ['getsomaestimativas_21',['getSomaEstimativas',['../class_plano_sprint.html#a6af80f2b2299f62a27439aad5588e995',1,'PlanoSprint']]],
+  ['gettempo_22',['getTempo',['../class_tempo.html#abcbb0bc8b4211717951c727aeed007df',1,'Tempo::getTempo() const'],['../class_tempo.html#abcbb0bc8b4211717951c727aeed007df',1,'Tempo::getTempo() const']]],
+  ['getvalor_23',['getValor',['../class_dominio.html#adc86858ec8f9d7d91a0d8498f3614864',1,'Dominio::getValor()'],['../class_papel.html#abffd94741e81d0e634f4eb3fe8f82b47',1,'Papel::getValor()'],['../class_texto.html#a3e10c490166ff82e6559a502fe790b2c',1,'Texto::getValor()'],['../class_prioridade.html#af24b6a849bc2a2abf880bb65859ed237',1,'Prioridade::getValor()'],['../class_dominio.html#adc86858ec8f9d7d91a0d8498f3614864',1,'Dominio::getValor()'],['../class_papel.html#abffd94741e81d0e634f4eb3fe8f82b47',1,'Papel::getValor()'],['../class_texto.html#a329fce47e83d7d290b1e704e251dcd4b',1,'Texto::getValor()'],['../class_prioridade.html#af24b6a849bc2a2abf880bb65859ed237',1,'Prioridade::getValor()']]]
 ];
