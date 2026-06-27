@@ -2,8 +2,6 @@
  * @file Servico.cpp
  * @brief Implementação dos métodos dos serviços
  * 
- * @author Seu Nome
- * @date 2024
  */
 
 #include "Servico.hpp"

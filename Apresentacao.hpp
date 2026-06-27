@@ -6,8 +6,6 @@
  *          com o usuário via console (cin/cout), validar entradas de
  *          forma simples e chamar os serviços apropriados.
  * 
- * @author Seu Nome
- * @date 2024
  */
 
 #ifndef APRESENTACAO_HPP_INCLUDED

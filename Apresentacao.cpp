@@ -5,8 +5,6 @@
  * @details Este arquivo contém a implementação de todos os métodos
  *          das classes responsáveis pela interface com o usuário.
  * 
- * @author Seu Nome
- * @date 2024
  */
 
 #include "Apresentacao.hpp"

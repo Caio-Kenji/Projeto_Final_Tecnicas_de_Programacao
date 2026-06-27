@@ -6,8 +6,6 @@
  *          entre a camada de apresentação e a camada de serviço. Cada interface
  *          corresponde a uma entidade do sistema.
  *
- * @author Seu Nome
- * @date 2024
  */
 
 #ifndef INTERFACES_HPP_INCLUDED
